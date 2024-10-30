@@ -3,6 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Designer & Developer, Kirill Mescheryakov">
+    <meta name="keywords" content="Meschc, Kirill Mescheryakov, designer, developer, social media, portfolio, web design, graphic design">
+    <meta name="author" content="Kirill Mescheryakov">
+    <meta property="og:title" content="Meschc">
+    <meta property="og:description" content="Designer & Developer, Kirill Mescheryakov">
+    <meta property="og:image" content="URL_вашего_изображения_для_поделивания">
+    <meta property="og:url" content="https://kirillmeschc.ru">
+    <meta name="twitter:card" content="summary_large_image">
     <title>Meschc</title>
     <style>
         body, html {
@@ -10,9 +19,17 @@
             padding: 0;
             height: 100%;
             display: flex;
+            flex-direction: column; /* Изменение направления для вертикального выравнивания */
             justify-content: center;
             align-items: center;
             font-family: Arial, sans-serif;
+        }
+        .site-title {
+            position: absolute; /* Позиционирование надписи */
+            top: 20px; /* Отступ сверху */
+            text-align: center;
+            font-size: 48px; /* Размер шрифта для заголовка */
+            color: rgba(0, 0, 0, 0.1); /* Чёрный цвет с 10% прозрачностью */
         }
         .link-container {
             display: flex;
@@ -24,18 +41,20 @@
             color: #333;
             font-size: 18px;
             text-align: center;
+            font-family: "Times New Roman", Georgia, serif; /* Антиква */
         }
         .link-container a:hover {
             color: #007BFF; /* Цвет при наведении */
+            text-decoration: underline; /* Подчёркивание при наведении */
         }
     </style>
 </head>
 <body>
+    <div class="site-title">meschc</div>
     <div class="link-container">
-        <a href="#">Ссылка 1</a>
-        <a href="#">Ссылка 2</a>
-        <a href="#">Ссылка 3</a>
-        <a href="#">Ссылка 4</a>
+        <a href="https://kirillmeschc.t.me" target="_blank">TG</a>
+        <a href="https://x.com/kirillmeschc" target="_blank">X</a>
+        <a href="https://layers.to/kirill" target="_blank">LRS</a>
     </div>
 </body>
 </html>
