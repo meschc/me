@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Центрированные ссылки</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        .link-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Расстояние между ссылками */
+        }
+        .link-container a {
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+            text-align: center;
+        }
+        .link-container a:hover {
+            color: #007BFF; /* Цвет при наведении */
+        }
+    </style>
+</head>
+<body>
+    <div class="link-container">
+        <a href="#">Ссылка 1</a>
+        <a href="#">Ссылка 2</a>
+        <a href="#">Ссылка 3</a>
+        <a href="#">Ссылка 4</a>
+    </div>
+</body>
+</html>
