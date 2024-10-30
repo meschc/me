@@ -12,7 +12,7 @@
     <meta property="og:image" content="URL_вашего_изображения_для_поделивания">
     <meta property="og:url" content="https://kirillmeschc.ru">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="icon" href="https://raw.githubusercontent.com/meschc/kirillmeschc.ru/refs/heads/main/logo_blue_eye.svg" type="image/x-icon"> <!-- Ссылка на фавикон -->
+    <link rel="icon" href="https://raw.githubusercontent.com/meschc/kirillmeschc.ru/refs/heads/main/logo_blue_eye.svg" type="image/svg+xml"> <!-- Ссылка на фавикон -->
     <title>Meschc</title>
     <style>
         body, html {
@@ -24,13 +24,6 @@
             justify-content: center;
             align-items: center;
             font-family: Arial, sans-serif;
-        }
-        .site-title {
-            position: absolute; /* Позиционирование надписи */
-            top: 20px; /* Отступ сверху */
-            text-align: center;
-            font-size: 48px; /* Размер шрифта для заголовка */
-            color: rgba(0, 0, 0, 0.1); /* Чёрный цвет с 10% прозрачностью */
         }
         .link-container {
             display: flex;
@@ -44,18 +37,27 @@
             text-align: center;
             font-family: "Times New Roman", Georgia, serif; /* Антиква */
         }
+        .link-container a:first-letter {
+            font-style: italic; /* Курсив для первой буквы */
+        }
         .link-container a:hover {
             color: #007BFF; /* Цвет при наведении */
             text-decoration: underline; /* Подчёркивание при наведении */
         }
+        .site-title {
+            font-size: 18px; /* Размер шрифта для заголовка, как у ссылок */
+            color: #333; /* Цвет заголовка */
+            font-family: "Times New Roman", Georgia, serif; /* Шрифт заголовка, как у ссылок */
+            margin-top: 20px; /* Отступ сверху для заголовка */
+        }
     </style>
 </head>
 <body>
-    <div class="site-title">meschc</div>
     <div class="link-container">
         <a href="https://kirillmeschc.t.me" target="_blank">TG</a>
         <a href="https://x.com/kirillmeschc" target="_blank">X</a>
         <a href="https://layers.to/kirill" target="_blank">LRS</a>
     </div>
+    <div class="site-title">meschc</div> <!-- Заголовок внизу -->
 </body>
 </html>
