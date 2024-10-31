@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Designer & Developer, Kirill Mescheryakov">
-    <meta name="keywords" content="Meschc, Kirill Mescheryakov, designer, developer, social media, portfolio, web design, graphic design">
-    <meta name="author" content="Kirill Mescheryakov">
+    <meta name="keywords" content="Meschc, Kirill Mescheryakov, designer, developer, portfolio, web design, graphic design">
     <meta property="og:title" content="Meschc">
     <meta property="og:description" content="Designer & Developer, Kirill Mescheryakov">
     <meta property="og:image" content="URL_вашего_изображения_для_поделивания">
     <meta property="og:url" content="https://kirillmeschc.ru">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="icon" href="/logo_blue_eye.svg" type="image/svg+xml"> <!-- Ссылка на фавикон -->
+    <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
     <title>Meschc</title>
     <style>
         body, html {
@@ -20,41 +18,37 @@
             padding: 0;
             height: 100%;
             display: flex;
-            flex-direction: column; /* Изменение направления для вертикального выравнивания */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-family: Arial, sans-serif;
+            font-family: "Times New Roman", serif;
+            color: #333;
         }
         .link-container {
             display: flex;
             flex-direction: column;
-            gap: 15px; /* Расстояние между ссылками */
-            flex-grow: 1; /* Занять всё доступное пространство */
-            justify-content: center; /* Центрирование ссылок */
+            font-size: 18px;
+            text-align: center;
+            gap: 3px; /* Расстояние между ссылками */
         }
         .link-container a {
             text-decoration: none;
             color: #333;
-            font-size: 18px;
-            text-align: center;
-            font-family: "Times New Roman", Georgia, serif; /* Антиква */
-        }
-        .link-container a:first-letter {
-            font-style: italic; /* Курсив для первой буквы */
+            padding: 5px; /* Паддинг для каждой ссылки */
         }
         .link-container a:hover {
-            color: #007BFF; /* Цвет при наведении */
-            text-decoration: underline; /* Подчёркивание при наведении */
+            color: #007BFF;
+            text-decoration: underline;
+        }
+        .link-container a:active {
+            color: #0056b3; /* Цвет при нажатии */
         }
         .site-title {
-            font-size: 18px; /* Размер шрифта для заголовка, как у ссылок */
-            color: rgba(51, 51, 51, 0.1); /* Цвет заголовка с 10% прозрачностью */
-            font-family: "Times New Roman", Georgia, serif; /* Шрифт заголовка, как у ссылок */
-            margin-bottom: 20px; /* Отступ снизу для заголовка */
-            position: absolute; /* Позиционирование заголовка */
-            bottom: 20px; /* Отступ от низа */
-            left: 50%; /* Центрирование по горизонтали */
-            transform: translateX(-50%); /* Сдвиг влево на 50% ширины для центрирования */
+            position: fixed;
+            bottom: 20px;
+            font-size: 18px;
+            color: rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
     </style>
 </head>
@@ -64,6 +58,6 @@
         <a href="https://x.com/kirillmeschc" target="_blank">x</a>
         <a href="https://layers.to/kirill" target="_blank">lrs</a>
     </div>
-    <div class="site-title">meschc</div> <!-- Заголовок внизу -->
+    <div class="site-title">meschc</div>
 </body>
 </html>
