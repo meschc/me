@@ -57,26 +57,9 @@
         <a href="https://kirillmeschc.t.me" target="_blank"><i>t</i>g</a>
         <a href="https://x.com/kirillmeschc" target="_blank"><i>x</i></a>
         <a href="https://layers.to/kirill" target="_blank"><i>l</i>rs</a>
-        <!--<div>Подписчики: <span id="subscriber-count">Загрузка...</span></div>-->
+        <br>
+        <a href="https://themeschc.t.me" target="_blank"><i>c</i>hnl <i>(181)</i></a>
     </div>
     <div class="site-title">meschc</div>
 </body>
-<script>
-   async function fetchSubscriberCount() {
-      try {
-         const response = await fetch('https://kirillmeschc-ru.onrender.com/subscriber_count');
-         const data = await response.json();
-         if (data.subscriber_count) {
-            document.getElementById('subscriber-count').innerText = data.subscriber_count;
-         } else {
-            console.error('Error:', data.error);
-         }
-      } catch (error) {
-         console.error('Failed to fetch subscriber count:', error);
-      }
-   }
-
-   // Запуск функции при загрузке страницы
-   window.onload = fetchSubscriberCount;
-</script>
 </html>
