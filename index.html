@@ -64,7 +64,7 @@
 <script>
    async function fetchSubscriberCount() {
       try {
-         const response = await fetch('https://yourappname.onrender.com/subscriber_count');
+         const response = await fetch('https://kirillmeschc-ru.onrender.com/subscriber_count');
          const data = await response.json();
          if (data.subscriber_count) {
             document.getElementById('subscriber-count').innerText = data.subscriber_count;
