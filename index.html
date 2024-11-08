@@ -22,21 +22,26 @@
             justify-content: center;
             align-items: center;
             font-family: serif;
-            color: #333;
+            color: #242424;
+
         }
         .link-container {
             display: flex;
             flex-direction: column;
             font-size: 18px;
             text-align: center;
-            algn-items: center;
-            gap: 3px; 
+            align-items: center;
+            gap: 2px; 
         }
         a {
             width: fit-content;
             text-decoration: none;
             color: #333;
-            padding: 5px 10px; 
+            padding: 4px 10px 7px 10px; 
+            border-radius: 8px;
+            border: 2px solid transparent;
+            transition: .2s ease-in-out;
+
         }
 
         a:hover {
@@ -46,18 +51,28 @@
         a:active {
             color: #ED3F1C; 
         }
-        a:focus {
-        border-radius: 8px;
+        a:focus-visible {
+            outline: none;
+            border: 2px solid #007BFF;
         }
-        .site-title {
+        a:first-letter {
+            font-style:italic;
+        }
+        .title {
             position: fixed;
             bottom: 20px;
             font-size: 18px;
             color: rgba(0, 0, 0, 0.1);
             text-align: center;
+            padding: 4px 10px 7px 10px; 
+            border-radius: 8px;
+            border: 2px solid transparent;
+            transition: .2s ease-in-out;
+
         }
-        a:first-letter {
-            font-style:italic;
+        .title:focus-visible {
+            outline: none;
+            border: 2px solid #007BFF;
         }
     </style>
 </head>
@@ -69,6 +84,6 @@
         <br>
         <a href="https://themeschc.t.me" target="_blank" rel="noopener noreferrer" title="Go to Meschc Telegram channel" alt="The Meschc Telegram" aria-label="Telegram The Meschc">chnl<i> (181)</i></a>
     </div>
-    <div class="site-title" title="smile!" alt="logotype with last name meschc" contenteditable >meschc</div>
+    <div class="title" spellcheck="false" title="smile!" alt="logotype with last name meschc" contenteditable >meschc</div>
 </body>
 </html>
