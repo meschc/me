@@ -10,7 +10,7 @@
     <meta property="og:image" content="assets/img/thumb.png">
     <meta property="og:url" content="https://kirillmeschc.ru">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"> <!-- Путь к фавикону -->
+    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"> 
     <title>Meschc</title>
     <style>
         body, html {
@@ -29,12 +29,13 @@
             flex-direction: column;
             font-size: 18px;
             text-align: center;
-            gap: 3px; /* Расстояние между ссылками */
+            gap: 3px; 
         }
         a {
+            width: fit-content;
             text-decoration: none;
             color: #333;
-            padding: 5px; /* Паддинг для каждой ссылки */
+            padding: 5px 10px; 
         }
 
         a:hover {
@@ -42,7 +43,10 @@
             text-decoration: underline;
         }
         a:active {
-            color: #ED3F1C; /* Цвет при нажатии */
+            color: #ED3F1C; 
+        }
+        a:focus {
+        border-radius: 8px;
         }
         .site-title {
             position: fixed;
@@ -58,12 +62,12 @@
 </head>
 <body>
     <div class="link-container">
-        <a href="https://kirillmeschc.t.me" target="_blank" rel="noopener noreferrer" title="Go to Telegram channel" alt="Telegram" aria-label="Telegram">tg</a>
-        <a href="https://x.com/kirillmeschc" target="_blank" rel="noopener noreferrer" title="Go to X account" alt="X" aria-label="X">x</a>
-        <a href="https://layers.to/kirill" target="_blank" rel="noopener noreferrer" title="Go to Layers page" alt="Layers" aria-label="Layers">lrs</a>
+        <a href="https://kirillmeschc.t.me" target="_blank" rel="noopener noreferrer" title="Go to Telegram profile" alt="Telegram profile" aria-label="Telegram profile">tg</a>
+        <a href="https://x.com/kirillmeschc" target="_blank" rel="noopener noreferrer" title="Go to X profile" alt="X profile" aria-label="X profile">x</a>
+        <a href="https://layers.to/kirill" target="_blank" rel="noopener noreferrer" title="Go to Layers profile" alt="Layers profile" aria-label="Layers profile">lrs</a>
         <br>
-        <a href="https://themeschc.t.me" target="_blank" rel="noopener noreferrer" title="Go to The Meschc's Telegram channel" alt="The Meschc Telegram" aria-label="Telegram The Meschc">chnl<i> (181)</i></a>
+        <a href="https://themeschc.t.me" target="_blank" rel="noopener noreferrer" title="Go to Meschc Telegram channel" alt="The Meschc Telegram" aria-label="Telegram The Meschc">chnl<i> (181)</i></a>
     </div>
-    <div class="site-title">meschc</div>
+    <div class="site-title" title="smile!" alt="logotype with last name meschc" contenteditable >meschc</div>
 </body>
 </html>
