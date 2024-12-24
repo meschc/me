@@ -33,13 +33,13 @@
             flex-direction: row;
             align-items: start;
             gap: 3em;
-            flex-wrap: wrap; /* Для мобильных экранов, чтобы компоненты не выходили за пределы экрана */
+            flex-wrap: wrap; 
         }
         .info {
             display: flex;
             flex-direction: column;
             align-items: start;
-            flex: 1; /* Заполняет доступное пространство */
+            flex: 1; 
         }
         img {
             border-radius: 10rem;
@@ -52,7 +52,7 @@
             display: flex;
             flex-direction: row;
             gap: 0.4em;
-            flex-wrap: wrap; /* Мобильные устройства будут лучше отображать теги */
+            flex-wrap: wrap;
         }
         .tag {
             height: fit-content;
@@ -156,10 +156,10 @@
             width: 1.3em;
         }
 
-        /* Мобильная адаптация */
+        
         @media (max-width: 768px) {
             body {
-                padding: 2em 1em; /* Уменьшаем отступы на мобильных */
+                padding: 2em 1em; 
             }
             .header {
                 flex-direction: column;
@@ -180,10 +180,10 @@
                 margin-left: 0;
             }
             .info {
-                width: 100%; /* Уменьшаем ширину блока с информацией на мобильных */
+                width: 100%; 
             }
             img {
-                height: 6em; /* Больше изображение на мобильных */
+                height: 6em; 
             }
             .contacts ul {
                 padding-left: 0;
@@ -191,16 +191,16 @@
             }
         }
 
-        /* Еще более маленькие экраны */
+    
         @media (max-width: 480px) {
             h1 {
-                font-size: 1.1em; /* Уменьшаем размер заголовка на очень маленьких экранах */
+                font-size: 1.1em; 
             }
             h2 {
                 font-size: 0.9em;
             }
             button {
-                font-size: 0.9em; /* Уменьшаем размер кнопки */
+                font-size: 0.9em;
                 margin-left: 0;
             }
         }
@@ -208,7 +208,7 @@
 </head>
 <body contenteditable='true'>
     <div class="header">
-        <img src="img.webp" alt="Kirill Meschceryakov"> 
+        <img src="assets/img/img.webp" alt="Kirill Meschceriakov"> 
         <div>
             <h1>Кирилл Мещеряков</h1>
             <p>UX/UI дизайнер <span class="transparent">& разработчик</span></p>
