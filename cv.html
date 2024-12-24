@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кирилл Мещеряков - UX/UI дизайнер</title>
+    <link rel="stylesheet" href="favicon.svg">
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+    <style>
+        body {
+            max-width: 800px;
+            font-family: "Geist", sans-serif;
+            margin: 0 auto;
+            padding: 4em;
+            background-color: #fff;
+            color: #212121;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            gap: 1em;
+            transition: 0.2s ease-in-out;
+        }
+        .header {
+            width: -webkit-fill-available;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 0.5em;
+        }
+        .body {
+            display: flex;
+            flex-direction: row;
+            align-items: start;
+            gap: 3em;
+            flex-wrap: wrap; /* Для мобильных экранов, чтобы компоненты не выходили за пределы экрана */
+        }
+        .info {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            flex: 1; /* Заполняет доступное пространство */
+        }
+        img {
+            border-radius: 10rem;
+            border: 1px solid rgba(0, 0, 0, 0.4);
+            width: auto;
+            height: 3em;
+            aspect-ratio: 1/1;
+        }
+        .tags {
+            display: flex;
+            flex-direction: row;
+            gap: 0.4em;
+            flex-wrap: wrap; /* Мобильные устройства будут лучше отображать теги */
+        }
+        .tag {
+            height: fit-content;
+            display: flex;
+            padding: 1px 8px 2px;
+            margin-left: auto;
+            justify-content: center;
+            align-items: center;
+            gap: 0.2em;
+            border-radius: 0.8em;
+            border: 1px solid #D5D5D5;
+            background-color: #FFFFFF00;
+            color: #000;
+            font-family: inherit;
+            font-size: 0.9em;
+            text-align: center;
+            font-weight: 400;
+            line-height: 1.5em;
+            transition: 0.2s ease-in-out;
+        }
+        h1 {
+            font-weight: 600;
+            text-align: left;
+            font-size: 1.2em;
+            margin: 0 0 0.2em 0;
+        }
+        h2 {
+            font-weight: 600;
+            margin-top: 1.5em;
+            font-size: 1em;
+        }
+        p {
+            font-size: 1em;
+            margin: 0;
+        }
+        .transparent {
+            opacity: 0.4;
+        }
+        ul {
+            list-style-type: disc;
+            margin: 0;
+            padding-left: 1em;
+        }
+        li {
+            margin-bottom: 0.4em;
+        }
+        .contacts li {
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+        }
+        a {
+            color: #2291FF;
+            text-decoration: underline;
+            text-decoration-style: wavy;
+            text-decoration-color: #3498db00;
+            text-underline-offset: 0.1em;
+            transition: 0.2s ease-in-out;
+        }
+        a:hover {
+            text-decoration: underline;
+            text-decoration-style: wavy;
+            text-decoration-color: #2291FF80;
+            text-underline-offset: 0.175em;
+        }
+        .contacts {
+            display: flex;
+            flex-direction: column;
+        }
+        .contacts ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        button {
+            height: fit-content;
+            display: flex;
+            padding: 7px 16px 8px 16px;
+            margin-left: auto;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            border-radius: 0.8em;
+            border: 1px solid #D5D5D5;
+            background-color: #FFFFFF00;
+            color: #000;
+            font-family: inherit;
+            font-size: 1em;
+            text-align: center;
+            font-weight: 400;
+            line-height: 1.5em;
+            transition: 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #F8F8F8;
+        }
+        button:active {
+            background-color: #E6E6E6;
+        }
+        .contacts li svg {
+            width: 1.3em;
+        }
+
+        /* Мобильная адаптация */
+        @media (max-width: 768px) {
+            body {
+                padding: 2em 1em; /* Уменьшаем отступы на мобильных */
+            }
+            .header {
+                flex-direction: column;
+                align-items: start;
+                text-align: left;
+            }
+            .body {
+                flex-direction: column-reverse;
+                gap: 2em;
+            }
+            .tags {
+                justify-content: left;
+                flex-direction: row;
+            }
+            .tag {
+                width: max-content;
+                text-align: center;
+                margin-left: 0;
+            }
+            .info {
+                width: 100%; /* Уменьшаем ширину блока с информацией на мобильных */
+            }
+            img {
+                height: 6em; /* Больше изображение на мобильных */
+            }
+            .contacts ul {
+                padding-left: 0;
+                margin-left: 0;
+            }
+        }
+
+        /* Еще более маленькие экраны */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.1em; /* Уменьшаем размер заголовка на очень маленьких экранах */
+            }
+            h2 {
+                font-size: 0.9em;
+            }
+            button {
+                font-size: 0.9em; /* Уменьшаем размер кнопки */
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body contenteditable='true'>
+    <div class="header">
+        <img src="img.webp" alt="Kirill Meschceryakov"> 
+        <div>
+            <h1>Кирилл Мещеряков</h1>
+            <p>UX/UI дизайнер <span class="transparent">& разработчик</span></p>
+        </div>
+        <button id="download">Скачать PDF</button>
+    </div>
+    <div class="tags">
+        <p class="tag">Москва</p>
+        <p class="tag">3 года опыта</p>
+        <p class="tag">UX/UI</p>
+        <p class="tag">Low-code</p>
+        <p class="tag">AI</p>
+    </div>
+    <div class="body">
+        <div class="contacts">
+            <h2>Контакты</h2>
+            <ul>
+                <li><i data-feather="send"></i><a href="https://kirillmeschc.t.me">kirillmeschc</a></li>
+                <li><i data-feather="mail"></i><a href="mailto:kirillmeschc@gmail.com">kirillmeschc@gmail.com</a></li>
+                <li><i data-feather="phone"></i><a href="tel:+79957890412">+7 (995) 789-04-12</a></li>
+            </ul>
+            <h2>Ссылки</h2>
+            <ul>
+                <li><i data-feather="send"></i><a href="https://themeschc.t.me">Mesch</a></li>
+                <li><i data-feather="globe"></i><a href="https://kirillmeschc.ru">kirillmeschc.ru</a></li>
+                <li><i data-feather="layers"></i><a href="https://layers.com/kirill">layers.com/kirill</a></li>
+                <li><i data-feather="twitter"></i><a href="https://x.com/kirillmeschc">x.com/kirillmeschc</a></li>
+                <li><i data-feather="github"></i><a href="https://create.kirillmeschc.ru">create.kirillmeschc.ru</a></li>
+            </ul>
+        </div>
+        <div class="info">
+            <h2>Карьера и цели</h2>
+            <p>
+                Стремлюсь создавать удобные, красивые и функциональные интерфейсы. Имею опыт работы с дизайн-системами 
+                и Low-code разработкой. Ориентируюсь на работу в крупных IT-компаниях или интересных продуктах, где могу 
+                применить свои навыки и создавать решения, которые делают жизнь пользователей проще.
+            </p>
+            <h2>Навыки</h2>
+            <ul>
+                <li>UX/UI-дизайн: создание интерфейсов, работа с дизайн-системами, пользовательский опыт.</li>
+                <li>Дизайн-инструменты: Figma (компоненты, variables, auto-layout), Rive, Webflow, Framer, Tilda.</li>
+                <li>Low-code платформы: Bubble, Make, Taptop.</li>
+                <li>Технические навыки: HTML, CSS, JavaScript.</li>
+                <li>Продуктивность: ChatGPT, Midjourney.</li>
+            </ul>
+            <h2>Достижения</h2>
+            <ul>
+                <li>Серебро национального чемпионата «АртМастерс 2022» в компетенции «Веб-дизайн».</li>
+                <li>Самообучение дизайну и разработке с нуля, сильные технические и креативные навыки.</li>
+            </ul>
+            <h2>Образование</h2>
+            <p>Самоучка, регулярно изучаю современные инструменты и подходы в UX/UI-дизайне.</p>
+            <h2>Языки</h2>
+            <p>Русский (родной), Английский (B1).</p>
+        </div>
+    </div>
+    <script>
+        feather.replace();
+
+        document.getElementById('download').addEventListener('click', function() {
+            var element = document.body; // Используем весь body контент
+
+            // Скрываем кнопку перед началом генерации PDF
+            var downloadButton = document.getElementById('download');
+            downloadButton.style.opacity = '0';
+
+            // Параметры для генерации PDF
+            var options = {
+                filename: 'Мещеряков_Кирилл.pdf',
+                html2canvas: { scale: 4, useCORS: true }, // Используем CORS
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Логируем начало процесса
+            console.log('Генерация PDF началась');
+            
+            // Попробуем использовать html2pdf с дополнительной обработкой ошибок
+            try {
+                html2pdf().from(element).set(options).save().then(function() {
+                    console.log('PDF файл успешно загружен');
+                }).catch(function(error) {
+                    console.error('Ошибка при генерации PDF:', error);
+                }).finally(function() {
+                    // Восстанавливаем кнопку после завершения процесса
+                    downloadButton.style.opacity = '1';
+                });
+            } catch (error) {
+                console.error('Ошибка при вызове html2pdf:', error);
+                // Восстанавливаем кнопку в случае ошибки
+                downloadButton.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
