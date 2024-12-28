@@ -11,13 +11,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
     <style>
         body {
             max-width: 800px;
-            font-family: "Geist", sans-serif;
+            font-family: 'Geist', sans-serif;
             margin: 0 auto;
-            padding: 4em;
+            padding: 2em;
             background-color: #fff;
             color: #212121;
             display: flex;
@@ -37,7 +37,7 @@
             display: flex;
             flex-direction: row;
             align-items: start;
-            gap: 3em;
+            gap: 2em;
             flex-wrap: wrap; 
         }
         .info {
@@ -63,7 +63,6 @@
             height: fit-content;
             display: flex;
             padding: 1px 8px 2px;
-            margin-left: auto;
             justify-content: center;
             align-items: center;
             gap: 0.2em;
@@ -75,19 +74,28 @@
             font-size: 0.9em;
             text-align: center;
             font-weight: 400;
-            line-height: 1.5em;
+            line-height: 1.2em;
             transition: 0.2s ease-in-out;
         }
         h1 {
             font-weight: 600;
             text-align: left;
             font-size: 1.2em;
-            margin: 0 0 0.2em 0;
+            margin: 0 0 0.1em 0;
         }
         h2 {
-            font-weight: 600;
-            margin-top: 1.5em;
+            font-weight: 500;
+            margin-top: 1em;
+            margin-bottom: 0.4em;
             font-size: 1em;
+            page-break-before: auto;
+        }
+        h3 {
+            font-weight: 400;
+            margin-top: 0.2em;
+            margin-bottom: 0.5em;
+            font-size: 1em;
+
         }
         p {
             font-size: 1em;
@@ -108,6 +116,10 @@
             display: flex;
             align-items: center;
             gap: 0.5em;
+        }
+        .job .tittle {
+            display: flex;
+            gap: 0.4em;
         }
         a {
             color: #2291FF;
@@ -158,7 +170,7 @@
             background-color: #E6E6E6;
         }
         .contacts li svg {
-            width: 1.3em;
+            width: 1.2em;
         }
 
         
@@ -216,7 +228,7 @@
         <img src="assets/img/img.webp" alt="Kirill Meschceriakov"> 
         <div>
             <h1>Кирилл Мещеряков</h1>
-            <p>UX/UI дизайнер <span class="transparent">& разработчик</span></p>
+            <p>UX/UI дизайнер <!--<span class="transparent">& разработчик</span>--></p>
         </div>
         <button id="download">Скачать PDF</button>
     </div>
@@ -226,6 +238,8 @@
         <p class="tag">UX/UI</p>
         <p class="tag">Low-code</p>
         <p class="tag">AI</p>
+        <p class="tag">Русский (Родной)</p>
+        <p class="tag">Английский (А2)</p>
     </div>
     <div class="body">
         <div class="contacts">
@@ -237,37 +251,50 @@
             </ul>
             <h2>Ссылки</h2>
             <ul>
-                <li><i data-feather="send"></i><a href="https://themeschc.t.me">Mesch</a></li>
+                <li><i data-feather="send"></i><a href="https://themeschc.t.me">Телеканал Mesch</a></li>
                 <li><i data-feather="globe"></i><a href="https://kirillmeschc.ru">kirillmeschc.ru</a></li>
                 <li><i data-feather="layers"></i><a href="https://layers.com/kirill">layers.com/kirill</a></li>
                 <li><i data-feather="twitter"></i><a href="https://x.com/kirillmeschc">x.com/kirillmeschc</a></li>
-                <li><i data-feather="github"></i><a href="https://create.kirillmeschc.ru">create.kirillmeschc.ru</a></li>
+                <!--<li><i data-feather="github"></i><a href="https://create.kirillmeschc.ru">create.kirillmeschc.ru</a></li>-->
+            </ul>
+            <h2>Рекомендации</h2>
+            <ul>
+                <li><i data-feather="send"></i><a href="https://kuryanov.t.me">Никита Курьянов</a></li>
+                <li><i data-feather="send"></i><a href="https://VladBastrikov.t.me">Владислав Бастриков</a></li>
             </ul>
         </div>
         <div class="info">
-            <h2>Карьера и цели</h2>
+            <h2>Карьера и цели</h2>
             <p>
-                Стремлюсь создавать удобные, красивые и функциональные интерфейсы. Имею опыт работы с дизайн-системами 
-                и Low-code разработкой. Ориентируюсь на работу в крупных IT-компаниях или интересных продуктах, где могу 
-                применить свои навыки и создавать решения, которые делают жизнь пользователей проще.
+                С 2022 года работаю на фрилансе, сотрудничал с клиентами из России, Таиланда и ЮАР. Стремлюсь создавать удобные, красивые и функциональные интерфейсы. Работал с дизайн-системами и разрабатывал проекты на Low/no-code платформах. Ориентируюсь на работу в крупных IT-компаниях или интересных продуктах, где смогу применить свои навыки и создавать решения, которые делают жизнь пользователей проще.
             </p>
             <h2>Навыки</h2>
             <ul>
-                <li>UX/UI-дизайн: создание интерфейсов, работа с дизайн-системами, пользовательский опыт.</li>
-                <li>Дизайн-инструменты: Figma (компоненты, variables, auto-layout), Rive, Webflow, Framer, Tilda.</li>
-                <li>Low-code платформы: Bubble, Make, Taptop.</li>
-                <li>Технические навыки: HTML, CSS, JavaScript.</li>
-                <li>Продуктивность: ChatGPT, Midjourney.</li>
+                <li>UX/UI-дизайн: создание интерфейсов, работа с дизайн-системами, пользовательский опыт.</li>
+                <li>Инструменты: Figma (компоненты, variables, auto-layout), Rive, Play.</li>
+                <li>Low/no-code платформы: Bubble, Make, Taptop, Webflow, Framer, Tilda.</li>
+                <li>Технические навыки: HTML, CSS, начальный уровень JavaScript.</li>
+                <li>Дополнительные инструменты: ChatGPT, MidJourney, Notion, Sublime, Github.</li>
             </ul>
+            <h2>Опыт работы</h2>
+              <div class="job">
+                <div class="tittle">
+                    <h3>Фриланс, UX/UI-дизайнер | </h3>
+                    <h3 class="transparent">Январь 2022...настоящее время</h3>
+                </div>
+                <ul>
+                  <li>Разработка интерфейсов и прототипов для локальных и международных клиентов.</li>
+                  <li>Сотрудничество с <a href="https://www.hardcore.studio/">Hardcore Studio</a>, студией <a href="https://markiprint.ru/">Marki</a>, строительной компанией <a href="https://eeelmnt.com/">Element</a> и другими.</li>
+                  <li>Ведение проектов от идеи до реализации, включая анализ задач, разработку решений и взаимодействие с разработчиками.</li>
+                </ul>
+            </div>
+            </h2>
             <h2>Достижения</h2>
             <ul>
-                <li>Серебро национального чемпионата «АртМастерс 2022» в компетенции «Веб-дизайн».</li>
-                <li>Самообучение дизайну и разработке с нуля, сильные технические и креативные навыки.</li>
+                <li>Получил грант на 150 000 ₽ заняв серебро национального чемпионата «АртМастерс 2022» в компетенции «Веб-дизайн».</li>
             </ul>
             <h2>Образование</h2>
-            <p>Самоучка, регулярно изучаю современные инструменты и подходы в UX/UI-дизайне.</p>
-            <h2>Языки</h2>
-            <p>Русский (родной), Английский (B1).</p>
+            <p>Самоучка, регулярно изучаю современные инструменты и подходы в UX/UI-дизайне.</p>
         </div>
     </div>
     <script>
@@ -282,7 +309,7 @@
 
             // Параметры для генерации PDF
             var options = {
-                filename: 'Мещеряков_Кирилл.pdf',
+                filename: 'CV_Мещеряков_Кирилл.pdf',
                 html2canvas: { scale: 4, useCORS: true }, // Используем CORS
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
