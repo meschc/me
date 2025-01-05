@@ -1,0 +1,265 @@
+<!-- И? -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>* Личная библиотека Мещерякова К. Д. *</title>
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <meta property="og:image" content="assets/img/thumb.png">
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    body {
+      font-family: serif;
+      margin: 0;
+      line-height: 1.24;
+      gap: 2em;
+    }
+    h1 {
+      font-size: 2em;
+      line-height: 1.12;
+    }
+    a {
+        color: #2291FF;
+        text-decoration: underline;
+        text-decoration-color: #3498db00;
+        text-underline-offset: 0.1em;
+        transition: 0.2s ease-in-out;
+    }
+    a:hover {
+        text-decoration: underline;
+        text-decoration-color: #2291FF80;
+        text-underline-offset: 0.175em;
+    }
+    .banner {
+      position: relative;
+    }
+    .banner img {
+      height: 60vh; 
+      width: 100%; 
+      object-fit: contain;
+      object-position: bottom;
+    }
+    .table-container {
+      max-width: 80vw;
+      margin: 2em auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table-scrollable {
+      overflow-y: auto; 
+    }
+
+    th, td {
+      padding: 0.5em;
+      text-align: left;
+    }
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    tr { 
+      transition: 0.2s ease-in-out;
+    }
+
+    tr:not(thead tr):hover  { 
+      background-color: #00000008; 
+    }
+    .status {
+      padding: 0.2em 0.4em;
+      border-radius: 0.1em;
+      display: inline-block;
+      text-align: left;
+    }
+    .status-read {
+      background-color: #4caf5012;
+      color: #4caf50;
+    }
+    .status-reading {
+      background-color: #ffc10712;
+      color: #ffc107;
+    }
+    .status-wishlist {
+      background-color: #f4433612;
+      color: #f44336;
+    }
+    .cover-image {
+      width: 60px;
+      height: 80px;
+      object-fit: cover;
+    }
+    .loader-text {
+      animation: fade 1.5s ease-in-out infinite;
+    }
+    .footer {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-top: 2em;
+    }
+    p .footer {
+      margin: 0;
+    }
+
+    @keyframes fade {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+    @media (max-width: 1024px) {
+      .banner img {
+        object-fit: cover;
+      }
+      h1 {
+        font-size: 1.5em;
+      }
+      .table-container {
+        margin: 0.5em ;
+        max-width: 100vw;
+
+    }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <img id="banner" src="/assets/img/banner3.jpeg" alt="Книги с печатью">
+  </div>
+  <div class="table-container">
+    <h1>Библиотека Мещерякова К. Д. <!--<a href="#">Вишлист</a>--></h1>
+    <div id="loader" style="display: none;  margin-top: 20px;">
+      <p class="loader-text">Расставляю книги...</p>
+    </div>
+    <div class="table-scrollable">
+      <table>
+        <thead id="table-head"></thead>
+        <tbody id="book-list"></tbody>
+      </table> 
+    </div>
+    <div class="footer" id="footer" style="display: none;"><p><a href="#"><i>км</i></a></p><p>v1 [05.01.2025 22:59]</p></div>
+  </div>
+  <script>
+    feather.replace();
+
+    const apiUrl = "https://script.google.com/macros/s/AKfycbxq71nvGIkLjcv2bhn0UYnsTMWupy1uEcbSnB0GiM_or7C3rq9amy2EgMtls_W43cPAMA/exec";
+    let cachedData = null; // Кэшированные данные
+    let lastFetchTime = null; // Время последнего запроса
+
+    const loader = document.getElementById("loader"); // Элемент индикатора загрузки
+    const footer = document.getElementById("footer"); // Элемент футера
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
+    }
+
+    async function fetchBooks() {
+      try {
+        showLoader(); // Показываем индикатор загрузки
+
+        // Проверяем, если данные в кэше и прошло менее 10 минут
+        const now = Date.now();
+        if (cachedData && lastFetchTime && now - lastFetchTime < 10 * 60 * 1000) {
+          renderBooks(cachedData); // Используем кэшированные данные
+          return;
+        }
+
+        // Делаем запрос к API
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error(`Ошибка сети: ${response.statusText}`);
+
+        const books = await response.json();
+        cachedData = books; // Сохраняем данные в кэш
+        lastFetchTime = now; // Обновляем время последнего запроса
+        renderBooks(books);
+      } catch (error) {
+        console.error("Ошибка загрузки данных:", error.message);
+      } finally {
+        hideLoader(); // Скрываем индикатор загрузки
+      }
+    }
+
+    function renderBooks(books) {
+      const tableHead = document.getElementById("table-head");
+      const bookList = document.getElementById("book-list");
+
+      tableHead.innerHTML = "";
+      bookList.innerHTML = "";
+
+      if (books.length === 0) return;
+
+      const headers = Object.keys(books[0]);
+      const headerRow = document.createElement("tr");
+      headers.forEach(header => {
+        const th = document.createElement("th");
+        th.textContent = header;
+        headerRow.appendChild(th);
+      });
+      tableHead.appendChild(headerRow);
+
+      books.forEach(book => {
+        const row = document.createElement("tr");
+        headers.forEach(header => {
+          const td = document.createElement("td");
+
+          if (header === "Обложка") {
+            const img = document.createElement("img");
+            img.src = book[header] || "https://via.placeholder.com/60x80";
+            img.alt = "Обложка книги";
+            img.classList.add("cover-image");
+            td.appendChild(img);
+          } else if (header.toLowerCase() === "статус") {
+            const statusValue = book[header];
+            const statusClass = statusValue.toLowerCase() === "прочитано" ? "status-read" :
+                                statusValue.toLowerCase() === "в процессе" ? "status-reading" :
+                                "status-wishlist";
+            td.innerHTML = `<span class="status ${statusClass}">${statusValue}</span>`;
+          } else if (header.toLowerCase().includes("дата")) {
+            td.textContent = formatDate(book[header]);
+          } else {
+            td.textContent = book[header] || " ";
+          }
+          row.appendChild(td);
+        });
+        bookList.appendChild(row);
+      });
+
+      // Показать footer после загрузки
+      footer.style.display = "flex";
+    }
+
+    function showLoader() {
+      loader.style.display = "block"; // Показываем индикатор загрузки
+    }
+
+    function hideLoader() {
+      loader.style.display = "none"; // Скрываем индикатор загрузки
+    }
+
+    // Смена баннера при обновлении страницы
+    const banners = [
+      "/assets/img/banner1.jpeg",
+      "/assets/img/banner2.jpeg",
+      "/assets/img/banner3.jpeg"
+    ];
+
+    const bannerElement = document.getElementById("banner");
+    const randomIndex = Math.floor(Math.random() * banners.length);
+    bannerElement.src = banners[randomIndex];
+
+    // Первичная загрузка и обновление каждые 10 минут
+    fetchBooks();
+    setInterval(fetchBooks, 60000);
+  </script>
+</body>
+</html>
