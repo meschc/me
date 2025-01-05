@@ -9,12 +9,12 @@
   <meta property="og:image" content="assets/img/banner2.jpeg">
   <meta property="og:url" content="https://kirillmeschc.ru/library">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#007BFF">
+  <meta name="theme-color" content="#D5D2CC">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"> 
   <script src="https://unpkg.com/feather-icons"></script>
   <style>
     body {
-      font-family: serif;
+      font-family: 'New York', 'Georgia', serif, ui-serif;
       margin: 0;
       line-height: 1.24;
       gap: 2em;
@@ -74,6 +74,12 @@
 
     tr:not(thead tr):hover  { 
       background-color: #00000008; 
+    }
+    td:nth-child(4) {
+      min-width: 170px ;
+    }
+    td:nth-child(3) {
+      min-width: 140px ;
     }
     .status {
       padding: 0.2em 0.4em;
@@ -153,103 +159,99 @@
     <div class="footer" id="footer" style="display: none;"><p><a href="#"><i>км</i></a></p><p>v1 [05.01.2025 22:59]</p></div>
   </div>
   <script>
-    feather.replace();
+feather.replace();
 
-    const apiUrl = "https://script.google.com/macros/s/AKfycbxq71nvGIkLjcv2bhn0UYnsTMWupy1uEcbSnB0GiM_or7C3rq9amy2EgMtls_W43cPAMA/exec";
-    let cachedData = null; // Кэшированные данные
-    let lastFetchTime = null; // Время последнего запроса
+  const apiUrl = "https://script.google.com/macros/s/AKfycbxq71nvGIkLjcv2bhn0UYnsTMWupy1uEcbSnB0GiM_or7C3rq9amy2EgMtls_W43cPAMA/exec";
+  let cachedData = null; // Кэшированные данные
+  let lastFetchTime = null; // Время последнего запроса
 
-    const loader = document.getElementById("loader"); // Элемент индикатора загрузки
-    const footer = document.getElementById("footer"); // Элемент футера
+  const loader = document.getElementById("loader"); // Элемент индикатора загрузки
+  const footer = document.getElementById("footer"); // Элемент футера
 
-    function formatDate(dateString) {
-      const date = new Date(dateString);
-      return `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
-    }
+  async function fetchBooks() {
+    try {
+      showLoader(); // Показываем индикатор загрузки
 
-    async function fetchBooks() {
-      try {
-        showLoader(); // Показываем индикатор загрузки
-
-        // Проверяем, если данные в кэше и прошло менее 10 минут
-        const now = Date.now();
-        if (cachedData && lastFetchTime && now - lastFetchTime < 10 * 60 * 1000) {
-          renderBooks(cachedData); // Используем кэшированные данные
-          return;
-        }
-
-        // Делаем запрос к API
-        const response = await fetch(apiUrl);
-        if (!response.ok) throw new Error(`Ошибка сети: ${response.statusText}`);
-
-        const books = await response.json();
-        cachedData = books; // Сохраняем данные в кэш
-        lastFetchTime = now; // Обновляем время последнего запроса
-        renderBooks(books);
-      } catch (error) {
-        console.error("Ошибка загрузки данных:", error.message);
-      } finally {
-        hideLoader(); // Скрываем индикатор загрузки
+      // Проверяем, если данные в кэше и прошло менее 10 минут
+      const now = Date.now();
+      if (cachedData && lastFetchTime && now - lastFetchTime < 10 * 60 * 1000) {
+        renderBooks(cachedData); // Используем кэшированные данные
+        return;
       }
+
+      // Делаем запрос к API
+      const response = await fetch(apiUrl);
+      if (!response.ok) throw new Error(`Ошибка сети: ${response.statusText}`);
+
+      const books = await response.json();
+      cachedData = books; // Сохраняем данные в кэш
+      lastFetchTime = now; // Обновляем время последнего запроса
+      renderBooks(books);
+    } catch (error) {
+      console.error("Ошибка загрузки данных:", error.message);
+    } finally {
+      hideLoader(); // Скрываем индикатор загрузки
     }
+  }
 
-    function renderBooks(books) {
-      const tableHead = document.getElementById("table-head");
-      const bookList = document.getElementById("book-list");
+  function renderBooks(books) {
+    const tableHead = document.getElementById("table-head");
+    const bookList = document.getElementById("book-list");
 
-      tableHead.innerHTML = "";
-      bookList.innerHTML = "";
+    tableHead.innerHTML = "";
+    bookList.innerHTML = "";
 
-      if (books.length === 0) return;
+    if (books.length === 0) return;
 
-      const headers = Object.keys(books[0]);
-      const headerRow = document.createElement("tr");
+    const headers = Object.keys(books[0]);
+    const headerRow = document.createElement("tr");
+    headers.forEach(header => {
+      const th = document.createElement("th");
+      th.textContent = header;
+      headerRow.appendChild(th);
+    });
+    tableHead.appendChild(headerRow);
+
+    books.forEach(book => {
+      const row = document.createElement("tr");
       headers.forEach(header => {
-        const th = document.createElement("th");
-        th.textContent = header;
-        headerRow.appendChild(th);
+        const td = document.createElement("td");
+
+        if (header === "Обложка") {
+          const img = document.createElement("img");
+          img.src = book[header] || "https://via.placeholder.com/60x80";
+          img.alt = "Обложка книги";
+          img.classList.add("cover-image");
+          td.appendChild(img);
+        } else if (header.toLowerCase() === "статус") {
+          const statusValue = book[header];
+          const statusClass = statusValue.toLowerCase() === "прочитано" ? "status-read" :
+                              statusValue.toLowerCase() === "в процессе" ? "status-reading" :
+                              "status-wishlist";
+          td.innerHTML = `<span class="status ${statusClass}">${statusValue}</span>`;
+        } else {
+          td.textContent = book[header] || " ";
+        }
+        row.appendChild(td);
       });
-      tableHead.appendChild(headerRow);
+      bookList.appendChild(row);
+    });
 
-      books.forEach(book => {
-        const row = document.createElement("tr");
-        headers.forEach(header => {
-          const td = document.createElement("td");
+    // Показать footer после загрузки
+    footer.style.display = "flex";
+  }
 
-          if (header === "Обложка") {
-            const img = document.createElement("img");
-            img.src = book[header] || "https://via.placeholder.com/60x80";
-            img.alt = "Обложка книги";
-            img.classList.add("cover-image");
-            td.appendChild(img);
-          } else if (header.toLowerCase() === "статус") {
-            const statusValue = book[header];
-            const statusClass = statusValue.toLowerCase() === "прочитано" ? "status-read" :
-                                statusValue.toLowerCase() === "в процессе" ? "status-reading" :
-                                "status-wishlist";
-            td.innerHTML = `<span class="status ${statusClass}">${statusValue}</span>`;
-          } else if (header.toLowerCase().includes("дата")) {
-            td.textContent = formatDate(book[header]);
-          } else {
-            td.textContent = book[header] || " ";
-          }
-          row.appendChild(td);
-        });
-        bookList.appendChild(row);
-      });
+  function showLoader() {
+    loader.style.display = "block"; // Показываем индикатор загрузки
+  }
 
-      // Показать footer после загрузки
-      footer.style.display = "flex";
-    }
+  function hideLoader() {
+    loader.style.display = "none"; // Скрываем индикатор загрузки
+  }
 
-    function showLoader() {
-      loader.style.display = "block"; // Показываем индикатор загрузки
-    }
-
-    function hideLoader() {
-      loader.style.display = "none"; // Скрываем индикатор загрузки
-    }
-
+  // Первичная загрузка и обновление каждые 10 минут
+  fetchBooks();
+  setInterval(fetchBooks, 60000);
     // Смена баннера при обновлении страницы
     // const banners = [
       // "/assets/img/banner1.jpeg",
@@ -261,9 +263,6 @@
    // const randomIndex = Math.floor(Math.random() * banners.length);
    // bannerElement.src = banners[randomIndex];
 
-    // Первичная загрузка и обновление каждые 10 минут
-    fetchBooks();
-    setInterval(fetchBooks, 60000);
   </script>
 </body>
 </html>
