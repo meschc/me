@@ -11,32 +11,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#D5D2CC">
   <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml"> 
-  <!-- Yandex.Metrika counter -->
-  <meta name="yandex-verification" content="e262e2d4dc8fff6e" />
-  <script type="text/javascript" >
-   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-   m[i].l=1*new Date();
-   for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-   k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-
-   ym(99417316, "init", {
-        clickmap:true,
-        trackLinks:true,
-        accurateTrackBounce:true,
-        webvisor:true
-   });
-  </script>
-  <noscript><div><img src="https://mc.yandex.ru/watch/99417316" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-  <!-- /Yandex.Metrika counter -->
-  <!-- Google Tag Manager -->
-    <meta name="google-site-verification" content="5_80Jqus1iqacnVqMrQ1pFElcdj_nlOonLfe9b6crpU" />
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-T4MM9FND');</script>
-  <!-- End Google Tag Manager -->
+  <script src="https://unpkg.com/feather-icons"></script>
   <style>
     body {
       font-family: 'New York', 'PT Serif', serif, ui-serif;
@@ -165,12 +140,8 @@
   </style>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T4MM9FND"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
   <div class="banner">
-    <img id="banner" src="/assets/img/banner3.webp" alt="Книги с печатью">
+    <img id="banner" src="/assets/img/banner3.jpeg" alt="Книги с печатью">
   </div>
   <div class="table-container">
     <h1>Библиотека Мещерякова К. Д. <!--<a href="#">Вишлист</a>--></h1>
@@ -186,6 +157,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="footer" id="footer" style="display: none;"><p><a href="#"><i>км</i></a></p><p>v1 [05.01.2025 22:59]</p></div>
   </div>
   <script>
+feather.replace();
+
   const apiUrl = "https://script.google.com/macros/s/AKfycbxq71nvGIkLjcv2bhn0UYnsTMWupy1uEcbSnB0GiM_or7C3rq9amy2EgMtls_W43cPAMA/exec";
   let cachedData = null; // Кэшированные данные
   let lastFetchTime = null; // Время последнего запроса
@@ -217,6 +190,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     } finally {
       hideLoader(); // Скрываем индикатор загрузки
     }
+  }
+
+  function addNonBreakingSpaces(text) {
+    if (!text || typeof text !== 'string') return text;
+    
+    const prepositions = [
+      'в', 'без', 'до', 'из', 'к', 'на', 'по', 'о', 'от', 'перед', 'при', 
+      'через', 'с', 'у', 'за', 'над', 'об', 'под', 'про', 'для', 'и', 'а'
+    ];
+    
+    return text.replace(
+      new RegExp(`(^|\\s)(${prepositions.join('|')})\\s`, 'gi'),
+      '$1$2&nbsp;'
+    );
   }
 
   function renderBooks(books) {
@@ -255,14 +242,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                               "status-wishlist";
           td.innerHTML = `<span class="status ${statusClass}">${statusValue}</span>`;
         } else {
-          td.textContent = book[header] || " ";
+          td.innerHTML = addNonBreakingSpaces(book[header]) || " ";
         }
         row.appendChild(td);
       });
       bookList.appendChild(row);
     });
 
-    // Показать footer после загрузки
     footer.style.display = "flex";
   }
 
