@@ -1,4 +1,4 @@
-# <a href="https://kirillmeschc.ru">kirillmeschc.ru</a>
-<a href="https://kirillmeschc.ru/cv">CV</a>
+# <a href="https://kirmesch.ru">kirmesch.ru</a>
+<a href="https://kirmesch.ru/cv">CV</a>
 <br>
-<a href="https://kirillmeschc.ru/library">Library</a>
+<a href="https://kirmesch.ru/library">Library</a>
