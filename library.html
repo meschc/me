@@ -1,7 +1,7 @@
-<!-- И? -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+  <!-- И? -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>* Личная библиотека Мещерякова К. Д. *</title>
@@ -14,10 +14,11 @@
   <script src="https://unpkg.com/feather-icons"></script>
   <style>
     body {
-      font-family: 'New York', 'PT Serif', serif, ui-serif;
+      font-family:  'New York', 'PT Serif', serif, ui-serif;
       margin: 0;
       line-height: 1.24;
       gap: 2em;
+      font-size: 14px;
     }
     h1 {
       font-size: 2em;
@@ -53,7 +54,13 @@
       width: 100%;
       border-collapse: collapse;
     }
-
+    thead th{
+      font-weight: 400;
+    }
+    tbody td {
+      text-align: start;
+      align-content: start;
+    }
     .table-scrollable {
       overflow-y: auto; 
     }
@@ -67,7 +74,9 @@
       top: 0;
       z-index: 1;
     }
-
+    th {
+    padding-bottom: 2em;
+    }
     tr { 
       transition: 0.2s ease-in-out;
     }
@@ -102,7 +111,7 @@
     .cover-image {
       width: 60px;
       height: 80px;
-      object-fit: cover;
+      object-fit: contain;
     }
     .loader-text {
       animation: fade 1.5s ease-in-out infinite;
