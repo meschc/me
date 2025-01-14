@@ -25,16 +25,16 @@
       line-height: 1.12;
     }
     a {
-        color: #2291FF;
-        text-decoration: underline;
-        text-decoration-color: #3498db00;
-        text-underline-offset: 0.1em;
-        transition: 0.2s ease-in-out;
+      color: #2291FF;
+      text-decoration: underline;
+      text-decoration-color: #3498db00;
+      text-underline-offset: 0.1em;
+      transition: 0.2s ease-in-out;
     }
     a:hover {
-        text-decoration: underline;
-        text-decoration-color: #2291FF80;
-        text-underline-offset: 0.175em;
+      text-decoration: underline;
+      text-decoration-color: #2291FF80;
+      text-underline-offset: 0.175em;
     }
     .banner {
       position: relative;
@@ -75,15 +75,13 @@
       z-index: 1;
     }
     th {
-    padding-bottom: 2em;
+      padding-bottom: 2em;
     }
     tr { 
       transition: 0.2s ease-in-out;
     }
 
-    tr:not(thead tr):hover  { 
-      background-color: #00000008; 
-    }
+
     td:nth-child(3),:nth-child(6) {
       min-width: 140px ;
     }
@@ -131,6 +129,11 @@
       }
       50% {
         opacity: 0.5;
+      }
+    }
+    @media screen and (min-width: 1024px) {
+        tr:not(thead tr):hover  { 
+        background-color: #00000008; 
       }
     }
     @media (max-width: 1024px) {
@@ -226,40 +229,52 @@ feather.replace();
 
     const headers = Object.keys(books[0]);
     const headerRow = document.createElement("tr");
-    headers.forEach(header => {
-      const th = document.createElement("th");
-      th.textContent = header;
-      headerRow.appendChild(th);
+
+    // Список индексов скрываемых столбцов
+    const hiddenColumnIndexes = [];
+
+    headers.forEach((header, index) => {
+        if (header.includes("//")) {
+            hiddenColumnIndexes.push(index); // Сохраняем индекс скрываемого столбца
+            return; // Пропускаем создание заголовка
+        }
+
+        const th = document.createElement("th");
+        th.textContent = header;
+        headerRow.appendChild(th);
     });
+
     tableHead.appendChild(headerRow);
 
     books.forEach(book => {
-      const row = document.createElement("tr");
-      headers.forEach(header => {
-        const td = document.createElement("td");
+        const row = document.createElement("tr");
+        headers.forEach((header, index) => {
+            if (hiddenColumnIndexes.includes(index)) return; // Пропускаем скрытые столбцы
 
-        if (header === "Обложка") {
-          const img = document.createElement("img");
-          img.src = book[header] || "https://via.placeholder.com/60x80";
-          img.alt = "Обложка книги";
-          img.classList.add("cover-image");
-          td.appendChild(img);
-        } else if (header.toLowerCase() === "статус") {
-          const statusValue = book[header];
-          const statusClass = statusValue.toLowerCase() === "прочитано" ? "status-read" :
-                              statusValue.toLowerCase() === "в процессе" ? "status-reading" :
-                              "status-wishlist";
-          td.innerHTML = `<span class="status ${statusClass}">${statusValue}</span>`;
-        } else {
-          td.innerHTML = addNonBreakingSpaces(book[header]) || " ";
-        }
-        row.appendChild(td);
-      });
-      bookList.appendChild(row);
+            const td = document.createElement("td");
+
+            if (header === "Обложка") {
+                const img = document.createElement("img");
+                img.src = book[header] || "https://via.placeholder.com/120x160";
+                img.alt = "Обложка книги";
+                img.classList.add("cover-image");
+                td.appendChild(img);
+            } else if (header.toLowerCase() === "статус") {
+                const statusValue = book[header];
+                const statusClass = statusValue.toLowerCase() === "прочитано" ? "status-read" :
+                                    statusValue.toLowerCase() === "в процессе" ? "status-reading" :
+                                    "status-wishlist";
+                td.innerHTML = `<span class="status ${statusClass}">${statusValue}</span>`;
+            } else {
+                td.innerHTML = addNonBreakingSpaces(book[header]) || " ";
+            }
+            row.appendChild(td);
+        });
+        bookList.appendChild(row);
     });
 
     footer.style.display = "flex";
-  }
+}
 
   function showLoader() {
     loader.style.display = "block"; // Показываем индикатор загрузки
