@@ -262,6 +262,7 @@ feather.replace();
             } else if (header.toLowerCase() === "статус") {
                 const statusValue = book[header];
                 const statusClass = statusValue.toLowerCase() === "прочитано" ? "status-read" :
+                                    statusValue.toLowerCase() === "прослушано" ? "status-read" :
                                     statusValue.toLowerCase() === "в процессе" ? "status-reading" :
                                     "status-wishlist";
                 td.innerHTML = `<span class="status ${statusClass}">${statusValue}</span>`;
