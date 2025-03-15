@@ -6,12 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>* Личная библиотека Мещерякова К. Д. *</title>
   <base href="https://kirmesch.ru/library">
-  <meta property="og:image" content="/assets/img/banner3.jpeg">
+  <meta property="og:image" content="assets/img/banner3.jpeg">
   <meta property="og:url" content="https://kirmesch.ru/library">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#D5D2CC">
-  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml"> 
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"> 
   <script src="https://unpkg.com/feather-icons"></script>
+  <script src="https://apis.google.com/js/api.js"></script>
   <style>
     body {
       font-family:  'New York', 'PT Serif', serif, ui-serif;
@@ -62,7 +63,7 @@
       align-content: start;
     }
     .table-scrollable {
-      overflow-y: auto; 
+      display: none; /* Скрываем таблицу */
     }
 
     th, td {
@@ -149,11 +150,100 @@
 
     }
     }
+    .card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1em;
+      margin-bottom: 1em;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: 0.3s ease-in-out;
+    }
+    .card:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .card img {
+      margin-bottom: 1em;
+    }
+    .author-name {
+      font-size: 16px;
+      font-weight: normal;
+    }
+    .book-title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1em;
+      justify-content: center;
+    }
+    .card {
+      width: calc(33.333% - 2em);
+      box-sizing: border-box;
+    }
+    .cards-view {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2em;
+      padding: 1.5em;
+    }
+    .book-card {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1em;
+      gap: 1.25em;
+      border-radius: 8px;
+      background: white;
+      transition: all 0.3s ease;
+    }
+    .book-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      max-width: 280px;
+      width: 100%;
+      gap: 0.5em;
+    }
+    .book-cover {
+      width: 120px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 1em;
+      box-shadow: 0px 52px 15px 0px rgba(0, 0, 0, 0.00), 0px 33px 13px 0px rgba(0, 0, 0, 0.02), 0px 19px 11px 0px rgba(0, 0, 0, 0.08), 0px 8px 8px 0px rgba(0, 0, 0, 0.13), 0px 2px 5px 0px rgba(0, 0, 0, 0.15);
+    }
+    .book-author {
+      font-size: 16px;
+      color: #666;
+      width: 100%;
+      margin: 0;
+    }
+    .book-title {
+      font-size: 24px;
+      font-weight: 600;
+      width: 100%;
+      margin: 0;
+    }
+    @media (max-width: 1024px) {
+      .cards-view {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 768px) {
+      .cards-view {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="banner">
-    <img id="banner" src="/assets/img/banner3.jpeg" alt="Книги с печатью">
+    <img id="banner" src="assets/img/banner3.jpeg" alt="Книги с печатью">
   </div>
   <div class="table-container">
     <h1>Библиотека Мещерякова К. Д. <!--<a href="#">Вишлист</a>--></h1>
@@ -166,139 +256,319 @@
         <tbody id="book-list"></tbody>
       </table> 
     </div>
+    
+    <!-- Шаблон карточки книги -->
+    <template id="book-card-template">
+      <div class="book-card">
+        <img class="book-cover" src="" alt="">
+        <div class="book-content">
+          <h2 class="book-title"></h2>
+          <p class="book-author"></p>
+        </div>
+      </div>
+    </template>
+
+    <div class="cards-view" id="cards-container"></div>
     <div class="footer" id="footer" style="display: none;"><p><a href="/"><i>км</i></a></p><p>v1.4 [14.01.2025 17:09]</p></div>
   </div>
   <script>
-feather.replace();
+    // Конфигурация API
+    const API_KEY = 'AIzaSyDRtyU2p7NoNjW7pYu-L3eFvR3i7Pj-uRE';
+    const SPREADSHEET_ID = '1G5WmOlUwzMu1CB06VHhFVKA2LGXZzzvtYwJzSk3bGtM';
+    const RANGE = 'Книги!A:Z';
+    
+    // Настройки безопасности
+    const MAX_RETRIES = 3;
+    const RETRY_DELAY = 1000; // миллисекунды
 
-  const apiUrl = "https://script.google.com/macros/s/AKfycbxq71nvGIkLjcv2bhn0UYnsTMWupy1uEcbSnB0GiM_or7C3rq9amy2EgMtls_W43cPAMA/exec";
-  let cachedData = null; // Кэшированные данные
-  let lastFetchTime = null; // Время последнего запроса
+    console.log('Скрипт начал выполнение');
 
-  const loader = document.getElementById("loader"); // Элемент индикатора загрузки
-  const footer = document.getElementById("footer"); // Элемент футера
+    let cachedData = null;
+    let lastFetchTime = null;
+    const loader = document.getElementById("loader");
+    const footer = document.getElementById("footer");
+    const cardsContainer = document.getElementById("cards-container");
 
-  async function fetchBooks() {
-    try {
-      showLoader(); // Показываем индикатор загрузки
+    feather.replace();
 
-      // Проверяем, если данные в кэше и прошло менее 10 минут
-      const now = Date.now();
-      if (cachedData && lastFetchTime && now - lastFetchTime < 10 * 60 * 1000) {
-        renderBooks(cachedData); // Используем кэшированные данные
-        return;
+    // Улучшенная функция инициализации API с повторными попытками
+    async function initGoogleSheetsAPI(retryCount = 0) {
+      console.log("initGoogleSheetsAPI вызвана");
+      try {
+        await gapi.client.init({
+          apiKey: API_KEY,
+          discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
+        });
+        
+        console.log("gapi инициализирован успешно");
+        fetchBooks();
+      } catch (error) {
+        console.error("Ошибка инициализации API:", error);
+        
+        if (retryCount < MAX_RETRIES) {
+          console.log(`Повторная попытка ${retryCount + 1} из ${MAX_RETRIES}...`);
+          setTimeout(() => initGoogleSheetsAPI(retryCount + 1), RETRY_DELAY);
+        } else {
+          showError("Не удалось загрузить данные. Пожалуйста, обновите страницу.");
+        }
       }
-
-      // Делаем запрос к API
-      const response = await fetch(apiUrl);
-      if (!response.ok) throw new Error(`Ошибка сети: ${response.statusText}`);
-
-      const books = await response.json();
-      cachedData = books; // Сохраняем данные в кэш
-      lastFetchTime = now; // Обновляем время последнего запроса
-      renderBooks(books);
-    } catch (error) {
-      console.error("Ошибка загрузки данных:", error.message);
-    } finally {
-      hideLoader(); // Скрываем индикатор загрузки
     }
-  }
 
-  function addNonBreakingSpaces(text) {
-    if (!text || typeof text !== 'string') return text;
-    
-    const prepositions = [
-      'в', 'без', 'до', 'из', 'к', 'на', 'по', 'о', 'от', 'перед', 'при', 
-      'через', 'с', 'у', 'за', 'над', 'об', 'под', 'про', 'для', 'и', 'а'
-    ];
-    
-    return text.replace(
-      new RegExp(`(^|\\s)(${prepositions.join('|')})\\s`, 'gi'),
-      '$1$2&nbsp;'
-    );
-  }
+    // Загружаем API при загрузке страницы
+    window.onload = function() {
+      console.log('Страница загружена, начинаем загрузку API');
+      gapi.load('client', initGoogleSheetsAPI);
+    };
 
-  function renderBooks(books) {
-    const tableHead = document.getElementById("table-head");
-    const bookList = document.getElementById("book-list");
+    // Функция отображения ошибок
+    function showError(message) {
+      const loader = document.getElementById("loader");
+      loader.innerHTML = `<p style="color: #f44336;">${message}</p>`;
+      loader.style.display = "block";
+    }
 
-    tableHead.innerHTML = "";
-    bookList.innerHTML = "";
+    // Улучшенная функция загрузки данных с обработкой ошибок
+    async function fetchBooks(retryCount = 0) {
+      console.log("fetchBooks вызвана");
+      console.log("Начало загрузки книг...");
+      try {
+        showLoader();
+        console.log("Показан индикатор загрузки");
 
-    if (books.length === 0) return;
-
-    const headers = Object.keys(books[0]);
-    const headerRow = document.createElement("tr");
-
-    // Список индексов скрываемых столбцов
-    const hiddenColumnIndexes = [];
-
-    headers.forEach((header, index) => {
-        if (header.includes("//")) {
-            hiddenColumnIndexes.push(index); // Сохраняем индекс скрываемого столбца
-            return; // Пропускаем создание заголовка
+        const now = Date.now();
+        if (cachedData && lastFetchTime && now - lastFetchTime < 10 * 60 * 1000) {
+          console.log("Используются кэшированные данные");
+          renderBooks(cachedData);
+          return;
         }
 
+        console.log("Запрос к Google Sheets API...");
+        const response = await gapi.client.sheets.spreadsheets.values.get({
+          spreadsheetId: SPREADSHEET_ID,
+          range: RANGE,
+        });
+
+        console.log("Ответ от API получен:", response);
+        console.log("Данные от API:", response.result.values);
+
+        const rows = response.result.values;
+        if (rows.length) {
+          console.log("Данные получены, количество строк:", rows.length);
+          const headers = rows[0];
+          const books = rows.slice(1).map(row => {
+            const book = {};
+            headers.forEach((header, index) => {
+              book[header] = row[index] || '';
+            });
+            return book;
+          });
+
+          cachedData = books;
+          lastFetchTime = now;
+          console.log("Данные сохранены в кэш");
+          renderBooks(books);
+        } else {
+          console.log("Таблица пуста или содержит только заголовки");
+        }
+      } catch (error) {
+        console.error("Ошибка загрузки данных:", error);
+        alert("Ошибка загрузки данных: " + error.message);
+      } finally {
+        hideLoader();
+        console.log("Индикатор загрузки скрыт");
+      }
+    }
+
+    function addNonBreakingSpaces(text) {
+      if (!text || typeof text !== 'string') return text;
+      
+      const prepositions = [
+        'в', 'без', 'до', 'из', 'к', 'на', 'по', 'о', 'от', 'перед', 'при', 
+        'через', 'с', 'у', 'за', 'над', 'об', 'под', 'про', 'для', 'и', 'а'
+      ];
+      
+      return text.replace(
+        new RegExp(`(^|\\s)(${prepositions.join('|')})\\s`, 'gi'),
+        '$1$2&nbsp;'
+      );
+    }
+
+    function renderBooks(books) {
+      const bookList = document.getElementById("book-list");
+      const cardsContainer = document.getElementById("cards-container");
+
+      bookList.innerHTML = "";
+      cardsContainer.innerHTML = "";
+
+      if (books.length === 0) return;
+
+      renderTable(books);
+      renderCards(books);
+
+      footer.style.display = "flex";
+    }
+
+    function renderTable(books) {
+      const tableHead = document.getElementById("table-head");
+      const bookList = document.getElementById("book-list");
+
+      tableHead.innerHTML = "";
+      bookList.innerHTML = "";
+
+      if (books.length === 0) return;
+
+      const headers = Object.keys(books[0]);
+      const headerRow = document.createElement("tr");
+
+      headers.forEach(header => {
         const th = document.createElement("th");
         th.textContent = header;
         headerRow.appendChild(th);
-    });
+      });
 
-    tableHead.appendChild(headerRow);
+      tableHead.appendChild(headerRow);
 
-    books.forEach(book => {
+      books.forEach(book => {
         const row = document.createElement("tr");
-        headers.forEach((header, index) => {
-            if (hiddenColumnIndexes.includes(index)) return; // Пропускаем скрытые столбцы
-
-            const td = document.createElement("td");
-
-            if (header === "Обложка") {
-                const img = document.createElement("img");
-                img.src = book[header] || "https://via.placeholder.com/120x160";
-                img.alt = "Обложка книги";
-                img.classList.add("cover-image");
-                td.appendChild(img);
-            } else if (header.toLowerCase() === "статус") {
-                const statusValue = book[header];
-                const statusClass = statusValue.toLowerCase() === "прочитано" ? "status-read" :
-                                    statusValue.toLowerCase() === "прослушано" ? "status-read" :
-                                    statusValue.toLowerCase() === "в процессе" ? "status-reading" :
-                                    "status-wishlist";
-                td.innerHTML = `<span class="status ${statusClass}">${statusValue}</span>`;
-            } else {
-                td.innerHTML = addNonBreakingSpaces(book[header]) || " ";
-            }
-            row.appendChild(td);
+        headers.forEach(header => {
+          const cell = document.createElement("td");
+          cell.textContent = book[header] || '';
+          row.appendChild(cell);
         });
         bookList.appendChild(row);
-    });
+      });
+    }
 
-    footer.style.display = "flex";
-}
+    function getDominantColor(img) {
+      console.log('Извлекаем доминантный цвет из обложки');
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      
+      // Устанавливаем фиксированный размер для анализа
+      canvas.width = 50;  // Уменьшаем размер для оптимизации
+      canvas.height = 75;
+      
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      let r = 0, g = 0, b = 0, count = 0;
+      
+      // Упрощенный алгоритм - берем среднее значение цветов
+      for (let i = 0; i < imageData.length; i += 4) {
+        // Пропускаем слишком светлые и слишком темные цвета
+        const brightness = (imageData[i] + imageData[i + 1] + imageData[i + 2]) / 3;
+        if (brightness > 30 && brightness < 225) {
+          r += imageData[i];
+          g += imageData[i + 1];
+          b += imageData[i + 2];
+          count++;
+        }
+      }
+      
+      // Вычисляем средние значения
+      r = Math.round(r / count);
+      g = Math.round(g / count);
+      b = Math.round(b / count);
+      
+      console.log('Извлечен цвет:', r, g, b);
+      return { r, g, b };
+    }
 
-  function showLoader() {
-    loader.style.display = "block"; // Показываем индикатор загрузки
-  }
+    function getContrastColor(r, g, b) {
+      // Вычисляем относительную яркость
+      const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      
+      // Делаем цвет насыщеннее
+      const saturationFactor = 1.2;
+      r = Math.min(255, Math.max(0, r * saturationFactor));
+      g = Math.min(255, Math.max(0, g * saturationFactor));
+      b = Math.min(255, Math.max(0, b * saturationFactor));
+      
+      // Если цвет светлый, делаем его темнее
+      if (luminance > 0.5) {
+        return {
+          r: Math.max(0, r * 0.6),
+          g: Math.max(0, g * 0.6),
+          b: Math.max(0, b * 0.6)
+        };
+      }
+      
+      // Если цвет тёмный, делаем его светлее
+      return {
+        r: Math.min(255, r * 1.4),
+        g: Math.min(255, g * 1.4),
+        b: Math.min(255, b * 1.4)
+      };
+    }
 
-  function hideLoader() {
-    loader.style.display = "none"; // Скрываем индикатор загрузки
-  }
+    function renderCards(books) {
+      if (!cardsContainer) {
+        console.error("Контейнер для карточек не найден");
+        return;
+      }
+      
+      cardsContainer.innerHTML = "";
+      const template = document.getElementById('book-card-template');
+      
+      books.forEach(book => {
+        const card = template.content.cloneNode(true);
+        const coverImg = new Image(); // Создаем новый объект изображения
+        const authorText = card.querySelector('.book-author');
+        const titleText = card.querySelector('.book-title');
+        const cardCover = card.querySelector('.book-cover');
+        
+        // Настраиваем обработчики до установки src
+        coverImg.crossOrigin = "anonymous";
+        
+        coverImg.onload = function() {
+          console.log('Обложка загружена:', book["Название"]);
+          
+          // Копируем загруженное изображение в элемент карточки
+          cardCover.src = this.src;
+          cardCover.alt = book["Название"];
+          
+          try {
+            const dominantColor = getDominantColor(this);
+            const textColor = getContrastColor(dominantColor.r, dominantColor.g, dominantColor.b);
+            
+            // Применяем цвет к тексту
+            const colorStr = `rgb(${Math.round(textColor.r)}, ${Math.round(textColor.g)}, ${Math.round(textColor.b)})`;
+            console.log('Применяем цвет:', colorStr);
+            
+            authorText.style.color = colorStr;
+            titleText.style.color = colorStr;
+          } catch (error) {
+            console.error('Ошибка при обработке цвета:', error);
+          }
+        };
+        
+        coverImg.onerror = function() {
+          console.log('Ошибка загрузки обложки:', book["Название"]);
+          cardCover.src = "/assets/img/coverMockup.svg";
+        };
+        
+        // Заполняем текстовые данные
+        authorText.textContent = addNonBreakingSpaces(book["Автор"]) || " ";
+        titleText.textContent = addNonBreakingSpaces(book["Название"]) || " ";
+        
+        // Добавляем карточку в контейнер
+        cardsContainer.appendChild(card);
+        
+        // Загружаем изображение
+        coverImg.src = book["Обложка"] || "/assets/img/coverMockup.svg";
+      });
+    }
 
-  // Первичная загрузка и обновление каждые 10 минут
-  fetchBooks();
-  setInterval(fetchBooks, 60000);
-    // Смена баннера при обновлении страницы
-    // const banners = [
-      // "/assets/img/banner1.jpeg",
-     // "/assets/img/banner2.jpeg",
-      // "/assets/img/banner3.jpeg"
-    // ];
+    function showLoader() {
+      loader.style.display = "block"; // Показываем индикатор загрузки
+    }
 
-   // const bannerElement = document.getElementById("banner");
-   // const randomIndex = Math.floor(Math.random() * banners.length);
-   // bannerElement.src = banners[randomIndex];
+    function hideLoader() {
+      loader.style.display = "none"; // Скрываем индикатор загрузки
+    }
 
+    // Обновляем интервал обновления данных
+    setInterval(fetchBooks, 600000); // Каждые 10 минут
   </script>
 </body>
 </html>
