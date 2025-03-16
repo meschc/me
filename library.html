@@ -415,9 +415,10 @@
       ];
       
       return text.replace(
-        new RegExp(`(^|\\s)(${prepositions.join('|')})\\s`, 'gi'),
+        new RegExp(`(\\s|^)(${prepositions.join('|')})(\\s)`, 'gi'),
         '$1$2&nbsp;'
-      );
+      ).replace(/(\s)-(\s)/g, '&nbsp;-&nbsp;') // Делаем неразрывным тире
+       .replace(/(\d+)\s(\p{L}+)/gu, '$1&nbsp;$2'); // Делаем неразрывным числа и слова
     }
 
     function renderBooks(books) {
