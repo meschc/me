@@ -13,7 +13,28 @@
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"> 
   <script src="https://unpkg.com/feather-icons"></script>
   <script src="https://apis.google.com/js/api.js"></script>
+  
   <style>
+    @font-face {
+      font-family: 'Minipax-Bold';
+      src: url('https://kirmesch.ru/assets/fonts/Minipax-Bold-BF64ab7272333c5.otf') format('opentype');
+      font-weight: bold;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Golos-DemiBold';
+      src: url('https://kirmesch.ru/assets/fonts/golos-text_demibold.ttf') format('truetype');
+      font-weight: 600;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Golos-Regular';
+      src: url('https://kirmesch.ru/assets/fonts/golos-text_regular.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+    }
+
     body {
       font-family:  'New York', 'PT Serif', serif, ui-serif;
       margin: 0;
@@ -24,6 +45,7 @@
     h1 {
       font-size: 2em;
       line-height: 1.12;
+      font-family: 'Minipax-Bold', serif;
     }
     a {
       color: #2291FF;
@@ -143,6 +165,7 @@
       }
       h1 {
         font-size: 1.5em;
+        font-family: 'Minipax-Bold', serif;
       }
       .table-container {
         margin: 0.5em ;
@@ -172,8 +195,10 @@
       font-weight: normal;
     }
     .book-title {
+      font-family: 'Golos-DemiBold', sans-serif;
       font-size: 18px;
       font-weight: bold;
+      font-family: 'Minipax-Bold', serif;
     }
     .card-container {
       display: flex;
@@ -218,6 +243,7 @@
       box-shadow: 0px 52px 15px 0px rgba(0, 0, 0, 0.00), 0px 33px 13px 0px rgba(0, 0, 0, 0.02), 0px 19px 11px 0px rgba(0, 0, 0, 0.08), 0px 8px 8px 0px rgba(0, 0, 0, 0.13), 0px 2px 5px 0px rgba(0, 0, 0, 0.15);
     }
     .book-author {
+      font-family: 'Golos-Regular', sans-serif;
       font-size: 16px;
       color: #666;
       width: 100%;
@@ -228,6 +254,7 @@
       font-weight: 600;
       width: 100%;
       margin: 0;
+      font-family: 'Minipax-Bold', serif;
     }
     @media (max-width: 1024px) {
       .cards-view {
@@ -269,7 +296,7 @@
     </template>
 
     <div class="cards-view" id="cards-container"></div>
-    <div class="footer" id="footer" style="display: none;"><p><a href="/"><i>км</i></a></p><p>v1.4 [14.01.2025 17:09]</p></div>
+    <div class="footer" id="footer" style="display: none;"><p><a href="/"><i>км</i></a></p><p>v2 [16.03.2025 17:55]</p></div>
   </div>
   <script>
     // Конфигурация API
