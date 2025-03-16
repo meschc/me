@@ -572,8 +572,8 @@
         };
         
         // Заполняем текстовые данные
-        authorText.textContent = addNonBreakingSpaces(book["Автор"]) || " ";
-        titleText.textContent = addNonBreakingSpaces(book["Название"]) || " ";
+        authorText.innerHTML = addNonBreakingSpaces(book["Автор"]) || " ";
+        titleText.innerHTML = addNonBreakingSpaces(book["Название"]) || " ";
         
         // Добавляем карточку в контейнер
         cardsContainer.appendChild(card);
