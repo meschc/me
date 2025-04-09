@@ -1,0 +1,41 @@
+name: Export Next.js site to /docs
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-export:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: cd site-next && npm ci
+
+      - name: Build and export site
+        run: |
+          cd site-next
+          npm run build
+          npm run export
+
+      - name: Move export to /docs
+        run: |
+          rm -rf docs
+          mv site-next/out docs
+
+      - name: Commit and push
+        run: |
+          git config user.name "meschc-bot"
+          git config user.email "bot@meschc.dev"
+          git add docs
+          git commit -m "Auto: export site on push"
+          git push
