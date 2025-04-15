@@ -14,7 +14,7 @@ export type FileEntry = {
 
 export const fileTree: Record<string, FileEntry> = {
   "meschc": {
-    name: "meschc",
+    name: "me",
     children: {
       "about.tsx": {
         name: "about.tsx"
