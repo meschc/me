@@ -49,6 +49,10 @@
             align-items: start;
             flex: 1; 
         }
+        .name {
+            display: flex;
+            gap: 16px;
+        }
         img {
             border-radius: 10rem;
             border: 1px solid rgba(0, 0, 0, 0.4);
@@ -146,34 +150,31 @@
             list-style-type: none;
             padding-left: 0;
         }
+        .contacts li svg {
+            width: 1.2em;
+        }
         button {
-            height: fit-content;
-            display: flex;
-            padding: 7px 16px 8px 16px;
-            margin-left: auto;
-            justify-content: center;
-            align-items: center;
-            gap: 4px;
+            background-color: #2291ff;
+            box-shadow: rgba(140, 194, 255, 1) 0px 0.5px 0px 0.5px inset;
+            color: #fff;
+            border-color: #2291ff;
+            border-style: solid;
+            border-width: 1px;
             border-radius: 0.8em;
-            border: 1px solid #D5D5D5;
-            background-color: #FFFFFF00;
-            color: #000;
             font-family: inherit;
             font-size: 1em;
+            padding: 8px 16px;
             text-align: center;
             font-weight: 400;
             line-height: 1.5em;
-            transition: 0.2s ease-in-out;
+            transition: background-color 0.2s ease-in-out;
             cursor: pointer;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
         }
         button:hover {
-            background-color: #F8F8F8;
-        }
-        button:active {
-            background-color: #E6E6E6;
-        }
-        .contacts li svg {
-            width: 1.2em;
+            background-color: #40a0ff;
         }
         @media (max-width: 768px) {
             body {
@@ -200,8 +201,14 @@
             .info {
                 width: 100%; 
             }
+            .name {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
             img {
                 height: 6em; 
+                width: fit-content;
             }
             .contacts ul {
                 padding-left: 0;
@@ -212,15 +219,30 @@
             button {
                 display:none;
             }
+            .header {
+                width: auto ;
+            }
+            .share-button {
+                display: inline-flex !important;
+                width: 100%;
+                margin-top: 2em;
+            }
         }
+
+        .share-button {
+            display: none;
+        }
+
     </style>
 </head>
 <body>
     <div class="header">
-        <img src="assets/img/img.webp" alt="Kirill Meschceriakov"> 
-        <div>
-            <h1>Кирилл Мещеряков</h1>
-            <p>UX/UI дизайнер <!--<span class="transparent">& разработчик</span>--></p>
+        <div class="name">
+            <img src="assets/img/img.webp" alt="Kirill Meschceriakov"> 
+            <div>
+                <h1>Кирилл Мещеряков</h1>
+                <p>UX/UI дизайнер <!--<span class="transparent">& разработчик</span>--></p>
+            </div>
         </div>
         <button id="download">Поделиться PDF</button>
     </div>
@@ -264,8 +286,8 @@
             <ul>
                 <li>UX/UI-дизайн: создание интерфейсов, работа с дизайн-системами, пользовательский опыт.</li>
                 <li>Инструменты: Figma (компоненты, variables, auto-layout), Rive, Play.</li>
-                <li>Low/no-code платформы: Bubble, Make, Taptop, Webflow, Framer, Tilda.</li>
-                <li>Технические навыки: HTML, CSS, начальный уровень JS.</li>
+                <li>Low/no-code платформы: Bubble, Taptop, Webflow, Framer, Tilda.</li>
+                <li>Технические навыки: HTML, CSS, JS.</li>
                 <li>Дополнительно: Cursor AI, ChatGPT, MidJourney, Notion, Sublime, Github.</li>
             </ul>
             <h2>Опыт работы</h2>
@@ -289,8 +311,19 @@
             <p>Самоучка, регулярно изучаю современные инструменты и подходы в UX/UI-дизайне.</p>
         </div>
     </div>
+    <button class="share-button" id="share">Поделиться CV</button>
     <script>
         feather.replace();
+
+        const shareButton = document.getElementById('share');
+        if (shareButton && navigator.share) {
+          shareButton.addEventListener('click', () => {
+            navigator.share({
+              title: document.title,
+              url: window.location.href
+            }).catch(console.error);
+          });
+        }
 
         document.getElementById('download').addEventListener('click', function() {
             var element = document.body; // Используем весь body контент
