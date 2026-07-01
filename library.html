@@ -9,30 +9,44 @@
   <meta property="og:image" content="assets/img/banner3.jpeg">
   <meta property="og:url" content="https://kirmesch.ru/library">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#D5D2CC">
-  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml"> 
-  <script src="https://unpkg.com/feather-icons"></script>
-  <script src="https://apis.google.com/js/api.js"></script>
-  
+  <meta name="theme-color" content="#2291FF">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+  <!-- Заранее открываем соединение с API и подгружаем критичные шрифты -->
+  <link rel="preconnect" href="https://sheets.googleapis.com" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://kirmesch.ru/assets/fonts/Minipax-Bold-BF64ab7272333c5.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://kirmesch.ru/assets/fonts/Minipax-SemiBold-BF64ab727206cb4.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="https://kirmesch.ru/assets/fonts/golos-text_regular.woff2" crossorigin>
+
   <style>
-    @font-face {
-      font-family: 'Minipax-Bold';
-      src: url('https://kirmesch.ru/assets/fonts/Minipax-Bold-BF64ab7272333c5.otf') format('opentype');
-      font-weight: bold;
-      font-style: normal;
+    :root {
+      /* Единый акцент для всех проектов — как в index1 (--accent-color) */
+      --accent: #2291FF;
+      --accent-hover: #40a0ff;
     }
     @font-face {
-      font-family: 'Golos-DemiBold';
-      src: url('https://kirmesch.ru/assets/fonts/golos-text_demibold.ttf') format('truetype');
+      font-family: 'Minipax';
+      src: url('https://kirmesch.ru/assets/fonts/Minipax-Bold-BF64ab7272333c5.woff2') format('woff2'),
+           url('https://kirmesch.ru/assets/fonts/Minipax-Bold-BF64ab7272333c5.otf') format('opentype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Minipax';
+      src: url('https://kirmesch.ru/assets/fonts/Minipax-SemiBold-BF64ab727206cb4.woff2') format('woff2'),
+           url('https://kirmesch.ru/assets/fonts/Minipax-SemiBold-BF64ab727206cb4.otf') format('opentype');
       font-weight: 600;
       font-style: normal;
+      font-display: swap;
     }
-
     @font-face {
       font-family: 'Golos-Regular';
-      src: url('https://kirmesch.ru/assets/fonts/golos-text_regular.ttf') format('truetype');
+      src: url('https://kirmesch.ru/assets/fonts/golos-text_regular.woff2') format('woff2'),
+           url('https://kirmesch.ru/assets/fonts/golos-text_regular.ttf') format('truetype');
       font-weight: 400;
       font-style: normal;
+      font-display: swap;
     }
 
     body {
@@ -40,15 +54,13 @@
       margin: 0;
       line-height: 1.24;
       gap: 2em;
-      font-size: 14px;
-    }
-    h1 {
-      font-size: 2em;
-      line-height: 1.12;
-      font-family: 'Minipax-Bold', serif;
+      font-size: 10px;
+      font-variant-numeric: lining-nums;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
     }
     a {
-      color: #2291FF;
+      color: var(--accent);
       text-decoration: underline;
       text-decoration-color: #3498db00;
       text-underline-offset: 0.1em;
@@ -56,15 +68,15 @@
     }
     a:hover {
       text-decoration: underline;
-      text-decoration-color: #2291FF80;
+      text-decoration-color: color-mix(in srgb, var(--accent) 50%, transparent);
       text-underline-offset: 0.175em;
     }
     .banner {
       position: relative;
     }
     .banner img {
-      height: 60vh; 
-      width: 100%; 
+      height: 60vh;
+      width: 100%;
       object-fit: contain;
       object-position: bottom;
     }
@@ -73,203 +85,645 @@
       margin: 2em auto;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    thead th{
-      font-weight: 400;
-    }
-    tbody td {
-      text-align: start;
-      align-content: start;
-    }
-    .table-scrollable {
-      display: none; /* Скрываем таблицу */
-    }
+    table { width: 100%; border-collapse: collapse; }
+    .table-scrollable { display: none; /* Скрываем таблицу */ }
 
-    th, td {
-      padding: 0.5em;
-      text-align: left;
-    }
-    th {
-      position: sticky;
-      top: 0;
-      z-index: 1;
-    }
-    th {
-      padding-bottom: 2em;
-    }
-    tr { 
-      transition: 0.2s ease-in-out;
-    }
-
-
-    td:nth-child(3),:nth-child(6) {
-      min-width: 140px ;
-    }
-    td:nth-child(4) {
-      min-width: 170px ;
-    }
-    .status {
-      padding: 0.2em 0.4em;
-      border-radius: 0.1em;
-      display: inline-block;
-      text-align: left;
-    }
-    .status-read {
-      background-color: #4caf5012;
-      color: #4caf50;
-    }
-    .status-reading {
-      background-color: #ffc10712;
-      color: #ffc107;
-    }
-    .status-wishlist {
-      background-color: #f4433612;
-      color: #f44336;
-    }
-    .cover-image {
-      width: 60px;
-      height: 80px;
-      object-fit: contain;
-    }
-    .loader-text {
-      animation: fade 1.5s ease-in-out infinite;
-    }
+    .loader-text { animation: fade 1.5s ease-in-out infinite; }
     .footer {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      margin-top: 2em;
+      align-items: baseline;
+      margin-top: 3em;
+      font-family: 'Golos-Regular', sans-serif;
+      font-size: 1.4em;
+      color: #8a857c;
     }
-    p .footer {
-      margin: 0;
-    }
+    .footer p { margin: 0; }
     @keyframes fade {
-      0%, 100% {
-        opacity: 1;
-      }
-      50% {
-        opacity: 0.5;
-      }
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
     }
-    @media screen and (min-width: 1024px) {
-        tr:not(thead tr):hover  { 
-        background-color: #00000008; 
-      }
+
+    /* ===== Подпись-заголовок со счётчиком (п.3) ===== */
+    .lib-caption {
+      font-family: 'Minipax', serif;
+      font-weight: 600;
+      font-size: clamp(1.7em, 0.6vw + 1.6em, 2.6em);
+      line-height: 1.15;
+      margin: 0.2em 0 0;
+      color: #2b2723;
     }
+    .lib-count { color: var(--accent); white-space: nowrap; font-style: italic; }
+
     @media (max-width: 1024px) {
-      .banner img {
-        object-fit: cover;
-      }
-      h1 {
-        font-size: 1.5em;
-        font-family: 'Minipax-Bold', serif;
-      }
+      .banner img { object-fit: cover; height: 42vh; }
       .table-container {
-        margin: 0.5em ;
-        max-width: 100vw;
-
+        max-width: 100%;
+        margin: 0.5em 0 2em;
+        padding: 0 0.75em;
+        box-sizing: border-box;
+      }
     }
-    }
-    .card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 1em;
-      margin-bottom: 1em;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      transition: 0.3s ease-in-out;
-    }
-    .card:hover {
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    .card img {
-      margin-bottom: 1em;
-    }
-    .author-name {
-      font-size: 16px;
-      font-weight: normal;
+    @media (max-width: 600px) {
+      .banner img { height: 32vh; }
     }
 
-    .card-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1em;
-      justify-content: center;
+    /* ===== Иконки (единый стиль — feather) ===== */
+    .ico {
+      width: 1em;
+      height: 1em;
+      display: inline-block;
+      vertical-align: -0.13em;
+      flex: none;
     }
-    .card {
-      width: calc(33.333% - 2em);
-      box-sizing: border-box;
-    }
+
+    /* ===== Полка карточек: до 5 в ряд (п.6) ===== */
     .cards-view {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2em;
-      padding: 1.5em;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2.2em 1.4em;
+      align-items: start;
     }
+    @media (max-width: 1024px) { .cards-view { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 760px)  { .cards-view { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 480px)  {
+      .cards-view { grid-template-columns: repeat(2, 1fr); gap: 1.5em 0.9em; }
+      .cover-wrap { height: clamp(120px, 38vw, 158px); }  /* чуть меньше, чтобы влезали в 2 колонки */
+      .book-title { font-size: 1.55em; }
+      .book-author { font-size: 1.25em; }
+    }
+
     .book-card {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      padding: 1em;
-      gap: 1.25em;
-      border-radius: 8px;
-      background: white;
-      transition: all 0.3s ease;
+      gap: 0.7em;
+      background: transparent;
+      cursor: pointer;
+      /* Плавное последовательное появление (п.1) */
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
     }
+    .book-card.is-in { opacity: 1; transform: none; }
+
     .book-content {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      max-width: 280px;
       width: 100%;
-      gap: 0.5em;
+      gap: 0.4em;
     }
-    .book-cover {
-      width: auto;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 2px 4px 4px 2px;
-      margin-bottom: 1em;
-      box-shadow: 0px 52px 15px 0px rgba(0, 0, 0, 0.00), 0px 33px 13px 0px rgba(0, 0, 0, 0.02), 0px 19px 11px 0px rgba(0, 0, 0, 0.08), 0px 8px 8px 0px rgba(0, 0, 0, 0.13), 0px 2px 5px 0px rgba(0, 0, 0, 0.15);
+    .book-title {
+      font-family: 'Minipax', serif;
+      font-size: 1.7em;
+      font-weight: 600;
+      line-height: 0.98;
+      width: 100%;
+      margin: 0;
+      transition: color 0.3s ease;
     }
     .book-author {
       font-family: 'Golos-Regular', sans-serif;
-      font-size: 16px;
-      color: #666;
-      width: 100%;
-      margin: 0;
-    }
-    .book-title {
-      font-family: 'Golos-DemiBold', sans-serif;
-      font-size: 24px;
-      font-weight: 600;
+      font-size: 1.35em;
+      color: #8a857c;
       width: 100%;
       margin: 0;
     }
 
-    @media (max-width: 1024px) {
-      .cards-view {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    /* ===== Обложка: одинаковая ВЫСОТА, ширина по аспекту (п.6) ===== */
+    .cover-wrap {
+      position: relative;
+      height: clamp(160px, 15vw, 230px);
+      width: auto;
+      max-width: 100%;
+      border-radius: 2px 5px 5px 2px;
+      overflow: hidden;
+      background: #e9e6e0;
+      transition: transform 0.25s ease;
+      box-shadow: 0px 19px 11px 0px rgba(0, 0, 0, 0.04), 0px 8px 8px 0px rgba(0, 0, 0, 0.10), 0px 2px 5px 0px rgba(0, 0, 0, 0.14);
     }
-    @media (max-width: 768px) {
-      .cards-view {
-        grid-template-columns: 1fr;
+    .book-card:hover .cover-wrap { transform: translateY(-3px); }
+    /* iBooks-мокап (корешок/блик) поверх любой обложки */
+    .cover-wrap::after, .sheet__cover::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url('/assets/img/coverMockup.svg') center / 100% 100% no-repeat;
+      pointer-events: none;
+      border-radius: inherit;
+      z-index: 3;
+    }
+    .cover-wrap .book-cover {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      margin: 0;
+      border-radius: inherit;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      z-index: 1;
+    }
+    .cover-wrap .book-cover.is-loaded { opacity: 1; }
+
+    /* Сгенерированная обложка-заглушка: плоский цвет + прямые линии (п.5).
+       Текст сверху, графика снизу (п.4). */
+    .gen-cover {
+      position: relative;          /* in-flow — задаёт ширину обёртки */
+      height: 100%;
+      aspect-ratio: 2 / 3;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 0.9em;
+      box-sizing: border-box;
+      color: #fff;
+      background: var(--gc-bg, #2291FF);
+      overflow: hidden;
+    }
+    .gen-cover__art { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .gen-cover__text { position: relative; }
+    .gen-cover__title {
+      display: -webkit-box;
+      -webkit-line-clamp: 4;         /* ограничиваем длину на обложке */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      font-family: 'Minipax', serif;
+      font-weight: 700;
+      font-size: 1.7em;
+      line-height: 1.02;
+    }
+    .gen-cover__author {
+      display: block;
+      margin-top: 0.4em;
+      font-family: 'Golos-Regular', sans-serif;
+      font-size: 1.2em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ===== Мета-строка на карточке: статус, формат, оценка, жанр ===== */
+    .book-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.45em 0.6em;
+      width: 100%;
+      margin-top: 0.1em;
+      font-family: 'Golos-Regular', sans-serif;
+      font-size: 1.25em;
+    }
+    /* все теги меты одной высоты/выравнивания (п.7) */
+    .meta-status, .meta-format, .meta-rating { display: inline-flex; align-items: center; line-height: 1; height: 1.2em; }
+    .book-meta .ico { width: 1.1em; height: 1.1em; }
+    .meta-status.is-done { color: #2e9e57; }
+    .meta-status.is-pending { color: #b9b4ab; }
+    .meta-status .chk2 { margin-left: -0.5em; }
+    .meta-format { color: #8a857c; }
+    .meta-rating { gap: 0.18em; color: #e0a615; font-variant-numeric: tabular-nums; }
+    .meta-rating .ico { fill: currentColor; }
+    .meta-rating.is-fav { color: #e0245e; }
+    .meta-genre {
+      color: #8a857c;
+      font-size: 0.92em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1 1 100%;
+      min-width: 0;
+    }
+
+    /* ===== Жанры — чипсами над фильтрами (п.2) ===== */
+    .genrebar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5em;
+      margin: 1.4em 0 0;
+      font-family: 'Golos-Regular', sans-serif;
+    }
+    .gchip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4em;
+      font-family: inherit;
+      font-size: 1.25em;
+      line-height: 1;
+      height: 2.5em;               /* фикс. высота — все чипсы одинаковые */
+      padding: 0 0.9em;
+      box-sizing: border-box;
+      border: 1px solid #e2ded7;
+      background: #fff;
+      border-radius: 999px;
+      color: #4a463f;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: 0.15s ease;
+    }
+    .gchip:hover { border-color: #c9c4bb; }
+    .gchip.is-active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .gchip__count { font-variant-numeric: tabular-nums; opacity: 0.55; font-size: 0.88em; }
+    .gchip.is-active .gchip__count { opacity: 0.9; }
+    .gchip--disabled { opacity: 0.4; pointer-events: none; }
+
+    /* Обёртка «кнопка Фильтры + жанры». На десктопе прозрачна, кнопка скрыта. */
+    .filters-head { display: contents; }
+    .mfilter-btn { display: none; }
+
+    /* Мобайл: жанры в одну строку со скроллом + единая кнопка «Фильтры» (п.4) */
+    @media (max-width: 600px) {
+      .filters-head {
+        display: flex;
+        align-items: center;
+        gap: 0.6em;
+        margin: 1.4em 0 0;
       }
+      .genrebar {
+        margin: 0;
+        flex: 1 1 auto;
+        min-width: 0;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+      .genrebar::-webkit-scrollbar { display: none; }
+      .genrebar .gchip { flex: 0 0 auto; }
+      .mfilter-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4em;
+        flex: 0 0 auto;
+        font-family: 'Golos-Regular', sans-serif;
+        font-size: 1.25em;
+        line-height: 1;
+        height: 2.5em;
+        padding: 0 0.9em;
+        box-sizing: border-box;
+        border: 1px solid #e2ded7;
+        background: #fff;
+        border-radius: 999px;
+        color: #4a463f;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .mfilter-btn .ico { width: 1.05em; height: 1.05em; color: #a59f95; }
+      .mfilter-btn.is-active { border-color: var(--accent); color: var(--accent); }
+      .mfilter-btn.is-active .ico { color: var(--accent); }
+      .mfilter-btn__badge {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        min-width: 1.5em;
+        height: 1.5em;
+        padding: 0 0.3em;
+        background: var(--accent);
+        color: #fff;
+        border-radius: 999px;
+        font-size: 0.82em;
+        font-variant-numeric: tabular-nums;
+      }
+      .mfilter-btn.is-active .mfilter-btn__badge { display: inline-flex; }
+    }
+
+    /* ===== Фильтры: ряд выпадающих списков с иконками (п.11) ===== */
+    .filterbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6em;
+      align-items: center;
+      margin: 1.6em 0 2.4em;
+      font-family: 'Golos-Regular', sans-serif;
+    }
+    .fdrop { position: relative; }
+    .fdrop__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45em;
+      font-family: inherit;
+      font-size: 1.3em;
+      line-height: 1;
+      padding: 0.6em 0.85em;
+      border: 1px solid #e2ded7;
+      background: #fff;
+      border-radius: 0.7em;
+      color: #4a463f;
+      cursor: pointer;
+      transition: 0.15s ease;
+      white-space: nowrap;
+    }
+    .fdrop__btn:hover { border-color: #c9c4bb; }
+    /* иконка серая пока фильтр неактивен, синяя — когда активен (п.5) */
+    .fdrop__icn { width: 1.05em; height: 1.05em; color: #a59f95; transition: color 0.15s ease; }
+    .fdrop.is-active .fdrop__icn { color: var(--accent); }
+    .fdrop.is-active .fdrop__btn { border-color: var(--accent); }
+    .fdrop__chev { width: 0.85em; height: 0.85em; color: #a59f95; transition: transform 0.2s ease; }
+    .fdrop.is-open .fdrop__chev { transform: rotate(180deg); }
+    /* бейдж-счётчик АБСОЛЮТНЫЙ (угол) — не меняет ширину кнопки, нет дёрганья (п.1) */
+    .fdrop__badge {
+      position: absolute;
+      top: -0.55em;
+      right: -0.55em;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      min-width: 1.6em;
+      height: 1.6em;
+      padding: 0 0.35em;
+      box-sizing: border-box;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 999px;
+      font-size: 0.8em;
+      font-variant-numeric: tabular-nums;
+      box-shadow: 0 0 0 2px #fff;
+    }
+    .fdrop.is-active .fdrop__badge { display: inline-flex; }
+    .fdrop__panel {
+      position: absolute;
+      top: calc(100% + 0.4em);
+      left: 0;
+      z-index: 20;
+      min-width: 210px;
+      max-height: 320px;
+      overflow: auto;
+      padding: 0.4em;
+      background: #fff;
+      border: 1px solid #e2ded7;
+      border-radius: 0.8em;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.16);
+      opacity: 0;
+      transform: translateY(-6px) scale(0.98);
+      transform-origin: top left;
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+    .fdrop.is-open .fdrop__panel { opacity: 1; transform: none; pointer-events: auto; }
+    .fopt {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      padding: 0.5em 0.6em;
+      border-radius: 0.5em;
+      font-size: 1.25em;
+      color: #3a362f;
+      cursor: pointer;
+      transition: background 0.12s ease;
+    }
+    .fopt:hover { background: #f4f2ee; }
+    .fopt input { accent-color: var(--accent); width: 1.05em; height: 1.05em; flex: none; }
+    .fopt__txt { flex: 1 1 auto; display: inline-flex; align-items: center; gap: 0.4em; }
+    .fopt__txt .ico { width: 1.05em; height: 1.05em; color: #8a857c; }
+    .fopt__count { color: #b3aaa0; font-variant-numeric: tabular-nums; }
+    .fopt--disabled { opacity: 0.38; pointer-events: none; }
+    .filterbar__reset {
+      font-family: inherit;
+      font-size: 1.25em;
+      background: none;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+      padding: 0.5em 0.4em;
+    }
+    .filterbar__reset[hidden] { display: none; }
+
+    /* Мобайл: сами фильтры скрыты, пока не нажали «Фильтры» (п.4).
+       Стоит ПОСЛЕ базового .filterbar, иначе перебивается по порядку. */
+    @media (max-width: 600px) {
+      .filterbar { display: none; margin-top: 1em; }
+      .filterbar.is-open { display: flex; }
+    }
+
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: #a59f95;
+      font-family: 'Golos-Regular', sans-serif;
+      font-size: 1.5em;
+      padding: 2em 0;
+    }
+    .no-results[hidden] { display: none; }
+
+    /* ===== Боковая выезжающая панель (drawer) с деталями книги (п.9) ===== */
+    .sheet-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(20, 18, 16, 0.45);
+      -webkit-backdrop-filter: blur(3px);
+      backdrop-filter: blur(3px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .sheet-overlay.is-open { opacity: 1; visibility: visible; pointer-events: auto; }
+    /* Десктоп: панель выезжает СПРАВА */
+    .sheet {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100vh;
+      width: min(440px, 94vw);
+      background: #fff;
+      box-shadow: -18px 0 60px rgba(0, 0, 0, 0.24);
+      overflow-y: auto;
+      box-sizing: border-box;
+      transform: translateX(100%);
+      transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .sheet-overlay.is-open .sheet { transform: none; }
+    .sheet__close {
+      position: absolute;
+      top: 0.9em;
+      right: 0.9em;
+      z-index: 3;
+      width: 2.4em;
+      height: 2.4em;
+      border: none;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.06);
+      color: #333;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+    .sheet__close .ico { width: 1.3em; height: 1.3em; }
+    .sheet__close:hover { background: rgba(0, 0, 0, 0.12); }
+    .sheet__body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.3em;
+      padding: 2.6em 1.8em 2.4em;
+      font-family: 'Golos-Regular', sans-serif;
+    }
+    /* Обложка в панели: фикс. ВЫСОТА, ширина любая */
+    .sheet__cover {
+      flex: 0 0 auto;
+      height: 240px;
+      width: auto;
+      align-self: center;
+      border-radius: 3px 6px 6px 3px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+    }
+    .sheet__cover .gen-cover { height: 240px; aspect-ratio: 2 / 3; }
+    .sheet__cover-img { display: block; height: 240px; width: auto; }
+    .sheet__info { width: 100%; min-width: 0; }
+    .sheet__title {
+      font-family: 'Minipax', serif;
+      font-weight: 700;
+      font-size: 2.4em;
+      line-height: 1.04;
+      margin: 0 0 0.15em;
+      text-align: center;
+    }
+    .sheet__author { font-size: 1.5em; color: #6a655d; margin: 0 0 1em; text-align: center; }
+    .sheet__badges { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.5em; margin-bottom: 1em; }
+    .badge {
+      font-size: 1.2em;
+      height: 2.5em;               /* все бейджи одной высоты (п.1) */
+      padding: 0 0.75em;
+      box-sizing: border-box;
+      border-radius: 8px;
+      background: #f4f2ee;
+      color: #4a463f;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35em;
+    }
+    .badge .rating-help { width: 1.4em; height: 1.4em; }
+    .badge .meta-status .ico { width: 1.15em; height: 1.15em; }
+    .badge.badge-done { color: #2e9e57; }
+    .sheet__logline {
+      font-size: 1.5em;
+      line-height: 1.36;
+      color: #2b2723;
+      margin: 0 0 1.1em;
+      font-family: 'New York', 'PT Serif', serif;
+    }
+    .sheet__rows { display: grid; grid-template-columns: auto 1fr; gap: 0.45em 1.1em; font-size: 1.3em; }
+    .sheet__rows dt { color: #a59f95; white-space: nowrap; }
+    .sheet__rows dd { margin: 0; color: #2b2723; overflow-wrap: anywhere; }
+    /* Список характеристик: все строки в ОДНОМ grid — колонки ровные (п.2).
+       Лишние (>5) скрыты, пока не раскрыто. */
+    .sheet__rows.is-collapsed .is-extra { display: none; }
+    .sheet__more-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35em;
+      margin-top: 0.7em;
+      padding: 0.2em 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: var(--accent);
+      font-family: 'Golos-Regular', sans-serif;
+      font-size: 1.3em;
+    }
+    .sheet__more-btn:hover { text-decoration: underline; }
+    .sheet__more-chev { width: 1em; height: 1em; transition: transform 0.2s ease; }
+    .sheet__more-btn[aria-expanded="true"] .sheet__more-chev { transform: rotate(180deg); }
+    .sheet__link { display: inline-block; margin-top: 1.2em; font-size: 1.35em; }
+    /* Рецензия — в самом конце (п.10) */
+    .sheet__review { width: 100%; margin-top: 1.5em; border-top: 1px solid #efece6; padding-top: 1.1em; }
+    .sheet__review h3 { font-size: 1.3em; font-weight: 600; color: #a59f95; margin: 0 0 0.4em; }
+    .sheet__review p { font-size: 1.42em; line-height: 1.42; color: #2b2723; margin: 0; font-family: 'New York', 'PT Serif', serif; }
+
+    /* Оценка: звёзды/сердце + «?» со светлым раскрывающимся пояснением (п.8, п.13) */
+    .rating-wrap { display: inline-flex; align-items: center; gap: 0.4em; }
+    .rate-stars { display: inline-flex; align-items: center; gap: 0.12em; color: #e0a615; }
+    .rate-stars .ico { fill: currentColor; }
+    .rate-stars .off .ico { fill: none; color: #ddd8cf; }
+    .rate-stars.is-fav { color: #e0245e; gap: 0.3em; }
+    .rate-stars.is-fav .ico { fill: currentColor; }
+    .rate-stars.muted { color: #a59f95; }
+    .rating-help {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 16px;
+      width: 1.5em;
+      height: 1.5em;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      background: #ece8e1;
+      color: #8a857c;
+      cursor: help;
+      transition: 0.15s ease;
+    }
+    .rating-help:hover { background: #e0dbd2; color: #5a554d; }
+    .rating-help .ico { width: 1em; height: 1em; }
+    /* Пояснение — flow-блок: не обрезается, светлый фон (п.8) */
+    .rating-note {
+      width: 100%;
+      box-sizing: border-box;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      background: #f4f2ee;
+      border: 1px solid #ece8e1;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3em;
+      font-size: 1.25em;
+      line-height: 1.32;
+      color: #3a362f;
+      padding: 0 1.1em;
+      margin: 0;
+      transition: max-height 0.32s ease, opacity 0.25s ease, padding 0.32s ease, margin 0.32s ease;
+    }
+    .rating-note.is-open { max-height: 340px; opacity: 1; padding: 1em 1.1em; margin: 0 0 1.1em; }
+    .rating-note b { font-size: 1.05em; margin-bottom: 0.1em; }
+    .rating-note span { display: flex; align-items: center; gap: 0.4em; }
+    .rating-note .ico { width: 1em; height: 1em; fill: #e0245e; color: #e0245e; }
+
+    @media (max-width: 600px) {
+      /* Мобайл: тот же модуль, но снизу */
+      .sheet {
+        top: auto;
+        right: auto;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: auto;
+        max-height: 90vh;
+        border-radius: 18px 18px 0 0;
+        box-shadow: 0 -12px 44px rgba(0, 0, 0, 0.22);
+        transform: translateY(100%);
+      }
+      .sheet-overlay.is-open .sheet { transform: translateY(0); }
+      .sheet::before {
+        content: "";
+        position: absolute;
+        top: 0.6em;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 4px;
+        border-radius: 2px;
+        background: #d8d4cc;
+      }
+      .sheet__body { padding: 2.2em 1.4em 2em; }
+      .sheet__cover, .sheet__cover .gen-cover, .sheet__cover-img { height: 210px; }
     }
   </style>
 </head>
 <body>
   <div class="banner">
-    <img id="banner" src="assets/img/banner3.jpeg" alt="Книги с печатью">
+    <img id="banner" src="assets/img/banner3.jpeg" alt="Книги с печатью" decoding="async" fetchpriority="low">
   </div>
   <div class="table-container">
-    <h1>Библиотека Мещерякова К. Д. <!--<a href="#">Вишлист</a>--></h1>
+    <p class="lib-caption">В личной библиотеке Мещерякова <span class="lib-count" id="lib-count"></span></p>
     <div id="loader" style="display: none;  margin-top: 20px;">
       <p class="loader-text">Расставляю книги...</p>
     </div>
@@ -277,34 +731,54 @@
       <table>
         <thead id="table-head"></thead>
         <tbody id="book-list"></tbody>
-      </table> 
+      </table>
     </div>
-    
+
+    <!-- Жанры чипсами (п.2) -->
+    <!-- Жанры + кнопка «Фильтры» (на мобайле в одной строке) -->
+    <div class="filters-head">
+      <button type="button" class="mfilter-btn" id="mfilter-btn" aria-expanded="false" aria-controls="filterbar"></button>
+      <div class="genrebar" id="genrebar"></div>
+    </div>
+    <!-- Панель фильтров (на мобайле скрыта за кнопкой «Фильтры») -->
+    <div class="filterbar" id="filterbar"></div>
+
     <!-- Шаблон карточки книги -->
     <template id="book-card-template">
       <div class="book-card">
-        <img class="book-cover" src="" alt="">
+        <div class="cover-wrap">
+          <img class="book-cover" alt="" decoding="async">
+        </div>
         <div class="book-content">
           <h2 class="book-title"></h2>
           <p class="book-author"></p>
+          <div class="book-meta"></div>
         </div>
       </div>
     </template>
 
     <div class="cards-view" id="cards-container"></div>
-    <div class="footer" id="footer" style="display: none;"><p><a href="/"><i>км</i></a></p><p>v2 [16.03.2025 17:55]</p></div>
+    <div class="footer" id="footer" style="display: none;"><p><a href="/"><i>км</i></a></p><p>v3 [30.06.2026]</p></div>
   </div>
+
+  <!-- Выезжающая панель (справа на десктопе, снизу на мобайле) -->
+  <div class="sheet-overlay" id="sheet-overlay" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+      <button class="sheet__close" id="sheet-close" aria-label="Закрыть"></button>
+      <div class="sheet__body" id="sheet-body"></div>
+    </div>
+  </div>
+
   <script>
-    // Конфигурация API
+    // Конфигурация Google Sheets API — прямой REST-запрос вместо тяжёлой библиотеки gapi
     const API_KEY = 'AIzaSyDRtyU2p7NoNjW7pYu-L3eFvR3i7Pj-uRE';
     const SPREADSHEET_ID = '1G5WmOlUwzMu1CB06VHhFVKA2LGXZzzvtYwJzSk3bGtM';
     const RANGE = 'Книги!A:Z';
-    
-    // Настройки безопасности
+    const SHEETS_URL = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${encodeURIComponent(RANGE)}?key=${API_KEY}`;
+
+    // Настройки повторных попыток
     const MAX_RETRIES = 3;
     const RETRY_DELAY = 1000; // миллисекунды
-
-    console.log('Скрипт начал выполнение');
 
     let cachedData = null;
     let lastFetchTime = null;
@@ -312,287 +786,743 @@
     const footer = document.getElementById("footer");
     const cardsContainer = document.getElementById("cards-container");
 
-    feather.replace();
-
-    // Улучшенная функция инициализации API с повторными попытками
-    async function initGoogleSheetsAPI(retryCount = 0) {
-      console.log("initGoogleSheetsAPI вызвана");
-      try {
-        await gapi.client.init({
-          apiKey: API_KEY,
-          discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
-        });
-        
-        console.log("gapi инициализирован успешно");
-        fetchBooks();
-      } catch (error) {
-        console.error("Ошибка инициализации API:", error);
-        
-        if (retryCount < MAX_RETRIES) {
-          console.log(`Повторная попытка ${retryCount + 1} из ${MAX_RETRIES}...`);
-          setTimeout(() => initGoogleSheetsAPI(retryCount + 1), RETRY_DELAY);
-        } else {
-          showError("Не удалось загрузить данные. Пожалуйста, обновите страницу.");
-        }
-      }
-    }
-
-    // Загружаем API при загрузке страницы
-    window.onload = function() {
-      console.log('Страница загружена, начинаем загрузку API');
-      gapi.load('client', initGoogleSheetsAPI);
-    };
-
-    // Функция отображения ошибок
     function showError(message) {
       const loader = document.getElementById("loader");
       loader.innerHTML = `<p style="color: #f44336;">${message}</p>`;
       loader.style.display = "block";
     }
 
-    // Улучшенная функция загрузки данных с обработкой ошибок
+    // Загрузка данных напрямую через fetch + кэш в памяти на 10 минут
     async function fetchBooks(retryCount = 0) {
-      console.log("fetchBooks вызвана");
-      console.log("Начало загрузки книг...");
+      const now = Date.now();
+      if (cachedData && lastFetchTime && now - lastFetchTime < 10 * 60 * 1000) {
+        renderBooks(cachedData);
+        return;
+      }
+
       try {
         showLoader();
-        console.log("Показан индикатор загрузки");
+        // cache: 'no-store' — при каждой перезагрузке тянем свежие данные таблицы
+        const response = await fetch(SHEETS_URL, { cache: 'no-store' });
+        if (!response.ok) throw new Error("HTTP " + response.status);
 
-        const now = Date.now();
-        if (cachedData && lastFetchTime && now - lastFetchTime < 10 * 60 * 1000) {
-          console.log("Используются кэшированные данные");
-          renderBooks(cachedData);
-          return;
-        }
+        const data = await response.json();
+        const rows = data.values;
 
-        console.log("Запрос к Google Sheets API...");
-        const response = await gapi.client.sheets.spreadsheets.values.get({
-          spreadsheetId: SPREADSHEET_ID,
-          range: RANGE,
-        });
-
-        console.log("Ответ от API получен:", response);
-        console.log("Данные от API:", response.result.values);
-
-        const rows = response.result.values;
-        if (rows.length) {
-          console.log("Данные получены, количество строк:", rows.length);
+        if (rows && rows.length) {
           const headers = rows[0];
-          const books = rows.slice(1).map(row => {
-            const book = {};
-            headers.forEach((header, index) => {
-              book[header] = row[index] || '';
-            });
-            return book;
-          });
+          const books = rows.slice(1)
+            .map(row => {
+              const book = {};
+              headers.forEach((header, index) => {
+                book[header] = row[index] || '';
+              });
+              return book;
+            })
+            // Отбрасываем пустые строки таблицы (без названия) — иначе «книги-призраки»
+            .filter(book => (book['Название'] || '').trim() !== '');
 
           cachedData = books;
           lastFetchTime = now;
-          console.log("Данные сохранены в кэш");
           renderBooks(books);
-        } else {
-          console.log("Таблица пуста или содержит только заголовки");
         }
       } catch (error) {
         console.error("Ошибка загрузки данных:", error);
-        alert("Ошибка загрузки данных: " + error.message);
+        if (retryCount < MAX_RETRIES) {
+          setTimeout(() => fetchBooks(retryCount + 1), RETRY_DELAY * (retryCount + 1));
+        } else {
+          showError("Не удалось загрузить данные. Обновите страницу.");
+        }
       } finally {
         hideLoader();
-        console.log("Индикатор загрузки скрыт");
       }
     }
 
     function addNonBreakingSpaces(text) {
       if (!text || typeof text !== 'string') return text;
-      
       const prepositions = [
-        'в', 'без', 'до', 'из', 'к', 'на', 'по', 'о', 'от', 'перед', 'при', 
+        'в', 'без', 'до', 'из', 'к', 'на', 'по', 'о', 'от', 'перед', 'при',
         'через', 'с', 'у', 'за', 'над', 'об', 'под', 'про', 'для', 'и', 'а'
       ];
-      
       return text.replace(
         new RegExp(`(\\s|^)(${prepositions.join('|')})(\\s)`, 'gi'),
         '$1$2&nbsp;'
-      ).replace(/(\s)-(\s)/g, '&nbsp;-&nbsp;') // Делаем неразрывным тире
-       .replace(/(\d+)\s(\p{L}+)/gu, '$1&nbsp;$2'); // Делаем неразрывным числа и слова
+      ).replace(/(\s)-(\s)/g, '&nbsp;-&nbsp;')
+       .replace(/(\d+)\s(\p{L}+)/gu, '$1&nbsp;$2');
+    }
+
+    let allBooks = [];
+
+    // Число + правильное склонение слова «книга»
+    function pluralBooks(n) {
+      const a = Math.abs(n) % 100, b = a % 10;
+      if (a > 10 && a < 20) return 'произведений';
+      if (b > 1 && b < 5) return 'произведения';
+      if (b === 1) return 'произведение';
+      return 'произведений';
     }
 
     function renderBooks(books) {
-      const bookList = document.getElementById("book-list");
-      const cardsContainer = document.getElementById("cards-container");
-
-      bookList.innerHTML = "";
-      cardsContainer.innerHTML = "";
-
       if (books.length === 0) return;
+      allBooks = books;
 
-      renderTable(books);
-      renderCards(books);
+      const countEl = document.getElementById('lib-count');
+      if (countEl) countEl.textContent = books.length + ' ' + pluralBooks(books.length);
+
+      renderAllCards(books); // карточки строятся ОДИН раз, обложки грузятся один раз
+      buildGenreChips(books); // жанры-чипсы над фильтрами
+      buildFilters(books);
+      applyFilters();        // фильтры лишь показывают/прячут карточки
 
       footer.style.display = "flex";
     }
 
-    function renderTable(books) {
-      const tableHead = document.getElementById("table-head");
-      const bookList = document.getElementById("book-list");
-
-      tableHead.innerHTML = "";
-      bookList.innerHTML = "";
-
-      if (books.length === 0) return;
-
-      const headers = Object.keys(books[0]);
-      const headerRow = document.createElement("tr");
-
-      headers.forEach(header => {
-        const th = document.createElement("th");
-        th.textContent = header;
-        headerRow.appendChild(th);
-      });
-
-      tableHead.appendChild(headerRow);
-
-      books.forEach(book => {
-        const row = document.createElement("tr");
-        headers.forEach(header => {
-          const cell = document.createElement("td");
-          cell.textContent = book[header] || '';
-          row.appendChild(cell);
-        });
-        bookList.appendChild(row);
-      });
+    // ===== Экранирование =====
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    }
+    function escAttr(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     }
 
-    function getDominantColor(img) {
-      console.log('Извлекаем доминантный цвет из обложки');
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      
-      // Устанавливаем фиксированный размер для анализа
-      canvas.width = 50;  // Уменьшаем размер для оптимизации
-      canvas.height = 75;
-      
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-      let r = 0, g = 0, b = 0, count = 0;
-      
-      // Упрощенный алгоритм - берем среднее значение цветов
-      for (let i = 0; i < imageData.length; i += 4) {
-        // Пропускаем слишком светлые и слишком темные цвета
-        const brightness = (imageData[i] + imageData[i + 1] + imageData[i + 2]) / 3;
-        if (brightness > 30 && brightness < 225) {
-          r += imageData[i];
-          g += imageData[i + 1];
-          b += imageData[i + 2];
-          count++;
-        }
-      }
-      
-      // Вычисляем средние значения
-      r = Math.round(r / count);
-      g = Math.round(g / count);
-      b = Math.round(b / count);
-      
-      console.log('Извлечен цвет:', r, g, b);
-      return { r, g, b };
+    // ===== Иконки (feather, инлайн — единый стиль) =====
+    const FEATHER = {
+      'check': '<polyline points="20 6 9 17 4 12"/>',
+      'check-circle': '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
+      'book': '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+      'book-open': '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+      'headphones': '<path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>',
+      'smartphone': '<rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>',
+      'star': '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+      'tag': '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/>',
+      'layers': '<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>',
+      'help-circle': '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+      'heart': '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
+      'x': '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+      'chevron-down': '<polyline points="6 9 12 15 18 9"/>',
+      'sliders': '<line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>'
+    };
+    function icon(name, cls) {
+      return '<svg class="ico' + (cls ? ' ' + cls : '') + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (FEATHER[name] || '') + '</svg>';
     }
 
-    function getContrastColor(r, g, b) {
-      // Вычисляем относительную яркость
-      const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-      
-      // Делаем цвет насыщеннее
-      const saturationFactor = 1.2;
-      r = Math.min(255, Math.max(0, r * saturationFactor));
-      g = Math.min(255, Math.max(0, g * saturationFactor));
-      b = Math.min(255, Math.max(0, b * saturationFactor));
-      
-      // Если цвет светлый, делаем его темнее
-      if (luminance > 0.5) {
-        return {
-          r: Math.max(0, r * 0.6),
-          g: Math.max(0, g * 0.6),
-          b: Math.max(0, b * 0.6)
-        };
+    // ===== Генератор обложки-заглушки: плоский цвет + прямые линии (п.5) =====
+    function hashStr(str) {
+      let h = 2166136261;
+      for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+      return h >>> 0;
+    }
+    // Плоский яркий цвет на каждую книгу (светлота умеренная — белый текст читается).
+    function genBg(seed) {
+      const hue = (seed * 47) % 360;
+      const sat = 72 + (seed % 20);          // 72..91 %
+      const lig = 36 + ((seed >>> 8) % 9);   // 36..44 % — белый текст читается на любом тоне
+      return `hsl(${hue} ${sat}% ${lig}%)`;
+    }
+    // Графика из ПРЯМЫХ линий, разная по типу, в НИЖНЕЙ части обложки (текст сверху, п.4).
+    function genArt(seed) {
+      const v = seed % 5;
+      const out = [];
+      const line = (x1, y1, x2, y2) => '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '"/>';
+      const poly = pts => '<polygon points="' + pts + '"/>';
+      if (v === 0) {                  // диагональная штриховка (снизу)
+        for (let i = 0; i < 6; i++) { const o = 6 + i * 16; out.push(line(o, 84, o - 26, 148)); }
+      } else if (v === 1) {           // вложенные ромбы (снизу)
+        for (let i = 0; i < 3; i++) { const r = 10 + i * 11; out.push(poly('50,' + (112 - r) + ' ' + (50 + r) + ',112 50,' + (112 + r) + ' ' + (50 - r) + ',112')); }
+      } else if (v === 2) {           // треугольник (снизу)
+        out.push(poly('50,84 86,144 14,144'));
+        out.push(line(50, 84, 50, 144));
+      } else if (v === 3) {           // шевроны (снизу)
+        for (let i = 0; i < 4; i++) { const y = 86 + i * 13; out.push('<polyline points="16,' + (y + 12) + ' 50,' + y + ' 84,' + (y + 12) + '"/>'); }
+      } else {                        // сетка (снизу)
+        for (let i = 0; i < 4; i++) { const x = 22 + i * 18; out.push(line(x, 84, x, 144)); }
+        for (let i = 0; i < 3; i++) { const y = 92 + i * 16; out.push(line(12, y, 88, y)); }
       }
-      
-      // Если цвет тёмный, делаем его светлее
-      return {
-        r: Math.min(255, r * 1.4),
-        g: Math.min(255, g * 1.4),
-        b: Math.min(255, b * 1.4)
-      };
+      return '<svg class="gen-cover__art" viewBox="0 0 100 150" preserveAspectRatio="xMidYMid meet" aria-hidden="true">' +
+        '<g fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">' + out.join('') + '</g></svg>';
+    }
+    // Заглушка добавляется ВСЕГДА, даже без реальной обложки.
+    function genCover(book) {
+      const title = (book['Название'] || '').trim();
+      const author = (book['Автор'] || '').trim();
+      const seed = hashStr((title + '|' + author) || 'book');
+      const el = document.createElement('div');
+      el.className = 'gen-cover';
+      el.style.setProperty('--gc-bg', genBg(seed));
+      el.innerHTML = genArt(hashStr(title || 'book')) +
+        '<div class="gen-cover__text">' +
+          '<span class="gen-cover__title">' + escapeHtml(title) + '</span>' +
+          (author ? '<span class="gen-cover__author">' + escapeHtml(author) + '</span>' : '') +
+        '</div>';
+      return el;
     }
 
-    function renderCards(books) {
-      if (!cardsContainer) {
-        console.error("Контейнер для карточек не найден");
-        return;
+    // ===== Помощники для мета-данных =====
+    function splitList(value) {
+      if (!value) return [];
+      return value.split(',').map(s => s.trim()).filter(s => s && s !== '-');
+    }
+
+    const STATUS_DONE = ['Прочитано', 'Прослушано'];
+
+    function statusMeta(status) {
+      const s = (status || '').trim();
+      const done = STATUS_DONE.includes(s);
+      return { label: s || 'Не прочитано', done, checks: done ? 2 : 1, cls: done ? 'is-done' : 'is-pending' };
+    }
+
+    function formatMeta(format) {
+      const f = (format || '');
+      if (/Аудио/i.test(f)) return { icon: 'headphones', label: 'Аудио' };
+      if (/Электрон/i.test(f)) return { icon: 'smartphone', label: 'Электронная' };
+      if (/Бумаж/i.test(f)) return { icon: 'book-open', label: 'Бумажная' };
+      return { icon: '', label: f.replace(/&nbsp;/g, ' ').trim() };
+    }
+
+    function ratingValue(rating) {
+      const n = parseInt(rating, 10);
+      return Number.isFinite(n) && n > 0 ? n : 0;
+    }
+
+    function statusHtml(book) {
+      const st = statusMeta(book['Статус']);
+      const one = '<span class="chk">' + icon('check') + '</span>';
+      const checks = st.checks === 2 ? one + '<span class="chk chk2">' + icon('check') + '</span>' : one;
+      return '<span class="meta-status ' + st.cls + '" title="' + escAttr(st.label) + '">' + checks + '</span>';
+    }
+
+    function ratingCardHtml(book) {
+      const n = ratingValue(book['Оценка']);
+      if (!n) return '';
+      if (n >= 5) return '<span class="meta-rating is-fav" title="Любимая книга">' + icon('heart') + '</span>';
+      return '<span class="meta-rating" title="Оценка ' + n + '/4">' + icon('star') + n + '</span>';
+    }
+
+    // Кнопка «?» (раскрывает пояснение) + сам блок-пояснение (flow, светлый).
+    function ratingHelpBtn() {
+      return '<button type="button" class="rating-help" aria-label="Система оценок">' + icon('help-circle') + '</button>';
+    }
+    function ratingNoteHtml() {
+      return '<div class="rating-note" id="rating-note">' +
+        '<b>Моя система оценки от 1 до 4</b>' +
+        '<span>1 — очень скучная книга, не дочитал</span>' +
+        '<span>2 — нормальная, но не зацепила, либо много воды</span>' +
+        '<span>3 — хорошая книга</span>' +
+        '<span>4 — отличная книга, всё в меру</span>' +
+        '<span>' + icon('heart') + ' 5 — вне системы оценки: любимая книга</span>' +
+      '</div>';
+    }
+
+    function ratingSheetHtml(book) {
+      const n = ratingValue(book['Оценка']);
+      let stars;
+      if (!n) stars = '<span class="rate-stars muted">Без оценки</span>';
+      else if (n >= 5) stars = '<span class="rate-stars is-fav">' + icon('heart') + ' Любимая</span>';
+      else {
+        let s = '';
+        for (let i = 1; i <= 4; i++) s += '<span class="' + (i <= n ? 'on' : 'off') + '">' + icon('star') + '</span>';
+        stars = '<span class="rate-stars">' + s + '</span>';
       }
-      
+      return '<span class="rating-wrap">' + stars + ratingHelpBtn() + '</span>';
+    }
+
+    function buildMetaHtml(book) {
+      const fmt = formatMeta(book['Формат']);
+      const genres = splitList(book['Жанр']);
+      let html = statusHtml(book);
+      if (fmt.icon) html += '<span class="meta-format" title="' + escAttr(fmt.label) + '">' + icon(fmt.icon) + '</span>';
+      html += ratingCardHtml(book);
+      if (genres.length) html += '<span class="meta-genre">' + escapeHtml(genres.join(', ')) + '</span>';
+      return html;
+    }
+
+    // ===== Полка карточек: строим ОДИН раз, обложки грузятся один раз =====
+    let cardRecords = []; // [{ el, book, loaded }]
+    let scrollLoaderBound = false;
+
+    function renderAllCards(books) {
       cardsContainer.innerHTML = "";
+      cardRecords = [];
+
       const template = document.getElementById('book-card-template');
-      
+      const fragment = document.createDocumentFragment();
+
       books.forEach(book => {
-        const card = template.content.cloneNode(true);
-        const coverImg = new Image(); // Создаем новый объект изображения
-        const authorText = card.querySelector('.book-author');
-        const titleText = card.querySelector('.book-title');
-        const cardCover = card.querySelector('.book-cover');
-        
-        // Настраиваем обработчики до установки src
-        coverImg.crossOrigin = "anonymous";
-        
-        coverImg.onload = function() {
-          console.log('Обложка загружена:', book["Название"]);
-          
-          // Копируем загруженное изображение в элемент карточки
-          cardCover.src = this.src;
-          cardCover.alt = book["Название"];
-          
-          try {
-            const dominantColor = getDominantColor(this);
-            const textColor = getContrastColor(dominantColor.r, dominantColor.g, dominantColor.b);
-            
-            // Применяем цвет к тексту
-            const colorStr = `rgb(${Math.round(textColor.r)}, ${Math.round(textColor.g)}, ${Math.round(textColor.b)})`;
-            console.log('Применяем цвет:', colorStr);
-            
-            authorText.style.color = colorStr;
-            titleText.style.color = colorStr;
-          } catch (error) {
-            console.error('Ошибка при обработке цвета:', error);
-          }
-        };
-        
-        coverImg.onerror = function() {
-          console.log('Ошибка загрузки обложки:', book["Название"]);
-          cardCover.src = "/assets/img/coverMockup.svg";
-        };
-        
-        // Заполняем текстовые данные
-        authorText.innerHTML = addNonBreakingSpaces(book["Автор"]) || " ";
+        const node = template.content.cloneNode(true);
+        const cardEl = node.querySelector('.book-card');
+        const coverWrap = node.querySelector('.cover-wrap');
+        const cardCover = node.querySelector('.book-cover');
+        const titleText = node.querySelector('.book-title');
+        const authorText = node.querySelector('.book-author');
+        const metaEl = node.querySelector('.book-meta');
+
         titleText.innerHTML = addNonBreakingSpaces(book["Название"]) || " ";
-        
-        // Добавляем карточку в контейнер
-        cardsContainer.appendChild(card);
-        
-        // Загружаем изображение
-        coverImg.src = book["Обложка"] || "/assets/img/coverMockup.svg";
+        authorText.innerHTML = addNonBreakingSpaces(book["Автор"]) || " ";
+        cardCover.alt = book["Название"] || "";
+        metaEl.innerHTML = buildMetaHtml(book);
+
+        // Заглушка-сайзер задаёт ширину обёртки (под ней потом проявится обложка)
+        coverWrap.prepend(genCover(book));
+
+        cardEl.dataset.cover = book["Обложка"] || "";
+        cardEl.addEventListener('click', () => openSheet(book));
+
+        cardRecords.push({ el: cardEl, book, loaded: false });
+        fragment.appendChild(node);
+      });
+
+      cardsContainer.appendChild(fragment);
+
+      const nr = document.createElement('p');
+      nr.className = 'no-results';
+      nr.id = 'no-results';
+      nr.hidden = true;
+      nr.textContent = 'Ничего не найдено по выбранным фильтрам.';
+      cardsContainer.appendChild(nr);
+
+      bindScrollLoader();
+      loadVisibleCovers();
+
+      // Плавное последовательное появление (п.1).
+      // rAF троттлится в фоновой вкладке — дублируем setTimeout-ом, чтобы карточки точно проявились.
+      cardRecords.forEach((r, i) => { r.el.style.transitionDelay = (Math.min(i, 24) * 0.035) + 's'; });
+      const reveal = () => cardRecords.forEach(r => r.el.classList.add('is-in'));
+      requestAnimationFrame(() => requestAnimationFrame(reveal));
+      setTimeout(reveal, 60);
+    }
+
+    // Ленивая загрузка обложек на основе позиции в окне (надёжнее IntersectionObserver).
+    function loadVisibleCovers() {
+      const vh = window.innerHeight || 800;
+      cardRecords.forEach(r => {
+        if (r.loaded || !r.el.dataset.cover || r.el.style.display === 'none') return;
+        const rect = r.el.getBoundingClientRect();
+        if (rect.top < vh + 500 && rect.bottom > -500) { r.loaded = true; loadCover(r.el); }
+      });
+    }
+    function bindScrollLoader() {
+      if (scrollLoaderBound) return;
+      scrollLoaderBound = true;
+      let ticking = false;
+      const onScroll = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => { ticking = false; loadVisibleCovers(); });
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+    }
+
+    // Безопасный (читаемый на белом) доминантный цвет обложки.
+    function safeColorFromImage(img) {
+      const c = document.createElement('canvas');
+      c.width = 40; c.height = 60;
+      const ctx = c.getContext('2d');
+      ctx.drawImage(img, 0, 0, 40, 60);
+      const d = ctx.getImageData(0, 0, 40, 60).data;
+      let r = 0, g = 0, b = 0, n = 0;
+      for (let i = 0; i < d.length; i += 4) {
+        const br = (d[i] + d[i + 1] + d[i + 2]) / 3;
+        if (br > 25 && br < 230) { r += d[i]; g += d[i + 1]; b += d[i + 2]; n++; }
+      }
+      if (!n) return null;
+      r /= n; g /= n; b /= n;
+      const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      const f = lum > 0.5 ? 0.55 : 0.78;
+      return `rgb(${Math.round(r * f)}, ${Math.round(g * f)}, ${Math.round(b * f)})`;
+    }
+
+    const coverColorCache = new Map();
+
+    // Ленивая подгрузка обложки: ставит ширину обёртки по аспекту + цвет названия (п.6, п.10).
+    function loadCover(card) {
+      const url = card.dataset.cover;
+      if (!url) return;
+      const wrap = card.querySelector('.cover-wrap');
+      const img = card.querySelector('.book-cover');
+      const titleEl = card.querySelector('.book-title');
+      const apply = col => { if (col && titleEl) titleEl.style.color = col; };
+      img.crossOrigin = 'anonymous';
+      img.onload = function () {
+        const ar = (img.naturalWidth || 2) / (img.naturalHeight || 3);
+        const h = wrap.clientHeight || 200;
+        let w = Math.round(h * ar);
+        const maxw = card.clientWidth || w;
+        if (w > maxw) w = maxw;
+        wrap.style.width = w + 'px';
+        img.classList.add('is-loaded');
+        if (coverColorCache.has(url)) { apply(coverColorCache.get(url)); return; }
+        try {
+          const col = safeColorFromImage(this);
+          coverColorCache.set(url, col);
+          apply(col);
+        } catch (e) { /* CORS/canvas — оставляем цвет по умолчанию */ }
+      };
+      img.onerror = function () { /* обложки нет — остаётся заглушка */ };
+      img.src = url;
+    }
+
+    // ===== Фильтры: жанры-чипсы (п.2) + дропдауны + ползунок оценки (п.3); само-фасетинг (п.5) =====
+    const FACETS = [
+      { key: 'Статус', label: 'Статус', ui: 'dropdown', ic: 'check-circle',
+        values: b => { const s = (b['Статус'] || '').trim(); return [s || 'Не прочитано']; },
+        render: v => icon(STATUS_DONE.includes(v) ? 'check-circle' : 'book') + ' ' + escapeHtml(v) },
+      { key: 'Жанр',   label: 'Жанр',   ui: 'chips', ic: 'book', values: b => splitList(b['Жанр']) },
+      { key: 'Оценка', label: 'Оценка', ui: 'dropdown', ic: 'star',
+        values: b => { const n = ratingValue(b['Оценка']); return [n ? String(n) : '0']; },
+        render: v => v === '0' ? 'Без оценки' : (v === '5' ? icon('heart') + ' Любимая' : icon('star') + ' ' + v) },
+      { key: 'Метки',  label: 'Метки',  ui: 'dropdown', ic: 'tag', values: b => splitList(b['Метки']),
+        render: v => icon('tag') + ' ' + escapeHtml(v) },
+      { key: 'Формат', label: 'Формат', ui: 'dropdown', ic: 'layers', values: b => { const f = formatMeta(b['Формат']); return f.label ? [f.label] : []; },
+        render: v => { const m = { 'Аудио': 'headphones', 'Электронная': 'smartphone', 'Бумажная': 'book-open' }; return (m[v] ? icon(m[v]) + ' ' : '') + escapeHtml(v); } }
+    ];
+
+    const activeFilters = {};                 // key -> Set (жанры-чипсы + дропдауны)
+    FACETS.forEach(f => { activeFilters[f.key] = new Set(); });
+
+    // Проходит ли книга все фильтры, КРОМЕ exceptKey (для само-фасетинга).
+    function matchBook(book, exceptKey) {
+      for (const facet of FACETS) {
+        if (facet.key === exceptKey) continue;
+        const sel = activeFilters[facet.key];
+        if (sel.size && !facet.values(book).some(v => sel.has(v))) return false;
+      }
+      return true;
+    }
+    function bookMatchesFilters(book) { return matchBook(book, null); }
+    function booksMatching(excludeKey) { return allBooks.filter(b => matchBook(b, excludeKey)); }
+
+    function facetCounts(facet) {
+      const counts = new Map();
+      booksMatching(facet.key).forEach(b => facet.values(b).forEach(v => counts.set(v, (counts.get(v) || 0) + 1)));
+      return counts;
+    }
+
+    function sortEntries(facet, entries) {
+      if (facet.key === 'Оценка') {
+        const num = v => v === '0' ? -1 : +v;
+        return entries.sort((a, b) => num(b[0]) - num(a[0]));
+      }
+      return entries.sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'ru'));
+    }
+
+    function anyFilterActive() {
+      return FACETS.some(f => activeFilters[f.key].size);
+    }
+
+    function applyFilters() {
+      let visible = 0;
+      cardRecords.forEach(r => {
+        const show = bookMatchesFilters(r.book);
+        r.el.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      const nr = document.getElementById('no-results');
+      if (nr) nr.hidden = visible !== 0;
+      refreshGenreChips();
+      refreshDropdowns();
+      const reset = document.getElementById('filterbar-reset');
+      if (reset) reset.hidden = !anyFilterActive();
+      updateMobileFilterBtn();
+      loadVisibleCovers(); // подгрузить обложки у только что показанных карточек
+    }
+
+    // --- Жанры-чипсы ---
+    const GENRE_FACET = FACETS.find(f => f.key === 'Жанр');
+    function buildGenreChips(books) {
+      const bar = document.getElementById('genrebar');
+      if (!bar) return;
+      bar.innerHTML = '';
+      const all = new Map();
+      books.forEach(b => GENRE_FACET.values(b).forEach(g => all.set(g, (all.get(g) || 0) + 1)));
+      if (!all.size) { bar.style.display = 'none'; return; }
+      bar.style.display = 'flex';
+      [...all.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'ru')).forEach(([g]) => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'gchip';
+        chip.dataset.genre = g;
+        chip.innerHTML = '<span class="gchip__txt">' + escapeHtml(g) + '</span><span class="gchip__count"></span>';
+        chip.addEventListener('click', () => {
+          const s = activeFilters['Жанр'];
+          if (s.has(g)) s.delete(g); else s.add(g);
+          applyFilters();
+        });
+        bar.appendChild(chip);
+      });
+    }
+    function refreshGenreChips() {
+      const counts = facetCounts(GENRE_FACET);
+      const sel = activeFilters['Жанр'];
+      document.querySelectorAll('#genrebar .gchip').forEach(chip => {
+        const g = chip.dataset.genre;
+        const c = counts.get(g) || 0;
+        chip.classList.toggle('is-active', sel.has(g));
+        chip.classList.toggle('gchip--disabled', c === 0 && !sel.has(g));
+        chip.querySelector('.gchip__count').textContent = c;
       });
     }
 
-    function showLoader() {
-      loader.style.display = "block"; // Показываем индикатор загрузки
+    // --- Дропдауны (Статус/Метки/Формат) + ползунок оценки ---
+    function buildFilters(books) {
+      const bar = document.getElementById('filterbar');
+      if (!bar) return;
+      bar.innerHTML = '';
+
+      FACETS.filter(f => f.ui === 'dropdown').forEach(facet => {
+        const all = new Map();
+        books.forEach(b => facet.values(b).forEach(v => all.set(v, (all.get(v) || 0) + 1)));
+        if (!all.size) return;
+
+        const drop = document.createElement('div');
+        drop.className = 'fdrop';
+        drop.dataset.key = facet.key;
+        drop.innerHTML =
+          '<button type="button" class="fdrop__btn">' +
+            icon(facet.ic, 'fdrop__icn') +
+            '<span class="fdrop__label">' + escapeHtml(facet.label) + '</span>' +
+            '<span class="fdrop__badge"></span>' +
+            icon('chevron-down', 'fdrop__chev') +
+          '</button>' +
+          '<div class="fdrop__panel"></div>';
+
+        const panel = drop.querySelector('.fdrop__panel');
+        sortEntries(facet, [...all.entries()]).forEach(entry => {
+          const value = entry[0];
+          const opt = document.createElement('label');
+          opt.className = 'fopt';
+          opt.dataset.value = value;
+          opt.innerHTML =
+            '<input type="checkbox">' +
+            '<span class="fopt__txt">' + (facet.render ? facet.render(value) : escapeHtml(value)) + '</span>' +
+            '<span class="fopt__count"></span>';
+          opt.querySelector('input').addEventListener('change', () => toggleFilter(facet.key, value));
+          panel.appendChild(opt);
+        });
+
+        drop.querySelector('.fdrop__btn').addEventListener('click', e => { e.stopPropagation(); toggleDrop(drop); });
+        panel.addEventListener('click', e => e.stopPropagation());
+        bar.appendChild(drop);
+      });
+
+      const reset = document.createElement('button');
+      reset.type = 'button';
+      reset.className = 'filterbar__reset';
+      reset.id = 'filterbar-reset';
+      reset.textContent = 'Сбросить фильтры';
+      reset.hidden = true;
+      reset.addEventListener('click', () => {
+        FACETS.forEach(f => activeFilters[f.key].clear());
+        applyFilters();
+      });
+      bar.appendChild(reset);
     }
 
-    function hideLoader() {
-      loader.style.display = "none"; // Скрываем индикатор загрузки
+    function refreshDropdowns() {
+      document.querySelectorAll('#filterbar .fdrop').forEach(drop => {
+        const facet = FACETS.find(f => f.key === drop.dataset.key);
+        if (!facet) return;
+        const counts = facetCounts(facet);
+        const sel = activeFilters[facet.key];
+
+        drop.classList.toggle('is-active', sel.size > 0);
+        drop.querySelector('.fdrop__badge').textContent = sel.size ? sel.size : '';
+
+        drop.querySelectorAll('.fopt').forEach(opt => {
+          const v = opt.dataset.value;
+          const c = counts.get(v) || 0;
+          opt.querySelector('.fopt__count').textContent = c;
+          opt.classList.toggle('fopt--disabled', c === 0 && !sel.has(v));
+          opt.querySelector('input').checked = sel.has(v);
+        });
+      });
     }
 
-    // Обновляем интервал обновления данных
-    setInterval(fetchBooks, 600000); // Каждые 10 минут
+    function toggleFilter(key, value) {
+      const set = activeFilters[key];
+      if (set.has(value)) set.delete(value); else set.add(value);
+      applyFilters();
+    }
+
+    function toggleDrop(drop) {
+      const open = drop.classList.contains('is-open');
+      closeAllDrops();
+      if (!open) drop.classList.add('is-open');
+    }
+    function closeAllDrops() {
+      document.querySelectorAll('#filterbar .fdrop.is-open').forEach(d => d.classList.remove('is-open'));
+    }
+    document.addEventListener('click', closeAllDrops);
+
+    // Мобильная кнопка «Фильтры» — прячет все дропдауны за собой (п.4)
+    const mfilterBtn = document.getElementById('mfilter-btn');
+    if (mfilterBtn) {
+      mfilterBtn.innerHTML = icon('sliders') + 'Фильтры<span class="mfilter-btn__badge" id="mfilter-badge"></span>';
+      mfilterBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        const bar = document.getElementById('filterbar');
+        mfilterBtn.setAttribute('aria-expanded', String(bar.classList.toggle('is-open')));
+      });
+    }
+    function updateMobileFilterBtn() {
+      const mb = document.getElementById('mfilter-btn');
+      if (!mb) return;
+      const n = FACETS.filter(f => f.ui === 'dropdown').reduce((s, f) => s + activeFilters[f.key].size, 0);
+      mb.classList.toggle('is-active', n > 0);
+      const badge = document.getElementById('mfilter-badge');
+      if (badge) badge.textContent = n || '';
+    }
+
+    // ===== Детали книги: боковая панель (drawer) =====
+    const sheetOverlay = document.getElementById('sheet-overlay');
+    const sheetBody = document.getElementById('sheet-body');
+    const sheetCloseBtn = document.getElementById('sheet-close');
+    sheetCloseBtn.innerHTML = icon('x');
+
+    function cleanVal(v) {
+      const s = (v || '').replace(/&nbsp;/g, ' ').trim();
+      return (!s || s === '-') ? '' : s;
+    }
+
+    // Не выводим отдельной строкой: показано выше, служебное, или вынесено в конец (Рецензия).
+    const SHEET_SKIP = new Set(['№', 'Название', 'Автор', 'Статус', 'Оценка', 'Формат', '//Обложка', 'Обложка', '//Логлайн', '//Рецензия', 'Ссылка на ЧГ']);
+
+    function pluralChar(n) {
+      const a = n % 100, b = a % 10;
+      if (a > 10 && a < 20) return 'характеристик';
+      if (b > 1 && b < 5) return 'характеристики';
+      if (b === 1) return 'характеристика';
+      return 'характеристик';
+    }
+
+    // № в библиотеке + остальные колонки (п.9). Если строк больше 5 — лишние под раскрытие (п.3).
+    function rowsHtml(book) {
+      const rows = [];
+      const num = cleanVal(book['№']);
+      if (num) rows.push(['№', num]);
+      Object.keys(book)
+        .filter(k => !SHEET_SKIP.has(k) && !/^Column\s*\d+$/i.test(k))
+        .forEach(k => { const v = cleanVal(book[k]); if (v) rows.push([k.replace(/^\/\/\s*/, ''), v]); });
+      if (!rows.length) return '';
+
+      const LIMIT = 5;
+      const rowStr = (r, i) => {
+        const ex = i >= LIMIT ? ' is-extra' : '';
+        return '<dt class="sheet__dt' + ex + '">' + escapeHtml(r[0]) + '</dt>' +
+               '<dd class="sheet__dd' + ex + '">' + escapeHtml(r[1]) + '</dd>';
+      };
+      // Все строки в ОДНОМ grid — колонки ровные между видимыми и скрытыми (п.2)
+      const dl = '<dl class="sheet__rows' + (rows.length > LIMIT ? ' is-collapsed' : '') + '">' +
+        rows.map(rowStr).join('') + '</dl>';
+      if (rows.length <= LIMIT) return dl;
+      const more = rows.length - LIMIT;
+      const label = 'Ещё ' + more + ' ' + pluralChar(more);
+      return dl +
+        '<button type="button" class="sheet__more-btn" aria-expanded="false">' +
+          icon('chevron-down', 'sheet__more-chev') +
+          '<span class="sheet__more-txt" data-more="' + escAttr(label) + '" data-less="Скрыть">' + escapeHtml(label) + '</span>' +
+        '</button>';
+    }
+
+    // Рецензия — отдельным блоком в самом конце (п.10).
+    function reviewHtml(book) {
+      const r = cleanVal(book['//Рецензия']);
+      if (!r) return '';
+      return '<div class="sheet__review"><h3>Рецензия</h3><p>' + escapeHtml(r) + '</p></div>';
+    }
+
+    let noteOpen = false;
+
+    function openSheet(book) {
+      const fmt = formatMeta(book['Формат']);
+      const st = statusMeta(book['Статус']);
+      const logline = cleanVal(book['//Логлайн']);
+      const link = cleanVal(book['Ссылка на ЧГ']);
+      noteOpen = false;
+
+      // Обложка: заглушка сразу, реальная — поверх по загрузке (фикс. высота, ширина любая)
+      const cover = document.createElement('div');
+      cover.className = 'sheet__cover';
+      cover.appendChild(genCover(book));
+      const url = cleanVal(book['Обложка']);
+      if (url) {
+        const img = new Image();
+        img.className = 'sheet__cover-img';
+        img.alt = book['Название'] || '';
+        img.onload = () => { cover.innerHTML = ''; cover.appendChild(img); };
+        img.src = url;
+      }
+
+      const info = document.createElement('div');
+      info.className = 'sheet__info';
+      info.innerHTML =
+        '<h2 class="sheet__title" id="sheet-title">' + escapeHtml(book['Название'] || '') + '</h2>' +
+        (book['Автор'] ? '<p class="sheet__author">' + escapeHtml(book['Автор']) + '</p>' : '') +
+        '<div class="sheet__badges">' +
+          '<span class="badge' + (st.done ? ' badge-done' : '') + '">' + statusHtml(book) + escapeHtml(st.label) + '</span>' +
+          (fmt.icon ? '<span class="badge">' + icon(fmt.icon) + escapeHtml(fmt.label) + '</span>' : '') +
+          '<span class="badge">' + ratingSheetHtml(book) + '</span>' +
+        '</div>' +
+        ratingNoteHtml() +
+        (logline ? '<p class="sheet__logline">' + escapeHtml(logline) + '</p>' : '') +
+        rowsHtml(book) +
+        (link ? '<a class="sheet__link" href="' + escAttr(encodeURI(link)) + '" target="_blank" rel="noopener">Открыть ссылку →</a>' : '') +
+        reviewHtml(book);
+
+      sheetBody.innerHTML = '';
+      sheetBody.appendChild(cover);
+      sheetBody.appendChild(info);
+      sheetBody.scrollTop = 0;
+
+      sheetOverlay.classList.add('is-open');
+      sheetOverlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSheet() {
+      sheetOverlay.classList.remove('is-open');
+      sheetOverlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function setNote(open) {
+      const note = sheetBody.querySelector('.rating-note');
+      if (note) note.classList.toggle('is-open', open);
+    }
+
+    sheetCloseBtn.addEventListener('click', closeSheet);
+    sheetOverlay.addEventListener('click', e => { if (e.target === sheetOverlay) closeSheet(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && sheetOverlay.classList.contains('is-open')) closeSheet(); });
+
+    // Пояснение оценки: наведение (десктоп) + тап (тач)
+    sheetBody.addEventListener('mouseover', e => { if (e.target.closest('.rating-help')) setNote(true); });
+    sheetBody.addEventListener('mouseout', e => {
+      const h = e.target.closest('.rating-help');
+      if (h && !h.contains(e.relatedTarget) && !noteOpen) setNote(false);
+    });
+    sheetBody.addEventListener('click', e => {
+      if (e.target.closest('.rating-help')) { e.stopPropagation(); noteOpen = !noteOpen; setNote(noteOpen); }
+    });
+
+    // Раскрыть/скрыть лишние характеристики (п.2): текст меняется на «Скрыть»
+    sheetBody.addEventListener('click', e => {
+      const btn = e.target.closest('.sheet__more-btn');
+      if (!btn) return;
+      const dl = sheetBody.querySelector('.sheet__rows');
+      if (!dl) return;
+      const collapsed = dl.classList.toggle('is-collapsed');
+      btn.setAttribute('aria-expanded', String(!collapsed));
+      const txt = btn.querySelector('.sheet__more-txt');
+      if (txt) txt.textContent = collapsed ? txt.dataset.more : txt.dataset.less;
+    });
+
+    function showLoader() { loader.style.display = "block"; }
+    function hideLoader() { loader.style.display = "none"; }
+
+    // Стартуем загрузку сразу — DOM уже готов (скрипт в конце body)
+    fetchBooks();
+    // Тихое автообновление данных раз в 10 минут
+    setInterval(fetchBooks, 600000);
   </script>
 </body>
 </html>
