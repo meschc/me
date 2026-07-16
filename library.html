@@ -271,24 +271,25 @@
       width: 100%;
       transform-style: preserve-3d;
     }
-    /* Задняя обложка — цвет обложки, задаёт габарит книги, СТОИТ НА МЕСТЕ */
+    /* Задняя обложка — цвет обложки, во весь габарит, в глубине. СТОИТ НА МЕСТЕ (в покое скрыта лицом) */
     .book3d::after {
       content: "";
       position: absolute;
       inset: 0;
       border-radius: 2px 5px 5px 2px;
       background: var(--cover-color, #cfc9c0);
-      transform: translateZ(-10px);
+      transform: translateZ(-8px);
     }
-    /* Белые страницы — чуть уже обложки, СТОЯТ НА МЕСТЕ, видны когда передняя обложка открывается */
+    /* Белые страницы — во весь габарит лица, но на ~6px уже справа, чтобы у правого края
+       при открытии выглядывал цветной кант ЗАДНЕЙ ОБЛОЖКИ. В ПОКОЕ скрыты обложкой */
     .book3d::before {
       content: "";
       position: absolute;
-      top: 3px; right: 4px; bottom: 3px; left: 0;
-      border-radius: 0 3px 3px 0;
-      background: linear-gradient(to right, #efece7 0, #fdfcfa 12px);   /* лёгкая тень у корешка */
-      box-shadow: inset -3px 0 4px rgba(0, 0, 0, 0.06);
-      transform: translateZ(-5px);
+      top: 0; bottom: 0; left: 0; right: 6px;
+      border-radius: 2px 4px 4px 2px;
+      background: linear-gradient(to right, #ece8e1 0, #fdfcfa 16px);   /* тень-сгиб у корешка слева */
+      box-shadow: inset -2px 0 5px rgba(0, 0, 0, 0.05);
+      transform: translateZ(-3px);
     }
 
     /* ===== Передняя обложка (лицо книги): рамка под картинку, своей высоты, БЕЗ обрезки ===== */
@@ -306,7 +307,7 @@
     @media (hover: hover) and (pointer: fine) {
       .book-card:hover { z-index: 2; }
       .book-card:hover .cover-wrap {
-        transform: rotateY(-18deg);
+        transform: rotateY(-24deg);
         box-shadow: -14px 20px 30px -16px rgba(0, 0, 0, 0.28), -5px 7px 12px -8px rgba(0, 0, 0, 0.20);
       }
     }
