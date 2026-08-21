@@ -296,9 +296,12 @@
     .cover-wrap {
       position: relative;
       width: 100%;
+      /* Пропорция коробки известна ДО загрузки картинки: из кэша (--cover-ar) либо 2:3.
+         Поэтому обложка не раздвигает полку в момент подгрузки — сетка не прыгает. */
+      aspect-ratio: var(--cover-ar, 2 / 3);
       border-radius: 2px 5px 5px 2px;
       overflow: hidden;
-      background: #e9e6e0;
+      background: var(--cover-color, #e9e6e0);
       transform-origin: left center;                /* петля у корешка (слева) */
       transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.45s cubic-bezier(0.23, 1, 0.32, 1);
       box-shadow: 0px 19px 11px 0px rgba(0, 0, 0, 0.04), 0px 8px 8px 0px rgba(0, 0, 0, 0.10), 0px 2px 5px 0px rgba(0, 0, 0, 0.14);
@@ -322,10 +325,15 @@
       z-index: 3;
     }
     .cover-wrap .book-cover {
-      position: relative;    /* в потоке — задаёт высоту обёртки по натуральному аспекту (не обрезается) */
+      /* Вне потока: пока картинки нет, её alt не добавляет обёртке высоту.
+         Раньше из-за этого под сгенерированной обложкой вылезала серая полоса
+         (тем длиннее, чем длиннее название) — заметнее всего на мобильном. */
+      position: absolute;
+      inset: 0;
       display: block;
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: contain;   /* обложка вписывается целиком, без обрезки */
       margin: 0;
       border-radius: inherit;
       opacity: 0;
@@ -337,9 +345,8 @@
     /* Сгенерированная обложка-заглушка: плоский цвет + прямые линии (п.5).
        Текст сверху, графика снизу (п.4). */
     .gen-cover {
-      position: relative;          /* заглушка-сайзер: 2:3 держит высоту обёртки, пока грузится обложка */
-      aspect-ratio: 2 / 3;
-      width: 100%;
+      position: absolute;          /* заполняет обёртку целиком: пропорцию задаёт .cover-wrap */
+      inset: 0;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -360,7 +367,7 @@
       font-family: 'Minipax', serif;
       font-weight: 700;
       font-size: 1.7em;
-      line-height: 1.02;
+      line-height: 1.14;   /* 1.02 обрезал выносные элементы у последней строки («д», «у», «р») */
     }
     .gen-cover__author {
       display: block;
@@ -947,8 +954,11 @@
     const MAX_RETRIES = 3;
     const RETRY_DELAY = 1000; // миллисекунды
 
-    let cachedData = null;
-    let lastFetchTime = null;
+    // Кэш книг переживает перезагрузку страницы: полка появляется сразу,
+    // свежие данные подтягиваются в фоне (stale-while-revalidate).
+    const DATA_CACHE_KEY = 'lib:books:v2';
+    const DATA_TTL = 10 * 60 * 1000;   // как часто ходим в таблицу за обновлением
+    let renderedSignature = '';        // отпечаток показанных данных — чтобы зря не перестраивать полку
     const loader = document.getElementById("loader");
     const footer = document.getElementById("footer");
     const cardsContainer = document.getElementById("cards-container");
@@ -959,45 +969,68 @@
       loader.style.display = "block";
     }
 
-    // Загрузка данных напрямую через fetch + кэш в памяти на 10 минут
-    async function fetchBooks(retryCount = 0) {
-      const now = Date.now();
-      if (cachedData && lastFetchTime && now - lastFetchTime < 10 * 60 * 1000) {
-        renderBooks(cachedData);
-        return;
+    // Строки таблицы -> массив книг. Пустые строки (без названия) отбрасываем,
+    // иначе на полке появляются «книги-призраки».
+    function rowsToBooks(rows) {
+      const headers = rows[0];
+      return rows.slice(1)
+        .map(row => {
+          const book = {};
+          headers.forEach((header, index) => { book[header] = row[index] || ''; });
+          return book;
+        })
+        .filter(book => (book['Название'] || '').trim() !== '');
+    }
+
+    function readBooksCache() {
+      try {
+        const raw = localStorage.getItem(DATA_CACHE_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || !Array.isArray(parsed.books) || !parsed.books.length) return null;
+        return parsed;
+      } catch (e) {
+        return null;   // приватный режим или битый кэш — просто идём в сеть
       }
+    }
+
+    function writeBooksCache(books, signature) {
+      try {
+        localStorage.setItem(DATA_CACHE_KEY, JSON.stringify({ books, signature, time: Date.now() }));
+      } catch (e) {
+        /* нет места в хранилище — не критично, работаем без кэша */
+      }
+    }
+
+    // Загрузка данных: сохранённая полка показывается мгновенно, затем тихо
+    // обновляется из таблицы. Перестраиваем её только если данные реально изменились.
+    async function fetchBooks(retryCount = 0) {
+      const cached = readBooksCache();
+      if (cached && !renderedSignature) renderBooks(cached.books, cached.signature);
+
+      // Кэш свежий и уже на экране — в сеть не идём
+      if (cached && renderedSignature && Date.now() - (cached.time || 0) < DATA_TTL) return;
 
       try {
-        showLoader();
-        // cache: 'no-store' — при каждой перезагрузке тянем свежие данные таблицы
+        if (!renderedSignature) showLoader();
+        // cache: 'no-store' — таблица должна приезжать свежей, а не из кэша браузера
         const response = await fetch(SHEETS_URL, { cache: 'no-store' });
         if (!response.ok) throw new Error("HTTP " + response.status);
 
         const data = await response.json();
         const rows = data.values;
+        if (!rows || !rows.length) throw new Error("Таблица вернулась пустой");
 
-        if (rows && rows.length) {
-          const headers = rows[0];
-          const books = rows.slice(1)
-            .map(row => {
-              const book = {};
-              headers.forEach((header, index) => {
-                book[header] = row[index] || '';
-              });
-              return book;
-            })
-            // Отбрасываем пустые строки таблицы (без названия) — иначе «книги-призраки»
-            .filter(book => (book['Название'] || '').trim() !== '');
-
-          cachedData = books;
-          lastFetchTime = now;
-          renderBooks(books);
-        }
+        const books = rowsToBooks(rows);
+        const signature = books.length + ':' + hashStr(JSON.stringify(books));
+        writeBooksCache(books, signature);
+        renderBooks(books, signature);
       } catch (error) {
         console.error("Ошибка загрузки данных:", error);
         if (retryCount < MAX_RETRIES) {
           setTimeout(() => fetchBooks(retryCount + 1), RETRY_DELAY * (retryCount + 1));
-        } else {
+        } else if (!renderedSignature) {
+          // Ругаемся только если показывать нечего; иначе на экране остаётся кэш
           showError("Не удалось загрузить данные. Обновите страницу.");
         }
       } finally {
@@ -1029,8 +1062,12 @@
       return 'произведений';
     }
 
-    function renderBooks(books) {
+    function renderBooks(books, signature) {
       if (books.length === 0) return;
+      // Фоновое обновление раз в 10 минут не должно рушить полку под пальцами:
+      // если данные те же — не перестраиваем ничего.
+      if (signature && signature === renderedSignature) return;
+      renderedSignature = signature || '';
       allBooks = books;
 
       const countEl = document.getElementById('lib-count');
@@ -1216,8 +1253,7 @@
     }
 
     // ===== Полка карточек: строим ОДИН раз, обложки грузятся один раз =====
-    let cardRecords = []; // [{ el, book, loaded }]
-    let scrollLoaderBound = false;
+    let cardRecords = []; // [{ el, book }]
 
     function renderAllCards(books) {
       cardsContainer.innerHTML = "";
@@ -1244,9 +1280,10 @@
         coverWrap.prepend(genCover(book));
 
         cardEl.dataset.cover = book["Обложка"] || "";
+        applyCoverMeta(cardEl, cardEl.dataset.cover);   // пропорция и цвет из кэша — до загрузки
         cardEl.addEventListener('click', () => openSheet(book));
 
-        cardRecords.push({ el: cardEl, book, loaded: false });
+        cardRecords.push({ el: cardEl, book });
         fragment.appendChild(node);
       });
 
@@ -1259,8 +1296,7 @@
       nr.textContent = 'Ничего не найдено по выбранным фильтрам.';
       cardsContainer.appendChild(nr);
 
-      bindScrollLoader();
-      loadVisibleCovers();
+      observeCovers();
 
       // Плавное последовательное появление (п.1).
       // rAF троттлится в фоновой вкладке — дублируем setTimeout-ом, чтобы карточки точно проявились.
@@ -1270,26 +1306,41 @@
       setTimeout(reveal, 60);
     }
 
-    // Ленивая загрузка обложек на основе позиции в окне (надёжнее IntersectionObserver).
-    function loadVisibleCovers() {
-      const vh = window.innerHeight || 800;
-      cardRecords.forEach(r => {
-        if (r.loaded || !r.el.dataset.cover || r.el.style.display === 'none') return;
-        const rect = r.el.getBoundingClientRect();
-        if (rect.top < vh + 500 && rect.bottom > -500) { r.loaded = true; loadCover(r.el); }
-      });
-    }
-    function bindScrollLoader() {
-      if (scrollLoaderBound) return;
-      scrollLoaderBound = true;
-      let ticking = false;
-      const onScroll = () => {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(() => { ticking = false; loadVisibleCovers(); });
-      };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onScroll, { passive: true });
+    // Ленивая загрузка обложек через IntersectionObserver.
+    // Раньше на каждый кадр скролла обходились ВСЕ карточки с getBoundingClientRect —
+    // это дёргало layout и давало рывки при прокрутке. Наблюдатель считает всё сам,
+    // и он же сам подхватывает карточки, которые вернули фильтры.
+    let coverObserver = null;
+    const PRIMED_COVERS = 8;   // сколько обложек грузим сами, если вкладка открыта в фоне
+
+    function observeCovers() {
+      if (!('IntersectionObserver' in window)) {
+        cardRecords.forEach(r => { if (r.el.dataset.cover) loadCover(r.el); });
+        return;
+      }
+      // Полка пересобирается целиком, поэтому сначала отпускаем старые карточки:
+      // иначе наблюдатель продолжает держать удалённые узлы.
+      if (coverObserver) coverObserver.disconnect();
+      if (!coverObserver) {
+        coverObserver = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            obs.unobserve(entry.target);          // каждая обложка грузится один раз
+            loadCover(entry.target);
+          });
+        }, { rootMargin: '600px 0px' });          // берём с запасом на экран вперёд
+      }
+      cardRecords.forEach(r => { if (r.el.dataset.cover) coverObserver.observe(r.el); });
+
+      // В фоновой вкладке браузер не вызывает наблюдателя. Обложки первого экрана
+      // начинаем грузить сами, чтобы при возврате на вкладку полка была уже готова.
+      if (document.hidden) {
+        cardRecords.slice(0, PRIMED_COVERS).forEach(r => {
+          if (!r.el.dataset.cover) return;
+          coverObserver.unobserve(r.el);
+          loadCover(r.el);
+        });
+      }
     }
 
     // Безопасный (читаемый на белом) доминантный цвет обложки.
@@ -1313,30 +1364,110 @@
 
     const coverColorCache = new Map();
 
-    // Ленивая подгрузка обложки: аспект обёртки = аспект картинки (не обрезается) + цвет названия (п.6).
-    function loadCover(card) {
+    // ===== Кэш обложек: пропорция и доминантный цвет =====
+    // Пропорция нужна ДО загрузки картинки — тогда на повторных заходах карточка
+    // сразу встаёт нужного размера и полка при скролле не прыгает.
+    const COVER_CACHE_KEY = 'lib:covers:v1';
+    const COVER_SAVE_DELAY = 400;   // обложки грузятся пачкой — пишем кэш один раз, а не 57
+    const COVER_FADE_MS = 450;      // чуть длиннее --t-slow: заглушка держится до конца проявления
+    const coverMeta = readCoverMeta();
+    let coverMetaDirty = false;
+    let coverSaveTimer = 0;
+
+    function readCoverMeta() {
+      try {
+        const raw = localStorage.getItem(COVER_CACHE_KEY);
+        const parsed = raw ? JSON.parse(raw) : null;
+        return (parsed && typeof parsed === 'object') ? parsed : {};
+      } catch (e) {
+        return {};   // приватный режим или битый кэш — работаем без него
+      }
+    }
+    function flushCoverMeta() {
+      if (!coverMetaDirty) return;
+      coverMetaDirty = false;
+      try { localStorage.setItem(COVER_CACHE_KEY, JSON.stringify(coverMeta)); }
+      catch (e) { /* нет места — не критично */ }
+    }
+    function saveCoverMeta() {
+      if (!coverMetaDirty) return;
+      clearTimeout(coverSaveTimer);
+      coverSaveTimer = setTimeout(flushCoverMeta, COVER_SAVE_DELAY);
+    }
+    // Уход со страницы не должен съедать последнюю пачку обложек
+    window.addEventListener('pagehide', flushCoverMeta);
+    function rememberCover(url, ar, color) {
+      const prev = coverMeta[url] || {};
+      const next = { ar: ar || prev.ar || '', color: color || prev.color || '' };
+      if (prev.ar === next.ar && prev.color === next.color) return;
+      coverMeta[url] = next;
+      coverMetaDirty = true;
+    }
+    // Известные пропорцию и цвет ставим на карточку заранее, ещё до сети.
+    function applyCoverMeta(card, url) {
+      const m = coverMeta[url];
+      if (!m) return;
+      if (m.ar) card.style.setProperty('--cover-ar', m.ar);
+      if (m.color) card.style.setProperty('--cover-color', m.color);
+    }
+
+    // Тяжёлый расчёт цвета — в простое, чтобы не тормозить показ обложки.
+    const whenIdle = window.requestIdleCallback
+      ? cb => window.requestIdleCallback(cb, { timeout: 1500 })
+      : cb => setTimeout(cb, 250);
+
+    function extractColor(img, url) {
+      if (coverColorCache.has(url)) return coverColorCache.get(url);
+      let col = null;
+      try {
+        col = safeColorFromImage(img);
+      } catch (e) {
+        col = null;   // canvas «испорчен» без CORS — цвет не берём и больше не пробуем
+      }
+      coverColorCache.set(url, col);
+      return col;
+    }
+
+    // Ленивая подгрузка обложки: пропорция карточки = пропорция картинки (не обрезается),
+    // цвет обложки идёт в --cover-color (поля-letterbox и название по ховеру, п.6).
+    function loadCover(card, attempt) {
       const url = card.dataset.cover;
       if (!url) return;
+      const step = attempt || 0;
       const wrap = card.querySelector('.cover-wrap');
       const img = card.querySelector('.book-cover');
-      // Цвет обложки кладём в --cover-color; название красится им только по ховеру (п.6)
-      const apply = col => { if (col) card.style.setProperty('--cover-color', col); };
-      img.crossOrigin = 'anonymous';
+
+      // crossOrigin нужен только чтобы прочитать цвет с canvas. Если хост не отдаёт
+      // CORS-заголовки, первая попытка падает — вторая идёт без него, и обложка
+      // всё равно показывается (просто без цвета).
+      if (step === 0) img.crossOrigin = 'anonymous';
+      else img.removeAttribute('crossorigin');
+
       img.onload = function () {
-        // сначала берём цвет (для полей-letterbox), потом показываем — заглушку убираем
-        if (coverColorCache.has(url)) apply(coverColorCache.get(url));
-        else {
-          try {
-            const col = safeColorFromImage(this);
-            coverColorCache.set(url, col);
-            apply(col);
-          } catch (e) { /* CORS/canvas — поля останутся серыми */ }
-        }
+        const ar = (this.naturalWidth && this.naturalHeight)
+          ? this.naturalWidth + ' / ' + this.naturalHeight
+          : '';
+        if (ar) card.style.setProperty('--cover-ar', ar);
         img.classList.add('is-loaded');
+        // Заглушка лежит ПОД картинкой и убирается лишь когда та полностью проявилась,
+        // иначе в момент перехода видна серая подложка обёртки.
         const gc = wrap.querySelector('.gen-cover');
-        if (gc) gc.remove();   // убираем заглушку, чтобы поля показывали фон (цвет обложки)
+        if (gc) setTimeout(() => gc.remove(), COVER_FADE_MS);
+        rememberCover(url, ar, '');
+
+        whenIdle(() => {
+          const col = extractColor(img, url);
+          if (col) {
+            card.style.setProperty('--cover-color', col);
+            rememberCover(url, ar, col);
+          }
+          saveCoverMeta();
+        });
       };
-      img.onerror = function () { /* обложки нет — остаётся заглушка */ };
+      img.onerror = function () {
+        if (step === 0) { img.removeAttribute('src'); loadCover(card, 1); return; }
+        /* обложки нет — остаётся заглушка */
+      };
       img.src = url;
     }
 
@@ -1402,7 +1533,7 @@
       const reset = document.getElementById('filterbar-reset');
       if (reset) reset.hidden = !anyFilterActive();
       updateMobileFilterBtn();
-      loadVisibleCovers(); // подгрузить обложки у только что показанных карточек
+      // обложки у показанных карточек подхватит IntersectionObserver
     }
 
     // --- Жанры-чипсы ---
@@ -1590,7 +1721,6 @@
         cardsContainer.classList.toggle('is-list', list);
         gridBtn.classList.toggle('is-active', !list);
         listBtn.classList.toggle('is-active', list);
-        loadVisibleCovers();
       });
     })();
 
@@ -1679,11 +1809,19 @@
       cover.appendChild(genCover(book));
       const url = cleanVal(book['Обложка']);
       if (url) {
-        const img = new Image();
-        img.className = 'sheet__cover-img';
-        img.alt = book['Название'] || '';
-        img.onload = () => { cover.innerHTML = ''; cover.appendChild(img); };
-        img.src = url;
+        // crossOrigin такой же, как у карточки: иначе браузер считает это другим
+        // запросом и качает ту же обложку второй раз вместо того, чтобы взять из кэша.
+        const show = withCors => {
+          const img = new Image();
+          img.className = 'sheet__cover-img';
+          img.alt = book['Название'] || '';
+          img.decoding = 'async';
+          if (withCors) img.crossOrigin = 'anonymous';
+          img.onload = () => { cover.innerHTML = ''; cover.appendChild(img); };
+          if (withCors) img.onerror = () => show(false);   // хост без CORS — грузим как обычно
+          img.src = url;
+        };
+        show(true);
       }
 
       const info = document.createElement('div');
