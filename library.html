@@ -324,6 +324,12 @@
       border-radius: inherit;
       z-index: 3;
     }
+    /* Настоящие обложки приезжают с уже впечатанным мокапом — его накладывает
+       генератор на create.kirmesch.ru. Второй слой сверху давал двойной корешок
+       и лишнюю полосу среза справа, поэтому у загруженной картинки накладку снимаем.
+       Сгенерированным заглушкам она по-прежнему нужна: без неё это просто плашка. */
+    .cover-wrap.has-cover::after,
+    .sheet__cover.has-cover::after { content: none; }
     .cover-wrap .book-cover {
       /* Вне потока: пока картинки нет, её alt не добавляет обёртке высоту.
          Раньше из-за этого под сгенерированной обложкой вылезала серая полоса
@@ -1449,6 +1455,7 @@
           : '';
         if (ar) card.style.setProperty('--cover-ar', ar);
         img.classList.add('is-loaded');
+        wrap.classList.add('has-cover');   // мокап уже внутри файла — свой не рисуем
         // Заглушка лежит ПОД картинкой и убирается лишь когда та полностью проявилась,
         // иначе в момент перехода видна серая подложка обёртки.
         const gc = wrap.querySelector('.gen-cover');
@@ -1817,7 +1824,11 @@
           img.alt = book['Название'] || '';
           img.decoding = 'async';
           if (withCors) img.crossOrigin = 'anonymous';
-          img.onload = () => { cover.innerHTML = ''; cover.appendChild(img); };
+          img.onload = () => {
+            cover.innerHTML = '';
+            cover.appendChild(img);
+            cover.classList.add('has-cover');
+          };
           if (withCors) img.onerror = () => show(false);   // хост без CORS — грузим как обычно
           img.src = url;
         };
