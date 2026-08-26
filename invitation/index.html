@@ -55,21 +55,6 @@ a:hover{color:#f0dcae}
 #stage{opacity:0;transition:opacity 1.4s ease}
 #stage.ready{opacity:1}
 
-/* ---- порог: всё грузится до входа ---- */
-#gate{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:60px 32px;text-align:center;background:radial-gradient(120% 80% at 50% 0%,#20121c 0%,#0e0a12 45%,#08060c 100%);color:#efe3ce;font-family:'Marck Script','Cormorant Garamond',cursive;transition:opacity 1.1s ease}
-#gate.gone{opacity:0;pointer-events:none}
-#gateSigil{position:relative;width:124px;height:124px;display:flex;align-items:center;justify-content:center}
-#gateSigil>i{position:absolute;border-radius:50%;display:block}
-#gateSigil .r1{inset:0;border:1px solid rgba(207,169,85,.16)}
-#gateSigil .r2{inset:0;border-top:1px solid rgba(240,220,174,.55);border-left:1px solid rgba(240,220,174,.12);animation:spin 9s linear infinite}
-#gateSigil .r3{inset:14px;border:1px dashed rgba(207,169,85,.3);animation:spinRev 16s linear infinite}
-#gateSigil .r4{inset:22%;border-radius:0;transform:rotate(45deg);border:1px solid rgba(224,180,98,.5)}
-#gateSigil .core{inset:auto;width:9px;height:9px;border-radius:0;background:#f6e6bd;transform:rotate(45deg);box-shadow:0 0 20px rgba(246,230,189,.9);animation:glowPulse 3.4s ease-in-out infinite}
-#gateCap{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:rgba(207,169,85,.72);min-height:14px}
-#gateBar{width:min(230px,62vw);height:1px;background:rgba(207,169,85,.16);overflow:hidden}
-#gateBar>span{display:block;height:100%;width:0;background:linear-gradient(to right,rgba(207,169,85,.3),#f0dcae);transition:width .45s ease}
-#gateBtn{opacity:0;pointer-events:none;transition:opacity .9s ease;padding:17px 34px;border:1px solid rgba(207,169,85,.55);background:linear-gradient(180deg,rgba(207,169,85,.16),rgba(207,169,85,.05));color:#f4e3bd;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;border-radius:2px;cursor:pointer;-webkit-tap-highlight-color:transparent;box-shadow:0 0 34px rgba(207,169,85,.14)}
-#gateBtn.on{opacity:1;pointer-events:auto;animation:rise 1s ease both}
 
 /* ---- ответ ---- */
 #vowNote{position:relative;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(207,169,85,.45);animation:fadeSoft 2s ease both 5s}
@@ -81,13 +66,6 @@ a:hover{color:#f0dcae}
 </style>
 </head>
 <body>
-
-<div id="gate">
-  <div id="gateSigil"><i class="r1"></i><i class="r2"></i><i class="r3"></i><i class="r4"></i><i class="core"></i></div>
-  <div id="gateCap">зажигаем свечи</div>
-  <div id="gateBar"><span id="gateFill"></span></div>
-  <button id="gateBtn" type="button">Войти</button>
-</div>
 
 <div id="stage" style="position:relative;width:100%;height:100dvh;min-height:100vh;overflow:hidden;background:radial-gradient(120% 80% at 50% 0%,#20121c 0%,#0e0a12 45%,#08060c 100%);font-family:'Marck Script','Cormorant Garamond',cursive;letter-spacing:.01em;color:#efe3ce;isolation:isolate">
 
@@ -408,8 +386,8 @@ a:hover{color:#f0dcae}
           <span style="flex:1;height:1px;background:rgba(207,169,85,.28)"></span>
         </div>
         <div style="animation:rise 1.1s ease both 2.9s;display:flex;flex-direction:column;gap:8px">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.3em;color:rgba(207,169,85,.75);text-transform:uppercase">суббота · 5 сентября</div>
-          <div style="font-size:52px;line-height:1;font-weight:300;color:#f6ecda;letter-spacing:.01em">18:00</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.3em;color:rgba(207,169,85,.75);text-transform:uppercase">суббота</div>
+          <div style="font-size:44px;line-height:1.05;font-weight:300;color:#f6ecda;letter-spacing:.01em">5 сентября</div>
           <div style="font-size:19px;font-weight:400;line-height:1.55;color:rgba(239,227,206,.62)">Больше не скажу ничего — кроме того, что смотреть придётся не под ноги.</div>
         </div>
       </div>
@@ -434,8 +412,8 @@ a:hover{color:#f0dcae}
           <span style="flex:1;height:1px;background:rgba(198,214,226,.28)"></span>
         </div>
         <div style="animation:rise 1.1s ease both 2.9s;display:flex;flex-direction:column;gap:8px">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.3em;color:rgba(198,214,226,.75);text-transform:uppercase">суббота · 5 сентября</div>
-          <div style="font-size:52px;line-height:1;font-weight:300;color:#f2f6f8;letter-spacing:.01em">14:00</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.3em;color:rgba(198,214,226,.75);text-transform:uppercase">суббота</div>
+          <div style="font-size:44px;line-height:1.05;font-weight:300;color:#f2f6f8;letter-spacing:.01em">5 сентября</div>
           <div style="font-size:19px;font-weight:400;line-height:1.55;color:rgba(238,241,242,.62)">Больше не скажу ничего — кроме того, что спешить в этот день не придётся.</div>
         </div>
       </div>
@@ -519,8 +497,8 @@ a:hover{color:#f0dcae}
   };
 
   var CARDS = {
-    a: 'XVI · Вознесение — суббота, 5 сентября, 18:00',
-    b: 'XVIII · Растворение — суббота, 5 сентября, 14:00'
+    a: 'XVI · Вознесение — суббота, 5 сентября',
+    b: 'XVIII · Растворение — суббота, 5 сентября'
   };
 
   var AUDIO_SRC = 'assets/o-children.mp3';
@@ -578,78 +556,31 @@ a:hover{color:#f0dcae}
   }
 
   /* ======================================================================
-     Предзагрузка: фото, музыка и шрифты — до того, как она что-то увидит
+     Фоновая загрузка: страница показывается сразу, музыка догоняет
      ====================================================================== */
-  var gate = $('#gate');
-  var gateCap = $('#gateCap');
-  var gateFill = $('#gateFill');
-  var gateBtn = $('#gateBtn');
-
-  var weights = { images: 0.32, audio: 0.58, fonts: 0.10 };
-  var done = { images: 0, audio: 0, fonts: 0 };
-  var audioUrl = null;
-
-  function paintProgress() {
-    var pct = (done.images * weights.images + done.audio * weights.audio + done.fonts * weights.fonts) * 100;
-    gateFill.style.width = Math.min(100, Math.round(pct)) + '%';
+  // Прогреваем кэш фотографий, пока она читает первый экран.
+  function warmImages() {
+    IMAGES.forEach(function (src) { new Image().src = src; });
   }
 
-  function loadImages() {
-    var loaded = 0;
-    var step = function () {
-      loaded += 1;
-      done.images = loaded / IMAGES.length;
-      paintProgress();
+  // Элемент создаётся сразу и сразу начинает буферизоваться, чтобы
+  // на первом касании play() ушёл мгновенно — иначе Safari его отклонит.
+  function prepareAudio() {
+    app.track = new Audio(AUDIO_SRC);
+    app.track.loop = true;
+    app.track.preload = 'auto';
+    app.track.volume = 0;
+  }
+
+  // Автозапуск браузеры не дают — ждём первое касание, скролл или клавишу.
+  function armFirstTouch() {
+    var events = ['pointerdown', 'touchend', 'keydown', 'wheel'];
+    var fire = function () {
+      events.forEach(function (name) { document.removeEventListener(name, fire, true); });
+      startSound();
     };
-    return Promise.all(IMAGES.map(function (src) {
-      return new Promise(function (resolve) {
-        var img = new Image();
-        img.onload = img.onerror = function () { step(); resolve(); };
-        img.src = src;
-      });
-    }));
+    events.forEach(function (name) { document.addEventListener(name, fire, true); });
   }
-
-  // XHR, а не <audio preload>: даёт честный прогресс и полностью
-  // забуференный blob — на середине трека ничего не подвиснет.
-  function loadAudio() {
-    return new Promise(function (resolve) {
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', AUDIO_SRC, true);
-      xhr.responseType = 'blob';
-      xhr.onprogress = function (e) {
-        if (!e.lengthComputable) return;
-        done.audio = e.loaded / e.total;
-        paintProgress();
-      };
-      xhr.onload = function () {
-        if (xhr.status >= 200 && xhr.status < 300) audioUrl = URL.createObjectURL(xhr.response);
-        done.audio = 1; paintProgress(); resolve();
-      };
-      xhr.onerror = xhr.onabort = function () { done.audio = 1; paintProgress(); resolve(); };
-      xhr.send();
-    });
-  }
-
-  function loadFonts() {
-    var ready = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
-    return ready.catch(function () {}).then(function () { done.fonts = 1; paintProgress(); });
-  }
-
-  Promise.all([loadImages(), loadAudio(), loadFonts()]).then(function () {
-    gateFill.style.width = '100%';
-    gateCap.textContent = 'всё готово';
-    setTimeout(function () {
-      gateCap.textContent = 'коснись, чтобы войти';
-      gateBtn.classList.add('on');
-    }, 480);
-  });
-
-  gateBtn.addEventListener('click', function () {
-    gate.classList.add('gone');
-    setTimeout(function () { gate.remove(); }, 1200);
-    app.enter();
-  });
 
   /* ======================================================================
      Состояние и экраны
@@ -759,25 +690,24 @@ a:hover{color:#f0dcae}
      Музыка
      ====================================================================== */
   function startSound() {
-    if (!audioUrl) return;
-    if (!app.track) {
-      app.track = new Audio(audioUrl);
-      app.track.loop = true;
-      app.track.preload = 'auto';
-    }
+    if (!app.track) return;
     app.track.volume = 0;
     var playback = app.track.play();
-    var fadeIn = function () {
-      var v = 0;
-      clearInterval(app.fade);
-      app.fade = setInterval(function () {
-        v = Math.min(TARGET_VOLUME, v + 0.02);
-        app.track.volume = v;
-        if (v >= TARGET_VOLUME) clearInterval(app.fade);
-      }, 90);
-    };
-    if (playback && playback.then) playback.then(function () { app.rearmed = false; fadeIn(); }).catch(rearmSound);
-    else fadeIn();
+    if (playback && playback.then) playback.then(onPlaying).catch(rearmSound);
+    else onPlaying();
+  }
+
+  // Значок ♪ переключается только тогда, когда звук правда пошёл.
+  function onPlaying() {
+    app.rearmed = false;
+    setState({ sound: true });
+    var v = 0;
+    clearInterval(app.fade);
+    app.fade = setInterval(function () {
+      v = Math.min(TARGET_VOLUME, v + 0.02);
+      app.track.volume = v;
+      if (v >= TARGET_VOLUME) clearInterval(app.fade);
+    }, 90);
   }
 
   /* Браузер отклонил автозапуск — ждём настоящего касания и пробуем снова. */
@@ -789,7 +719,6 @@ a:hover{color:#f0dcae}
     var retry = function () {
       events.forEach(function (name) { document.removeEventListener(name, retry, true); });
       app.rearmed = false;
-      setState({ sound: true });
       startSound();
     };
     events.forEach(function (name) { document.addEventListener(name, retry, true); });
@@ -834,7 +763,7 @@ a:hover{color:#f0dcae}
     backToReveal: function () { buzz(10); transition('reveal'); },
     toggleSound: function () {
       if (app.state.sound) { setState({ sound: false }); stopSound(); }
-      else { setState({ sound: true }); startSound(); }
+      else { startSound(); }
     }
   };
 
@@ -864,10 +793,11 @@ a:hover{color:#f0dcae}
   /* ======================================================================
      Запуск
      ====================================================================== */
-  app.enter = function () {
+  app.begin = function () {
     stage.classList.add('ready');
-    setState({ sound: true });
-    startSound();
+    warmImages();
+    prepareAudio();
+    armFirstTouch();
     if (CONFIG.notifyOnOpen) deliver({ event: 'opened' }).catch(function () {});
   };
 
@@ -891,6 +821,7 @@ a:hover{color:#f0dcae}
 
   flushQueue();
   render();
+  app.begin();
 })();
 </script>
 </body>
