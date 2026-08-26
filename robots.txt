@@ -1,3 +1,32 @@
 User-Agent: *
 Allow: *
 Disallow: /invitation/
+
+# Приглашение прячем от поисковиков, но разрешаем ботам, которые
+# рисуют превью ссылки в мессенджерах — иначе карточка будет пустой.
+User-Agent: Twitterbot
+Allow: /
+
+User-Agent: facebookexternalhit
+Allow: /
+
+User-Agent: TelegramBot
+Allow: /
+
+User-Agent: WhatsApp
+Allow: /
+
+User-Agent: vkShare
+Allow: /
+
+User-Agent: Discordbot
+Allow: /
+
+User-Agent: Slackbot-LinkExpanding
+Allow: /
+
+User-Agent: SkypeUriPreview
+Allow: /
+
+User-Agent: viber
+Allow: /

@@ -5,10 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="theme-color" content="#08060c">
-<title>Осень открыла две двери</title>
+<title>Осень открыла две двери…</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<link rel="mask-icon" href="assets/favicon.svg" color="#cfa955">
+<meta name="apple-mobile-web-app-title" content="Две двери">
 <meta property="og:title" content="Осень открыла две двери…">
-<meta property="og:description" content="и обе ведут ко мне.">
+<meta property="og:description" content="и обе ведут ко мне. Приглашение от кота — для бусинки.">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="от кота · для бусинки">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:url" content="https://kirmesch.ru/invitation/">
+<meta property="og:image" content="https://kirmesch.ru/invitation/assets/og.jpg">
+<meta property="og:image:secure_url" content="https://kirmesch.ru/invitation/assets/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Осень открыла две двери… и обе ведут ко мне.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Осень открыла две двери…">
+<meta name="twitter:description" content="и обе ведут ко мне. Приглашение от кота — для бусинки.">
+<meta name="twitter:image" content="https://kirmesch.ru/invitation/assets/og.jpg">
 <link rel="preload" as="font" type="font/ttf" href="assets/denistina.ttf" crossorigin>
 <link rel="preload" as="image" href="assets/p1.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -59,6 +76,18 @@ a:hover{color:#f0dcae}
 /* ---- ответ ---- */
 #vowNote{position:relative;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(207,169,85,.45);animation:fadeSoft 2s ease both 5s}
 #vowNote a{border-bottom:1px dotted rgba(207,169,85,.4)}
+#shareHint{min-height:11px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(207,169,85,.5);transition:opacity .3s ease}
+/* На коротких экранах финальный экран поджимается, чтобы «поделиться»
+   и «перечитать пророчество» не уехали за нижний край. */
+@media (max-height:740px){
+  #vowScreen{gap:15px!important;padding:52px 28px 32px!important}
+  #vowShare{gap:8px!important}
+}
+/* «рассказать подружкам» — ссылка внутри фразы, а не отдельная кнопка */
+#shareLink{padding:0;border:0;background:none;font:inherit;color:#e9d5a8;cursor:pointer;
+  border-bottom:1px dotted rgba(207,169,85,.55);-webkit-tap-highlight-color:transparent;transition:color .25s ease}
+#shareLink:hover{color:#f6ecda;border-bottom-color:rgba(240,220,174,.8)}
+#shareLink:active{color:#f6ecda}
 
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.12s!important}
@@ -445,7 +474,7 @@ a:hover{color:#f0dcae}
   </div>
 
   <div class="scif" data-if="isVow">
-  <div style="position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:30px;padding:90px 32px 80px">
+  <div id="vowScreen" style="position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:26px;padding:78px 32px 56px">
     <div style="position:absolute;left:50%;top:44%;width:340px;height:340px;margin:-170px 0 0 -170px;pointer-events:none;background:radial-gradient(closest-side,rgba(207,169,85,.2),transparent 72%);animation:halo 9s ease-in-out infinite"></div>
 
     <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:18px;animation:fadeSoft 2.4s ease both .35s">
@@ -462,7 +491,12 @@ a:hover{color:#f0dcae}
       <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.34em;color:rgba(207,169,85,.75);text-transform:uppercase">— кот</div>
     </div>
 
-    <div style="position:absolute;bottom:44px;left:0;right:0;display:flex;justify-content:center;animation:fadeSoft 2s ease both 4.2s">
+    <div id="vowShare" style="position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;animation:fadeSoft 2.2s ease both 5.6s">
+      <div style="font-size:18px;line-height:1.55;color:rgba(239,227,206,.55);max-width:23ch;text-wrap:pretty">А пока можешь <button data-on="share" id="shareLink">рассказать подружкам</button> о приглашении.</div>
+      <div id="shareHint"></div>
+    </div>
+
+    <div style="position:relative;display:flex;justify-content:center;margin-top:-8px;animation:fadeSoft 2s ease both 6.4s">
       <button data-on="backToReveal" style="padding:6px 2px;border:0;background:none;color:rgba(207,169,85,.55);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;-webkit-tap-highlight-color:transparent;border-bottom:1px dotted rgba(207,169,85,.3)" data-press>перечитать пророчество</button>
     </div>
   </div>
@@ -761,6 +795,7 @@ a:hover{color:#f0dcae}
       answer();
     },
     backToReveal: function () { buzz(10); transition('reveal'); },
+    share: function () { shareInvite(); },
     toggleSound: function () {
       if (app.state.sound) { setState({ sound: false }); stopSound(); }
       else { startSound(); }
@@ -772,6 +807,63 @@ a:hover{color:#f0dcae}
     buzz([14, 60, 26]);
     setState({ picked: which });
     setTimeout(function () { setState({ faceReady: true }); }, FLIP_MS);
+  }
+
+  /* ======================================================================
+     «Расскажи подружкам» — системное окно шеринга, а где его нет — буфер
+     ====================================================================== */
+  var SHARE = {
+    title: 'Осень открыла две двери…',
+    text: 'Смотри что Кирилл мне сделал',
+    url: 'https://kirmesch.ru/invitation/'
+  };
+  var HINT_MS = 4000;
+
+  function hint(text) {
+    var el = $('#shareHint');
+    if (!el) return;
+    el.textContent = text;
+    clearTimeout(app.hintTimer);
+    app.hintTimer = setTimeout(function () { el.textContent = ''; }, HINT_MS);
+  }
+
+  function shareInvite() {
+    buzz(14);
+    if (!navigator.share) return copyInvite();
+    navigator.share({ title: SHARE.title, text: SHARE.text, url: SHARE.url })
+      .then(function () { hint('улетело'); })
+      .catch(function (err) {
+        // Отмена в системном окне — это не ошибка, молчим.
+        if (err && err.name === 'AbortError') return;
+        copyInvite();
+      });
+  }
+
+  function copyInvite() {
+    var text = SHARE.text + ' — ' + SHARE.url;
+    var ok = function () { hint('ссылка скопирована'); };
+    var no = function () { hint('скопируй сама: ' + SHARE.url); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(ok).catch(function () {
+        if (copyFallback(text)) ok(); else no();
+      });
+      return;
+    }
+    if (copyFallback(text)) ok(); else no();
+  }
+
+  /* Старый добрый execCommand — для браузеров без Clipboard API. */
+  function copyFallback(text) {
+    var field = document.createElement('textarea');
+    field.value = text;
+    field.setAttribute('readonly', '');
+    field.style.cssText = 'position:fixed;top:-1000px;opacity:0';
+    document.body.appendChild(field);
+    field.select();
+    var done = false;
+    try { done = document.execCommand('copy'); } catch (e) { done = false; }
+    document.body.removeChild(field);
+    return done;
   }
 
   function answer() {
@@ -812,7 +904,7 @@ a:hover{color:#f0dcae}
   var vowScreen = stage.querySelector('[data-if="isVow"] > div');
   var note = document.createElement('div');
   note.id = 'vowNote';
-  vowScreen.appendChild(note);
+  vowScreen.insertBefore(note, $('#vowShare'));
 
   document.addEventListener('visibilitychange', function () {
     if (document.hidden && app.state.sound) stopSound();
