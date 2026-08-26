@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#08060c">
+<title>Осень открыла две двери</title>
+<meta property="og:title" content="Осень открыла две двери…">
+<meta property="og:description" content="и обе ведут ко мне.">
+<meta property="og:type" content="website">
+<link rel="preload" as="font" type="font/ttf" href="assets/denistina.ttf" crossorigin>
+<link rel="preload" as="image" href="assets/p1.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Marck+Script&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Denistina';src:url('assets/denistina.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+html,body{margin:0;padding:0;background:#08060c;overscroll-behavior:none;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#d8b871;text-decoration:none}
+a:hover{color:#f0dcae}
+::-webkit-scrollbar{width:0;height:0}
+@keyframes fogA{0%{transform:translate3d(-12%,4%,0) scale(1)}50%{transform:translate3d(14%,-6%,0) scale(1.18)}100%{transform:translate3d(-12%,4%,0) scale(1)}}
+@keyframes fogB{0%{transform:translate3d(10%,-8%,0) scale(1.1)}50%{transform:translate3d(-14%,10%,0) scale(.9)}100%{transform:translate3d(10%,-8%,0) scale(1.1)}}
+@keyframes fogC{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(-8%,-12%,0) scale(1.25)}100%{transform:translate3d(0,0,0) scale(1)}}
+@keyframes twinkle{0%,100%{opacity:.25}50%{opacity:.8}}
+@keyframes leaf{0%{transform:translate3d(0,-14vh,0) rotate(0deg);opacity:0}8%{opacity:.85}92%{opacity:.7}100%{transform:translate3d(7vw,112vh,0) rotate(520deg);opacity:0}}
+@keyframes leafAlt{0%{transform:translate3d(0,-14vh,0) rotate(20deg);opacity:0}10%{opacity:.7}90%{opacity:.55}100%{transform:translate3d(-9vw,112vh,0) rotate(-480deg);opacity:0}}
+@keyframes rise{0%{opacity:0;transform:translateY(22px);filter:blur(6px)}100%{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes hint{0%,100%{transform:scaleY(.25);opacity:.25}50%{transform:scaleY(1);opacity:.9}}
+@keyframes veilIn{0%{opacity:0}100%{opacity:1}}
+@keyframes veilOut{0%{opacity:1}100%{opacity:0}}
+@keyframes breath{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes bob{0%,100%{top:0}50%{top:-7px}}
+@keyframes driftA{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-9px) rotate(.5deg)}}
+@keyframes driftB{0%,100%{transform:translateY(0) rotate(-2.6deg)}50%{transform:translateY(-7px) rotate(-1.6deg)}}
+@keyframes driftC{0%,100%{transform:translateY(0) rotate(2.2deg)}50%{transform:translateY(-8px) rotate(1.2deg)}}
+@keyframes letterIn{from{opacity:0}to{opacity:1}}
+@keyframes halo{0%,100%{opacity:.35;transform:scale(.94)}50%{opacity:.75;transform:scale(1.06)}}
+@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+@keyframes ripple{0%{transform:scale(.4);opacity:.9}100%{transform:scale(1.9);opacity:0}}
+@keyframes glowPulse{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframes ink{0%{clip-path:inset(-40% 101% -40% -8%)}100%{clip-path:inset(-40% -8% -40% -8%)}}
+@keyframes nibRun{0%{left:0;opacity:0}7%{opacity:1}92%{opacity:1}100%{left:100%;opacity:0}}
+@keyframes fadeSoft{0%{opacity:0;filter:blur(8px)}100%{opacity:1;filter:blur(0)}}
+@keyframes sigilForm{0%{opacity:0;transform:scale(.55) rotate(-55deg);filter:blur(14px)}60%{opacity:1}100%{opacity:1;transform:scale(1) rotate(0);filter:blur(0)}}
+@keyframes spinRev{0%{transform:rotate(0)}100%{transform:rotate(-360deg)}}
+@keyframes starGlow{0%,100%{opacity:.72;filter:drop-shadow(0 0 10px rgba(224,180,98,.45))}50%{opacity:1;filter:drop-shadow(0 0 22px rgba(240,220,174,.8))}}
+/* ---- статическая замена dc-рантайма ---- */
+.scif{display:contents}
+.scif[hidden]{display:none}
+[data-press]{transition:transform .18s ease}
+[data-press]:active{transform:scale(.965)}
+#stage{opacity:0;transition:opacity 1.4s ease}
+#stage.ready{opacity:1}
+
+/* ---- порог: всё грузится до входа ---- */
+#gate{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:60px 32px;text-align:center;background:radial-gradient(120% 80% at 50% 0%,#20121c 0%,#0e0a12 45%,#08060c 100%);color:#efe3ce;font-family:'Marck Script','Cormorant Garamond',cursive;transition:opacity 1.1s ease}
+#gate.gone{opacity:0;pointer-events:none}
+#gateSigil{position:relative;width:124px;height:124px;display:flex;align-items:center;justify-content:center}
+#gateSigil>i{position:absolute;border-radius:50%;display:block}
+#gateSigil .r1{inset:0;border:1px solid rgba(207,169,85,.16)}
+#gateSigil .r2{inset:0;border-top:1px solid rgba(240,220,174,.55);border-left:1px solid rgba(240,220,174,.12);animation:spin 9s linear infinite}
+#gateSigil .r3{inset:14px;border:1px dashed rgba(207,169,85,.3);animation:spinRev 16s linear infinite}
+#gateSigil .r4{inset:22%;border-radius:0;transform:rotate(45deg);border:1px solid rgba(224,180,98,.5)}
+#gateSigil .core{inset:auto;width:9px;height:9px;border-radius:0;background:#f6e6bd;transform:rotate(45deg);box-shadow:0 0 20px rgba(246,230,189,.9);animation:glowPulse 3.4s ease-in-out infinite}
+#gateCap{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:rgba(207,169,85,.72);min-height:14px}
+#gateBar{width:min(230px,62vw);height:1px;background:rgba(207,169,85,.16);overflow:hidden}
+#gateBar>span{display:block;height:100%;width:0;background:linear-gradient(to right,rgba(207,169,85,.3),#f0dcae);transition:width .45s ease}
+#gateBtn{opacity:0;pointer-events:none;transition:opacity .9s ease;padding:17px 34px;border:1px solid rgba(207,169,85,.55);background:linear-gradient(180deg,rgba(207,169,85,.16),rgba(207,169,85,.05));color:#f4e3bd;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;border-radius:2px;cursor:pointer;-webkit-tap-highlight-color:transparent;box-shadow:0 0 34px rgba(207,169,85,.14)}
+#gateBtn.on{opacity:1;pointer-events:auto;animation:rise 1s ease both}
+
+/* ---- ответ ---- */
+#vowNote{position:relative;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(207,169,85,.45);animation:fadeSoft 2s ease both 5s}
+#vowNote a{border-bottom:1px dotted rgba(207,169,85,.4)}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.12s!important}
+}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div id="gateSigil"><i class="r1"></i><i class="r2"></i><i class="r3"></i><i class="r4"></i><i class="core"></i></div>
+  <div id="gateCap">зажигаем свечи</div>
+  <div id="gateBar"><span id="gateFill"></span></div>
+  <button id="gateBtn" type="button">Войти</button>
+</div>
+
+<div id="stage" style="position:relative;width:100%;height:100dvh;min-height:100vh;overflow:hidden;background:radial-gradient(120% 80% at 50% 0%,#20121c 0%,#0e0a12 45%,#08060c 100%);font-family:'Marck Script','Cormorant Garamond',cursive;letter-spacing:.01em;color:#efe3ce;isolation:isolate">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;opacity:1">
+    <div style="position:absolute;left:-30%;top:-10%;width:110%;height:70%;background:radial-gradient(closest-side,rgba(158,74,32,.34),transparent 72%);filter:blur(30px);animation:fogA 34s ease-in-out infinite"></div>
+    <div style="position:absolute;right:-35%;top:28%;width:110%;height:65%;background:radial-gradient(closest-side,rgba(74,52,120,.32),transparent 70%);filter:blur(36px);animation:fogB 44s ease-in-out infinite"></div>
+    <div style="position:absolute;left:-20%;bottom:-18%;width:130%;height:60%;background:radial-gradient(closest-side,rgba(196,142,66,.16),transparent 72%);filter:blur(44px);animation:fogC 52s ease-in-out infinite"></div>
+    <div style="position:absolute;inset:0;animation:twinkle 7s ease-in-out infinite;background-repeat:no-repeat;background-image:radial-gradient(1.4px 1.4px at 12% 14%,#f4e6c6,transparent),radial-gradient(1.2px 1.2px at 78% 9%,#f4e6c6,transparent),radial-gradient(1.6px 1.6px at 34% 26%,#e8cf9e,transparent),radial-gradient(1.1px 1.1px at 62% 33%,#f4e6c6,transparent),radial-gradient(1.5px 1.5px at 88% 41%,#e8cf9e,transparent),radial-gradient(1.2px 1.2px at 21% 47%,#f4e6c6,transparent),radial-gradient(1.3px 1.3px at 52% 58%,#e8cf9e,transparent),radial-gradient(1.1px 1.1px at 8% 66%,#f4e6c6,transparent),radial-gradient(1.5px 1.5px at 72% 71%,#f4e6c6,transparent),radial-gradient(1.2px 1.2px at 41% 83%,#e8cf9e,transparent),radial-gradient(1.4px 1.4px at 91% 88%,#f4e6c6,transparent),radial-gradient(1.1px 1.1px at 28% 94%,#e8cf9e,transparent)"></div>
+    <div style="position:absolute;inset:0;animation:twinkle 11s ease-in-out infinite reverse;background-repeat:no-repeat;background-image:radial-gradient(1.1px 1.1px at 47% 6%,#cdb187,transparent),radial-gradient(1px 1px at 17% 31%,#cdb187,transparent),radial-gradient(1.2px 1.2px at 83% 22%,#cdb187,transparent),radial-gradient(1px 1px at 66% 49%,#cdb187,transparent),radial-gradient(1.1px 1.1px at 31% 61%,#cdb187,transparent),radial-gradient(1px 1px at 94% 63%,#cdb187,transparent),radial-gradient(1.2px 1.2px at 57% 88%,#cdb187,transparent),radial-gradient(1px 1px at 11% 84%,#cdb187,transparent)"></div>
+    <div style="position:absolute;left:6%;top:0;width:10px;height:15px;background:linear-gradient(150deg,#b95e2c,#7a3c1e);border-radius:0 62% 0 62%;animation:leaf 17s linear infinite;animation-delay:-1s"></div>
+    <div style="position:absolute;left:22%;top:0;width:7px;height:11px;background:linear-gradient(150deg,#c99a4e,#8d6229);border-radius:0 62% 0 62%;animation:leafAlt 23s linear infinite;animation-delay:-6s"></div>
+    <div style="position:absolute;left:38%;top:0;width:12px;height:17px;background:linear-gradient(150deg,#a8552b,#5f2c17);border-radius:0 62% 0 62%;animation:leaf 21s linear infinite;animation-delay:-13s"></div>
+    <div style="position:absolute;left:53%;top:0;width:6px;height:10px;background:linear-gradient(150deg,#d3ab63,#8d6229);border-radius:0 62% 0 62%;animation:leafAlt 27s linear infinite;animation-delay:-3s"></div>
+    <div style="position:absolute;left:68%;top:0;width:9px;height:14px;background:linear-gradient(150deg,#b95e2c,#6d3319);border-radius:0 62% 0 62%;animation:leaf 19s linear infinite;animation-delay:-9s"></div>
+    <div style="position:absolute;left:81%;top:0;width:11px;height:16px;background:linear-gradient(150deg,#8a5a3c,#4d2a1c);border-radius:0 62% 0 62%;animation:leafAlt 25s linear infinite;animation-delay:-16s"></div>
+    <div style="position:absolute;left:93%;top:0;width:7px;height:11px;background:linear-gradient(150deg,#c99a4e,#7a3c1e);border-radius:0 62% 0 62%;animation:leaf 29s linear infinite;animation-delay:-21s"></div>
+    <div style="position:absolute;left:14%;top:0;width:5px;height:8px;background:#d3ab63;border-radius:0 62% 0 62%;animation:leafAlt 33s linear infinite;animation-delay:-24s"></div>
+    <div style="position:absolute;left:61%;top:0;width:5px;height:9px;background:#b95e2c;border-radius:0 62% 0 62%;animation:leaf 31s linear infinite;animation-delay:-11s"></div>
+    <div style="position:absolute;left:45%;top:0;width:8px;height:12px;background:linear-gradient(150deg,#a8552b,#6d3319);border-radius:0 62% 0 62%;animation:leafAlt 20s linear infinite;animation-delay:-18s"></div>
+    <div style="position:absolute;inset:0;opacity:.16;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 45%,transparent 40%,rgba(6,4,9,.72) 100%)"></div>
+  </div>
+
+  <button data-on="toggleSound" style="position:absolute;top:calc(env(safe-area-inset-top) + 16px);right:16px;z-index:14;width:42px;height:42px;border-radius:50%;border:1px solid rgba(207,169,85,.34);background:rgba(12,9,16,.5);backdrop-filter:blur(6px);color:#cfa955;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.06em;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent" data-press><span id="soundLabel">♪</span></button>
+
+  <div class="scif" data-if="isLanding">
+  <div style="position:absolute;inset:0;z-index:2;overflow-y:auto;overflow-x:hidden;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch">
+
+    <section style="scroll-snap-align:start;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:96px 30px 72px;text-align:center;position:relative">
+      <div style="position:relative;width:150px;height:150px;margin-bottom:26px;display:flex;align-items:center;justify-content:center;animation:sigilForm 2.6s cubic-bezier(.2,.85,.2,1) both">
+        <div style="position:absolute;inset:8%;border-radius:50%;background:radial-gradient(closest-side,rgba(224,180,98,.42),transparent 72%);animation:halo 6s ease-in-out infinite"></div>
+        <div style="position:absolute;width:132px;height:132px;border:1px solid rgba(207,169,85,.18);border-radius:50%"></div>
+        <div style="position:absolute;width:132px;height:132px;border-top:1px solid rgba(240,220,174,.55);border-left:1px solid rgba(240,220,174,.12);border-radius:50%;animation:spin 34s linear infinite"></div>
+        <div style="position:absolute;width:108px;height:108px;border:1px dashed rgba(207,169,85,.3);border-radius:50%;animation:spinRev 52s linear infinite"></div>
+        <svg viewBox="0 0 100 100" width="118" height="118" style="position:relative;overflow:visible;animation:starGlow 7s ease-in-out infinite">
+          <defs>
+            <linearGradient id="goldStar" x1="18%" y1="0%" x2="82%" y2="100%">
+              <stop offset="0%" stop-color="#fff3d6"></stop>
+              <stop offset="38%" stop-color="#f0dcae"></stop>
+              <stop offset="70%" stop-color="#c58e3f"></stop>
+              <stop offset="100%" stop-color="#8a5a24"></stop>
+            </linearGradient>
+            <radialGradient id="coreStar" cx="50%" cy="45%" r="55%">
+              <stop offset="0%" stop-color="#fffaf0"></stop>
+              <stop offset="55%" stop-color="#f2dfb4"></stop>
+              <stop offset="100%" stop-color="rgba(197,142,63,0)"></stop>
+            </radialGradient>
+          </defs>
+          <path d="M50 3 L52.7 43.5 L67 33 L56.5 47.3 L97 50 L56.5 52.7 L67 67 L52.7 56.5 L50 97 L47.3 56.5 L33 67 L43.5 52.7 L3 50 L43.5 47.3 L33 33 L47.3 43.5 Z" fill="url(#goldStar)" stroke="rgba(255,244,214,.55)" stroke-width=".5" stroke-linejoin="round"></path>
+          <path d="M50 15 L51.6 45.6 L61.5 38.5 L54.4 48.4 L85 50 L54.4 51.6 L61.5 61.5 L51.6 54.4 L50 85 L48.4 54.4 L38.5 61.5 L45.6 51.6 L15 50 L45.6 48.4 L38.5 38.5 L48.4 45.6 Z" fill="none" stroke="rgba(90,52,20,.5)" stroke-width=".4"></path>
+          <circle cx="50" cy="50" r="9" fill="url(#coreStar)"></circle>
+          <circle cx="50" cy="50" r="4.6" fill="none" stroke="rgba(122,66,22,.55)" stroke-width=".5"></circle>
+          <g stroke="rgba(240,220,174,.6)" stroke-width=".45" fill="none">
+            <path d="M50 6.5 L50 20 M50 93.5 L50 80 M6.5 50 L20 50 M93.5 50 L80 50"></path>
+          </g>
+        </svg>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.34em;color:rgba(207,169,85,.82);text-transform:uppercase;margin-bottom:22px;animation:fadeSoft 2s ease both .8s">от кота · для бусинки</div>
+      <h1 style="margin:0;font-family:'Denistina','Cormorant Garamond',cursive;font-weight:400;font-size:54px;line-height:1.18;letter-spacing:.005em;text-align:center">
+        <span style="display:block;color:#f6ecda;text-shadow:0 0 18px rgba(240,220,174,.25)"><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 0.900s">О</span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 0.955s">с</span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 1.010s">е</span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 1.065s">н</span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 1.120s">ь</span><span style="display:inline-block;width:.3em;animation:letterIn 0.5s ease-in-out both 1.175s"></span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 1.230s">о</span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 1.285s">т</span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 1.340s">к</span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 1.395s">р</span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 1.450s">ы</span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 1.505s">л</span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 1.560s">а</span></span>
+        <span style="display:block;color:#e8c88a;text-shadow:0 0 20px rgba(232,200,138,.3)"><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 1.615s">д</span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 1.670s">в</span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 1.725s">е</span><span style="display:inline-block;width:.3em;animation:letterIn 0.5s ease-in-out both 1.780s"></span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 1.835s">д</span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 1.890s">в</span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 1.945s">е</span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 2.000s">р</span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 2.055s">и</span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 2.110s">.</span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 2.165s">.</span><span style="display:inline-block;white-space:pre;animation:letterIn 0.5s ease-in-out both 2.220s">.</span></span>
+      </h1>
+      <p style="margin:20px 0 0;font-size:22px;line-height:1.5;font-weight:400;color:rgba(239,227,206,.75);max-width:19ch;animation:rise 1.8s ease both 3.0s">и обе ведут ко мне.</p>
+      <div style="position:absolute;bottom:52px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:12px;animation:fadeSoft 1.8s ease both 3.6s">
+        <div style="width:1px;height:46px;background:linear-gradient(to bottom,transparent,rgba(207,169,85,.9));transform-origin:top;animation:hint 2.8s ease-in-out infinite"></div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.3em;color:rgba(207,169,85,.6);text-transform:uppercase">веди вниз</div>
+      </div>
+    </section>
+
+    <section style="scroll-snap-align:start;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;gap:24px;padding:78px 26px">
+      <p data-reveal style="margin:0;font-size:26px;line-height:1.48;color:#f2e7d3;text-wrap:pretty;transition:opacity 1.2s ease 0s,transform 1.2s cubic-bezier(.2,.8,.2,1) 0s,filter 1.2s ease 0s">Шесть раз земля обошла солнце с тех пор, как ты <em style="color:#e8c88a">выбрала меня</em>.</p>
+      <div data-reveal style="transition:opacity 1.4s ease .1s,transform 1.4s cubic-bezier(.2,.8,.2,1) .1s,filter 1.4s ease .1s">
+        <div style="position:relative;width:100%;height:330px;animation:driftA 13s ease-in-out infinite;filter:drop-shadow(0 26px 44px rgba(0,0,0,.66))">
+          <div style="position:absolute;inset:-14px;clip-path:polygon(50% 0%,100% 24%,100% 100%,0% 100%,0% 24%);background:conic-gradient(from 210deg,rgba(207,169,85,.42),rgba(207,169,85,.06) 32%,rgba(240,220,174,.5) 58%,rgba(207,169,85,.08) 82%,rgba(207,169,85,.36))"></div>
+          <div style="position:absolute;inset:-7px;clip-path:polygon(50% 0%,100% 24%,100% 100%,0% 100%,0% 24%);background:linear-gradient(160deg,#120c18,#0a0710 55%,#171021)"></div>
+          <div style="position:absolute;inset:-3px;clip-path:polygon(50% 0%,100% 24%,100% 100%,0% 100%,0% 24%);background:rgba(207,169,85,.22)"></div>
+          <div style="position:absolute;inset:0;clip-path:polygon(50% 0%,100% 24%,100% 100%,0% 100%,0% 24%);overflow:hidden">
+            <img src="assets/p1.webp" loading="eager" decoding="async" alt="" style="width:100%;height:100%;object-fit:cover;filter:sepia(.16) saturate(1.06) contrast(1.08) brightness(.94)">
+            <div style="position:absolute;inset:0;background:linear-gradient(200deg,rgba(196,104,44,.16),transparent 52%,rgba(84,60,128,.18));mix-blend-mode:soft-light"></div>
+            <div style="position:absolute;inset:0;background:linear-gradient(340deg,rgba(240,220,174,.16),transparent 45%);mix-blend-mode:soft-light"></div>
+            <div style="position:absolute;inset:0;background:radial-gradient(116% 86% at 50% 38%,transparent 46%,rgba(8,5,13,.6))"></div>
+            <div style="position:absolute;inset:0;opacity:.055;background-image:repeating-linear-gradient(96deg,rgba(240,220,174,.5) 0 1px,transparent 1px 9px)"></div>
+            <div style="position:absolute;inset:0;opacity:.14;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23g)'/%3E%3C/svg%3E&quot;)"></div>
+          </div>
+        </div>
+      </div>
+      <p data-reveal style="margin:0;font-size:26px;line-height:1.48;color:#f2e7d3;text-wrap:pretty;transition:opacity 1.2s ease .2s,transform 1.2s cubic-bezier(.2,.8,.2,1) .2s,filter 1.2s ease .2s">И каждый круг оставил на нас по тихой метке — их не видно никому, кроме нас двоих.</p>
+<div data-reveal style="display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.28em;color:rgba(207,169,85,.6);text-transform:uppercase;transition:opacity 1.2s ease .25s">
+        <span style="width:20px;height:1px;background:rgba(207,169,85,.42)"></span>круг шестой
+      </div>
+    </section>
+
+    <section style="scroll-snap-align:start;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;gap:22px;padding:78px 26px">
+      <p data-reveal style="margin:0;font-size:26px;line-height:1.48;color:#f2e7d3;text-wrap:pretty;transition:opacity 1.2s ease 0s,transform 1.2s cubic-bezier(.2,.8,.2,1) 0s,filter 1.2s ease 0s">Был год, когда меня увели за стену.</p>
+      <div data-reveal style="display:grid;grid-template-columns:1.05fr .95fr;gap:14px;align-items:center;transition:opacity 1.4s ease .1s,transform 1.4s cubic-bezier(.2,.8,.2,1) .1s,filter 1.4s ease .1s">
+        <div style="position:relative;width:100%;height:252px;animation:driftB 13s ease-in-out infinite;filter:drop-shadow(0 26px 44px rgba(0,0,0,.66))">
+          <div style="position:absolute;inset:-14px;clip-path:polygon(50% 0%,100% 22%,100% 78%,50% 100%,0% 78%,0% 22%);background:conic-gradient(from 210deg,rgba(207,169,85,.42),rgba(207,169,85,.06) 32%,rgba(240,220,174,.5) 58%,rgba(207,169,85,.08) 82%,rgba(207,169,85,.36))"></div>
+          <div style="position:absolute;inset:-7px;clip-path:polygon(50% 0%,100% 22%,100% 78%,50% 100%,0% 78%,0% 22%);background:linear-gradient(160deg,#120c18,#0a0710 55%,#171021)"></div>
+          <div style="position:absolute;inset:-3px;clip-path:polygon(50% 0%,100% 22%,100% 78%,50% 100%,0% 78%,0% 22%);background:rgba(207,169,85,.22)"></div>
+          <div style="position:absolute;inset:0;clip-path:polygon(50% 0%,100% 22%,100% 78%,50% 100%,0% 78%,0% 22%);overflow:hidden">
+            <img src="assets/p2.webp" loading="eager" decoding="async" alt="" style="width:100%;height:100%;object-fit:cover;filter:sepia(.16) saturate(1.06) contrast(1.08) brightness(.94)">
+            <div style="position:absolute;inset:0;background:linear-gradient(200deg,rgba(196,104,44,.16),transparent 52%,rgba(84,60,128,.18));mix-blend-mode:soft-light"></div>
+            <div style="position:absolute;inset:0;background:linear-gradient(340deg,rgba(240,220,174,.16),transparent 45%);mix-blend-mode:soft-light"></div>
+            <div style="position:absolute;inset:0;background:radial-gradient(116% 86% at 50% 38%,transparent 46%,rgba(8,5,13,.6))"></div>
+            <div style="position:absolute;inset:0;opacity:.055;background-image:repeating-linear-gradient(96deg,rgba(240,220,174,.5) 0 1px,transparent 1px 9px)"></div>
+            <div style="position:absolute;inset:0;opacity:.14;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23g)'/%3E%3C/svg%3E&quot;)"></div>
+          </div>
+        </div>
+        <div style="position:relative;width:100%;aspect-ratio:1;height:auto;animation:driftC 13s ease-in-out infinite;filter:drop-shadow(0 26px 44px rgba(0,0,0,.66))">
+          <div style="position:absolute;inset:-14px;clip-path:circle(50% at 50% 50%);background:conic-gradient(from 210deg,rgba(207,169,85,.42),rgba(207,169,85,.06) 32%,rgba(240,220,174,.5) 58%,rgba(207,169,85,.08) 82%,rgba(207,169,85,.36))"></div>
+          <div style="position:absolute;inset:-7px;clip-path:circle(50% at 50% 50%);background:linear-gradient(160deg,#120c18,#0a0710 55%,#171021)"></div>
+          <div style="position:absolute;inset:-3px;clip-path:circle(50% at 50% 50%);background:rgba(207,169,85,.22)"></div>
+          <div style="position:absolute;inset:0;clip-path:circle(50% at 50% 50%);overflow:hidden">
+            <img src="assets/p3.webp" loading="eager" decoding="async" alt="" style="width:100%;height:100%;object-fit:cover;filter:sepia(.16) saturate(1.06) contrast(1.08) brightness(.94)">
+            <div style="position:absolute;inset:0;background:linear-gradient(200deg,rgba(196,104,44,.16),transparent 52%,rgba(84,60,128,.18));mix-blend-mode:soft-light"></div>
+            <div style="position:absolute;inset:0;background:linear-gradient(340deg,rgba(240,220,174,.16),transparent 45%);mix-blend-mode:soft-light"></div>
+            <div style="position:absolute;inset:0;background:radial-gradient(116% 86% at 50% 38%,transparent 46%,rgba(8,5,13,.6))"></div>
+            <div style="position:absolute;inset:0;opacity:.055;background-image:repeating-linear-gradient(96deg,rgba(240,220,174,.5) 0 1px,transparent 1px 9px)"></div>
+            <div style="position:absolute;inset:0;opacity:.14;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23g)'/%3E%3C/svg%3E&quot;)"></div>
+          </div>
+        </div>
+      </div>
+      <p data-reveal style="margin:0;font-size:26px;line-height:1.48;color:#f2e7d3;text-wrap:pretty;transition:opacity 1.2s ease .2s,transform 1.2s cubic-bezier(.2,.8,.2,1) .2s,filter 1.2s ease .2s">Триста шестьдесят пять раз ты засыпала, не зная, когда снова услышишь мой голос — и ни одного дня не отпустила. Ты ждала, как ждут зимой возвращения света: молча, упрямо.</p>
+<div data-reveal style="display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.28em;color:rgba(207,169,85,.6);text-transform:uppercase;transition:opacity 1.2s ease .25s">
+        <span style="width:20px;height:1px;background:rgba(207,169,85,.42)"></span>год ожидания
+      </div>
+    </section>
+
+    <section style="scroll-snap-align:start;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;gap:22px;padding:78px 26px">
+      <p data-reveal style="margin:0;font-size:26px;line-height:1.48;color:#f2e7d3;text-wrap:pretty;transition:opacity 1.2s ease 0s,transform 1.2s cubic-bezier(.2,.8,.2,1) 0s,filter 1.2s ease 0s">Дорога была не гладкой. Чужие города, пустые вечера, разговоры через тысячу вёрст и экран.</p>
+      <div data-reveal style="display:grid;grid-template-columns:.92fr 1.08fr;gap:16px;align-items:end;transition:opacity 1.4s ease .1s,transform 1.4s cubic-bezier(.2,.8,.2,1) .1s,filter 1.4s ease .1s">
+        <div style="position:relative;width:100%;height:214px;animation:driftB 13s ease-in-out infinite;filter:drop-shadow(0 26px 44px rgba(0,0,0,.66))">
+          <div style="position:absolute;inset:-14px;clip-path:polygon(24px 0%,100% 0%,100% calc(100% - 24px),calc(100% - 24px) 100%,0% 100%,0% 24px);background:conic-gradient(from 210deg,rgba(207,169,85,.42),rgba(207,169,85,.06) 32%,rgba(240,220,174,.5) 58%,rgba(207,169,85,.08) 82%,rgba(207,169,85,.36))"></div>
+          <div style="position:absolute;inset:-7px;clip-path:polygon(24px 0%,100% 0%,100% calc(100% - 24px),calc(100% - 24px) 100%,0% 100%,0% 24px);background:linear-gradient(160deg,#120c18,#0a0710 55%,#171021)"></div>
+          <div style="position:absolute;inset:-3px;clip-path:polygon(24px 0%,100% 0%,100% calc(100% - 24px),calc(100% - 24px) 100%,0% 100%,0% 24px);background:rgba(207,169,85,.22)"></div>
+          <div style="position:absolute;inset:0;clip-path:polygon(24px 0%,100% 0%,100% calc(100% - 24px),calc(100% - 24px) 100%,0% 100%,0% 24px);overflow:hidden">
+            <img src="assets/p4.webp" loading="eager" decoding="async" alt="" style="width:100%;height:100%;object-fit:cover;filter:sepia(.16) saturate(1.06) contrast(1.08) brightness(.94)">
+            <div style="position:absolute;inset:0;background:linear-gradient(200deg,rgba(196,104,44,.16),transparent 52%,rgba(84,60,128,.18));mix-blend-mode:soft-light"></div>
+            <div style="position:absolute;inset:0;background:linear-gradient(340deg,rgba(240,220,174,.16),transparent 45%);mix-blend-mode:soft-light"></div>
+            <div style="position:absolute;inset:0;background:radial-gradient(116% 86% at 50% 38%,transparent 46%,rgba(8,5,13,.6))"></div>
+            <div style="position:absolute;inset:0;opacity:.055;background-image:repeating-linear-gradient(96deg,rgba(240,220,174,.5) 0 1px,transparent 1px 9px)"></div>
+            <div style="position:absolute;inset:0;opacity:.14;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23g)'/%3E%3C/svg%3E&quot;)"></div>
+          </div>
+        </div>
+        <div style="position:relative;width:100%;height:268px;animation:driftC 13s ease-in-out infinite;filter:drop-shadow(0 26px 44px rgba(0,0,0,.66))">
+          <div style="position:absolute;inset:-14px;clip-path:ellipse(50% 50% at 50% 50%);background:conic-gradient(from 210deg,rgba(207,169,85,.42),rgba(207,169,85,.06) 32%,rgba(240,220,174,.5) 58%,rgba(207,169,85,.08) 82%,rgba(207,169,85,.36))"></div>
+          <div style="position:absolute;inset:-7px;clip-path:ellipse(50% 50% at 50% 50%);background:linear-gradient(160deg,#120c18,#0a0710 55%,#171021)"></div>
+          <div style="position:absolute;inset:-3px;clip-path:ellipse(50% 50% at 50% 50%);background:rgba(207,169,85,.22)"></div>
+          <div style="position:absolute;inset:0;clip-path:ellipse(50% 50% at 50% 50%);overflow:hidden">
+            <img src="assets/p5.webp" loading="eager" decoding="async" alt="" style="width:100%;height:100%;object-fit:cover;filter:sepia(.16) saturate(1.06) contrast(1.08) brightness(.94)">
+            <div style="position:absolute;inset:0;background:linear-gradient(200deg,rgba(196,104,44,.16),transparent 52%,rgba(84,60,128,.18));mix-blend-mode:soft-light"></div>
+            <div style="position:absolute;inset:0;background:linear-gradient(340deg,rgba(240,220,174,.16),transparent 45%);mix-blend-mode:soft-light"></div>
+            <div style="position:absolute;inset:0;background:radial-gradient(116% 86% at 50% 38%,transparent 46%,rgba(8,5,13,.6))"></div>
+            <div style="position:absolute;inset:0;opacity:.055;background-image:repeating-linear-gradient(96deg,rgba(240,220,174,.5) 0 1px,transparent 1px 9px)"></div>
+            <div style="position:absolute;inset:0;opacity:.14;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23g)'/%3E%3C/svg%3E&quot;)"></div>
+          </div>
+        </div>
+      </div>
+      <p data-reveal style="margin:0;font-size:26px;line-height:1.48;color:#f2e7d3;text-wrap:pretty;transition:opacity 1.2s ease .2s,transform 1.2s cubic-bezier(.2,.8,.2,1) .2s,filter 1.2s ease .2s">Каждая трудность спрашивала одно и то же: <em style="color:#e8c88a">настоящее ли?</em> Мы отвечали: да. Шесть лет отвечаем.</p>
+<div data-reveal style="display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.28em;color:rgba(207,169,85,.6);text-transform:uppercase;transition:opacity 1.2s ease .25s">
+        <span style="width:20px;height:1px;background:rgba(207,169,85,.42)"></span>пройдено
+      </div>
+    </section>
+
+    <section style="scroll-snap-align:start;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;gap:24px;padding:78px 26px">
+      <div data-reveal style="transition:opacity 1.4s ease,transform 1.4s cubic-bezier(.2,.8,.2,1),filter 1.4s ease">
+        <div style="position:relative;width:100%;height:352px;animation:driftA 13s ease-in-out infinite;filter:drop-shadow(0 26px 44px rgba(0,0,0,.66))">
+          <div style="position:absolute;inset:-14px;clip-path:polygon(0% 11%,50% 0%,100% 11%,100% 89%,50% 100%,0% 89%);background:conic-gradient(from 210deg,rgba(207,169,85,.42),rgba(207,169,85,.06) 32%,rgba(240,220,174,.5) 58%,rgba(207,169,85,.08) 82%,rgba(207,169,85,.36))"></div>
+          <div style="position:absolute;inset:-7px;clip-path:polygon(0% 11%,50% 0%,100% 11%,100% 89%,50% 100%,0% 89%);background:linear-gradient(160deg,#120c18,#0a0710 55%,#171021)"></div>
+          <div style="position:absolute;inset:-3px;clip-path:polygon(0% 11%,50% 0%,100% 11%,100% 89%,50% 100%,0% 89%);background:rgba(207,169,85,.22)"></div>
+          <div style="position:absolute;inset:0;clip-path:polygon(0% 11%,50% 0%,100% 11%,100% 89%,50% 100%,0% 89%);overflow:hidden">
+            <img src="assets/p6.webp" loading="eager" decoding="async" alt="" style="width:100%;height:100%;object-fit:cover;filter:sepia(.16) saturate(1.06) contrast(1.08) brightness(.94)">
+            <div style="position:absolute;inset:0;background:linear-gradient(200deg,rgba(196,104,44,.16),transparent 52%,rgba(84,60,128,.18));mix-blend-mode:soft-light"></div>
+            <div style="position:absolute;inset:0;background:linear-gradient(340deg,rgba(240,220,174,.16),transparent 45%);mix-blend-mode:soft-light"></div>
+            <div style="position:absolute;inset:0;background:radial-gradient(116% 86% at 50% 38%,transparent 46%,rgba(8,5,13,.6))"></div>
+            <div style="position:absolute;inset:0;opacity:.055;background-image:repeating-linear-gradient(96deg,rgba(240,220,174,.5) 0 1px,transparent 1px 9px)"></div>
+            <div style="position:absolute;inset:0;opacity:.14;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23g)'/%3E%3C/svg%3E&quot;)"></div>
+          </div>
+        </div>
+      </div>
+      <p data-reveal style="margin:0;font-size:26px;line-height:1.48;color:#f2e7d3;text-wrap:pretty;transition:opacity 1.2s ease .15s,transform 1.2s cubic-bezier(.2,.8,.2,1) .15s,filter 1.2s ease .15s">А в конце каждой дороги — закат, и ты в нём. Будто всё это было лишь путём к твоему лицу.</p>
+<div data-reveal style="display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.28em;color:rgba(207,169,85,.6);text-transform:uppercase;transition:opacity 1.2s ease .25s">
+        <span style="width:20px;height:1px;background:rgba(207,169,85,.42)"></span>шестое сентября · шесть лет
+      </div>
+    </section>
+
+    <section style="scroll-snap-align:start;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;gap:22px;padding:78px 26px">
+      <div data-reveal style="display:flex;justify-content:center;transition:opacity 1.4s ease,transform 1.4s cubic-bezier(.2,.8,.2,1),filter 1.4s ease">
+        <div style="position:relative;width:74%;height:300px;animation:driftA 13s ease-in-out infinite;filter:drop-shadow(0 26px 44px rgba(0,0,0,.66))">
+          <div style="position:absolute;inset:-14px;clip-path:polygon(50% 0%,86% 8%,100% 34%,100% 92%,72% 100%,28% 100%,0% 92%,0% 34%,14% 8%);background:conic-gradient(from 210deg,rgba(207,169,85,.42),rgba(207,169,85,.06) 32%,rgba(240,220,174,.5) 58%,rgba(207,169,85,.08) 82%,rgba(207,169,85,.36))"></div>
+          <div style="position:absolute;inset:-7px;clip-path:polygon(50% 0%,86% 8%,100% 34%,100% 92%,72% 100%,28% 100%,0% 92%,0% 34%,14% 8%);background:linear-gradient(160deg,#120c18,#0a0710 55%,#171021)"></div>
+          <div style="position:absolute;inset:-3px;clip-path:polygon(50% 0%,86% 8%,100% 34%,100% 92%,72% 100%,28% 100%,0% 92%,0% 34%,14% 8%);background:rgba(207,169,85,.22)"></div>
+          <div style="position:absolute;inset:0;clip-path:polygon(50% 0%,86% 8%,100% 34%,100% 92%,72% 100%,28% 100%,0% 92%,0% 34%,14% 8%);overflow:hidden">
+            <img src="assets/p7.webp" loading="eager" decoding="async" alt="" style="width:100%;height:100%;object-fit:cover;filter:sepia(.16) saturate(1.06) contrast(1.08) brightness(.94)">
+            <div style="position:absolute;inset:0;background:linear-gradient(200deg,rgba(196,104,44,.16),transparent 52%,rgba(84,60,128,.18));mix-blend-mode:soft-light"></div>
+            <div style="position:absolute;inset:0;background:linear-gradient(340deg,rgba(240,220,174,.16),transparent 45%);mix-blend-mode:soft-light"></div>
+            <div style="position:absolute;inset:0;background:radial-gradient(116% 86% at 50% 38%,transparent 46%,rgba(8,5,13,.6))"></div>
+            <div style="position:absolute;inset:0;opacity:.055;background-image:repeating-linear-gradient(96deg,rgba(240,220,174,.5) 0 1px,transparent 1px 9px)"></div>
+            <div style="position:absolute;inset:0;opacity:.14;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23g)'/%3E%3C/svg%3E&quot;)"></div>
+          </div>
+        </div>
+      </div>
+      <p data-reveal style="margin:0;font-size:26px;line-height:1.48;color:#f2e7d3;text-wrap:pretty;transition:opacity 1.2s ease .15s,transform 1.2s cubic-bezier(.2,.8,.2,1) .15s,filter 1.2s ease .15s">На шестую годовщину я загадал один вечер. Он уже назначен — <em style="color:#e8c88a">но ещё не выбран.</em></p>
+    </section>
+
+    <section style="scroll-snap-align:start;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:20px;padding:80px 30px">
+      <div data-reveal="" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.3em;color:rgba(207,169,85,.7);text-transform:uppercase;transition:opacity 1s ease">шестая годовщина</div>
+      <div data-reveal="" style="display:flex;align-items:center;gap:14px;transition:opacity 1s ease">
+        <span style="width:30px;height:1px;background:rgba(207,169,85,.4)"></span>
+        <span style="width:7px;height:7px;background:#cfa955;transform:rotate(45deg)"></span>
+        <span style="width:30px;height:1px;background:rgba(207,169,85,.4)"></span>
+      </div>
+      <h2 data-reveal="" style="margin:0;font-weight:300;font-size:40px;line-height:1.2;color:#f6ecda;transition:opacity 1.1s ease .1s,transform 1.1s cubic-bezier(.2,.8,.2,1) .1s,filter 1.1s ease .1s">&nbsp;И этот выбор предстоит <br>сделать тебе</h2>
+      <p data-reveal="" style="margin:0;font-size:21px;line-height:1.6;font-weight:400;color:rgba(239,227,206,.72);max-width:26ch;text-wrap:pretty;transition:opacity 1.1s ease .2s,transform 1.1s cubic-bezier(.2,.8,.2,1) .2s">Две карты. Обе — правда. Одна станет этим вечером — а если сердце передумает, пепел соберётся обратно.</p>
+      <button data-on="openCards" style="margin-top:16px;padding:17px 34px;border:1px solid rgba(207,169,85,.55);background:linear-gradient(180deg,rgba(207,169,85,.16),rgba(207,169,85,.05));color:#f4e3bd;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;border-radius:2px;cursor:pointer;backdrop-filter:blur(4px);-webkit-tap-highlight-color:transparent;box-shadow:0 0 34px rgba(207,169,85,.14)" data-press>Разложить карты</button>
+    </section>
+
+  </div>
+  </div>
+
+  <div class="scif" data-if="isCards">
+  <div style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:74px 20px 56px;animation:rise 1.2s ease both">
+    <div data-on="unpick" id="backdrop" style="position:absolute;inset:0;z-index:0;pointer-events:none;-webkit-tap-highlight-color:transparent"></div>
+    <div style="position:relative;z-index:1;text-align:center">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.3em;color:rgba(207,169,85,.72);text-transform:uppercase"><span id="pickLabel"></span></div>
+      <p style="margin:14px 0 0;font-size:25px;font-weight:400;line-height:1.4;color:#f2e7d3">Две карты лежат<br>открытыми.</p>
+    </div>
+
+    <div style="position:relative;z-index:1;display:flex;justify-content:center;align-items:center;gap:16px;padding:18px 0 26px;perspective:1100px">
+
+      <div style="flex:none;transition:transform 1.15s cubic-bezier(.2,.85,.2,1),opacity .9s ease,filter .9s ease;transform:none;opacity:1;filter:none" id="cardWrapA">
+        <div data-on="pickA" style="width:152px;height:238px;position:relative;transform-style:preserve-3d;transition:transform 1.15s cubic-bezier(.3,.9,.2,1);transform:rotateY(180deg);cursor:pointer;animation:bob 7s ease-in-out infinite;-webkit-tap-highlight-color:transparent">
+          <div style="position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:8px;border:1px solid rgba(207,169,85,.45);background:linear-gradient(160deg,#1a1220,#0d0913 60%,#16101c);box-shadow:0 18px 44px rgba(0,0,0,.6),inset 0 0 40px rgba(207,169,85,.06);overflow:hidden">
+            <div style="position:absolute;inset:7px;border:1px solid rgba(207,169,85,.24);border-radius:4px"></div>
+            <div style="position:absolute;inset:0;opacity:.4;background-image:radial-gradient(1px 1px at 6px 6px,rgba(207,169,85,.55),transparent);background-size:14px 14px"></div>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+              <div style="width:56px;height:56px;border:1px solid rgba(224,180,98,.6);transform:rotate(45deg);display:flex;align-items:center;justify-content:center">
+                <div style="width:9px;height:9px;background:#e0b462;box-shadow:0 0 16px rgba(224,180,98,.8)"></div>
+              </div>
+            </div>
+          </div>
+          <div style="position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:rotateY(180deg);border-radius:8px;border:1px solid rgba(224,180,98,.65);background:linear-gradient(175deg,#241628,#100a15 55%,#1c1220);box-shadow:0 18px 50px rgba(0,0,0,.65),0 0 46px rgba(207,169,85,.18);overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:14px 10px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.24em;color:rgba(224,180,98,.85)">XVI</div>
+            <div style="position:relative;width:100%;height:118px;display:flex;align-items:flex-end;justify-content:center">
+              <div style="position:absolute;bottom:0;width:2px;height:96px;background:linear-gradient(to top,rgba(224,180,98,.15),#f0dcae)"></div>
+              <div style="position:absolute;bottom:14px;width:26px;height:1px;background:rgba(224,180,98,.5)"></div>
+              <div style="position:absolute;bottom:44px;width:16px;height:1px;background:rgba(224,180,98,.42)"></div>
+              <div style="position:absolute;top:2px;width:34px;height:34px;border:1px solid rgba(224,180,98,.45);border-radius:50%;animation:halo 5s ease-in-out infinite"></div>
+              <div style="position:absolute;top:12px;width:13px;height:13px;background:#f6e6bd;transform:rotate(45deg);box-shadow:0 0 20px rgba(246,230,189,.9)"></div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:22px;font-weight:400;letter-spacing:.02em;color:#f6ecda">Вознесение</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.2em;color:rgba(207,169,85,.7);text-transform:uppercase;margin-top:5px">взгляд · ветер · высь</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="flex:none;transition:transform 1.15s cubic-bezier(.2,.85,.2,1),opacity .9s ease,filter .9s ease;transform:none;opacity:1;filter:none" id="cardWrapB">
+        <div data-on="pickB" style="width:152px;height:238px;position:relative;transform-style:preserve-3d;transition:transform 1.15s cubic-bezier(.3,.9,.2,1);transform:rotateY(180deg);cursor:pointer;animation:bob 7s ease-in-out infinite;animation-delay:-3.4s;-webkit-tap-highlight-color:transparent">
+          <div style="position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:8px;border:1px solid rgba(207,169,85,.45);background:linear-gradient(160deg,#161222,#0d0913 60%,#141020);box-shadow:0 18px 44px rgba(0,0,0,.6),inset 0 0 40px rgba(207,169,85,.06);overflow:hidden">
+            <div style="position:absolute;inset:7px;border:1px solid rgba(207,169,85,.24);border-radius:4px"></div>
+            <div style="position:absolute;inset:0;opacity:.4;background-image:radial-gradient(1px 1px at 6px 6px,rgba(207,169,85,.55),transparent);background-size:14px 14px"></div>
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+              <div style="width:56px;height:56px;border:1px solid rgba(224,180,98,.6);transform:rotate(45deg);display:flex;align-items:center;justify-content:center">
+                <div style="width:9px;height:9px;background:#e0b462;box-shadow:0 0 16px rgba(224,180,98,.8)"></div>
+              </div>
+            </div>
+          </div>
+          <div style="position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:rotateY(180deg);border-radius:8px;border:1px solid rgba(224,180,98,.65);background:linear-gradient(175deg,#16202a,#0a0d13 55%,#151b24);box-shadow:0 18px 50px rgba(0,0,0,.65),0 0 46px rgba(140,180,200,.14);overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:14px 10px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.24em;color:rgba(198,214,226,.85)">XVIII</div>
+            <div style="position:relative;width:100%;height:118px;display:flex;align-items:center;justify-content:center">
+              <div style="position:absolute;top:6px;width:32px;height:32px;border-radius:50%;background:radial-gradient(circle at 35% 32%,#f2efe4,#b9c6cf);box-shadow:0 0 26px rgba(226,235,240,.55)"></div>
+              <div style="position:absolute;bottom:26px;width:78px;height:1px;background:linear-gradient(to right,transparent,rgba(214,229,238,.75),transparent)"></div>
+              <div style="position:absolute;bottom:6px;width:56px;height:26px;border:1px solid rgba(214,229,238,.4);border-radius:50%;animation:ripple 5s ease-out infinite"></div>
+              <div style="position:absolute;bottom:6px;width:56px;height:26px;border:1px solid rgba(214,229,238,.4);border-radius:50%;animation:ripple 5s ease-out infinite;animation-delay:-2.5s"></div>
+              <div style="position:absolute;bottom:20px;width:20px;height:8px;border:1px solid rgba(214,229,238,.55);border-radius:50%"></div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:22px;font-weight:400;letter-spacing:.02em;color:#eef3f6">Растворение</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.2em;color:rgba(198,214,226,.7);text-transform:uppercase;margin-top:5px">покой · тепло · тишина</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="position:relative;z-index:1;min-height:110px;display:flex;flex-direction:column;gap:16px;align-items:center;justify-content:center">
+      <div class="scif" data-if="faceReady">
+      <button data-on="openReveal" style="padding:16px 30px;border:1px solid rgba(207,169,85,.55);background:linear-gradient(180deg,rgba(207,169,85,.18),rgba(207,169,85,.05));color:#f4e3bd;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.26em;text-transform:uppercase;border-radius:2px;cursor:pointer;animation:rise .9s ease both;-webkit-tap-highlight-color:transparent" data-press>Читать пророчество</button>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.2em;color:rgba(207,169,85,.42);text-transform:uppercase;animation:rise 1s ease both .5s">коснись тьмы вокруг · вернуть обе</span>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="scif" data-if="isReveal">
+  <div style="position:absolute;inset:0;z-index:3;overflow-y:auto;-webkit-overflow-scrolling:touch;animation:rise 1.3s ease both">
+    <div style="min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding:86px 30px 70px;gap:30px">
+
+      <div class="scif" data-if="isA">
+      <div style="display:flex;flex-direction:column;gap:30px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center">
+          <div style="width:13px;height:13px;background:#f6e6bd;transform:rotate(45deg);box-shadow:0 0 24px rgba(246,230,189,.85);animation:glowPulse 4s ease-in-out infinite"></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.32em;color:rgba(207,169,85,.8);text-transform:uppercase">аркан XVI · вознесение</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:17px;font-size:24px;line-height:1.55;font-weight:300;color:#f2e7d3;text-wrap:pretty">
+          <p style="margin:0;animation:rise 1.1s ease both .2s">Сначала будет подъём — не ногами, а взглядом.</p>
+          <p style="margin:0;animation:rise 1.1s ease both .7s">Всё привычное станет мелким и добрым, как рассыпанные бусины.</p>
+          <p style="margin:0;animation:rise 1.1s ease both 1.2s">Ветер там честнее слов: он говорит лишь то, что есть.</p>
+          <p style="margin:0;animation:rise 1.1s ease both 1.7s;color:#e8c88a">Возьми то, что укроет от прохлады: у сентября свой характер.</p>
+          <p style="margin:0;animation:rise 1.1s ease both 2.2s">И держись за руку — я буду рядом всю дорогу.</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;animation:rise 1.1s ease both 2.6s">
+          <span style="flex:1;height:1px;background:rgba(207,169,85,.28)"></span>
+          <span style="width:6px;height:6px;background:rgba(207,169,85,.7);transform:rotate(45deg)"></span>
+          <span style="flex:1;height:1px;background:rgba(207,169,85,.28)"></span>
+        </div>
+        <div style="animation:rise 1.1s ease both 2.9s;display:flex;flex-direction:column;gap:8px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.3em;color:rgba(207,169,85,.75);text-transform:uppercase">суббота · 5 сентября</div>
+          <div style="font-size:52px;line-height:1;font-weight:300;color:#f6ecda;letter-spacing:.01em">18:00</div>
+          <div style="font-size:19px;font-weight:400;line-height:1.55;color:rgba(239,227,206,.62)">Больше не скажу ничего — кроме того, что смотреть придётся не под ноги.</div>
+        </div>
+      </div>
+      </div>
+
+      <div class="scif" data-if="isB">
+      <div style="display:flex;flex-direction:column;gap:30px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center">
+          <div style="width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 32%,#f2efe4,#b9c6cf);box-shadow:0 0 24px rgba(226,235,240,.6);animation:glowPulse 5s ease-in-out infinite"></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.32em;color:rgba(198,214,226,.8);text-transform:uppercase">аркан XVIII · растворение</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:17px;font-size:24px;line-height:1.55;font-weight:300;color:#eef1f2;text-wrap:pretty">
+          <p style="margin:0;animation:rise 1.1s ease both .2s">Сначала будет спуск — туда, где у времени нет углов.</p>
+          <p style="margin:0;animation:rise 1.1s ease both .7s">С тебя снимут целый год, как тяжёлое пальто.</p>
+          <p style="margin:0;animation:rise 1.1s ease both 1.2s">Тишина будет такой полной, что ты услышишь, как отпускаешь.</p>
+          <p style="margin:0;animation:rise 1.1s ease both 1.7s;color:#c9dbe6">Возьми с собою только себя — остальное там лишнее.</p>
+          <p style="margin:0;animation:rise 1.1s ease both 2.2s">Я буду ждать по ту сторону тишины.</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;animation:rise 1.1s ease both 2.6s">
+          <span style="flex:1;height:1px;background:rgba(198,214,226,.28)"></span>
+          <span style="width:6px;height:6px;background:rgba(198,214,226,.7);transform:rotate(45deg)"></span>
+          <span style="flex:1;height:1px;background:rgba(198,214,226,.28)"></span>
+        </div>
+        <div style="animation:rise 1.1s ease both 2.9s;display:flex;flex-direction:column;gap:8px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.3em;color:rgba(198,214,226,.75);text-transform:uppercase">суббота · 5 сентября</div>
+          <div style="font-size:52px;line-height:1;font-weight:300;color:#f2f6f8;letter-spacing:.01em">14:00</div>
+          <div style="font-size:19px;font-weight:400;line-height:1.55;color:rgba(238,241,242,.62)">Больше не скажу ничего — кроме того, что спешить в этот день не придётся.</div>
+        </div>
+      </div>
+      </div>
+
+      <div style="display:flex;justify-content:center;padding:18px 0 4px;animation:rise 1.1s ease both 3.2s">
+        <button data-on="accept" aria-label="Я приду" style="position:relative;width:158px;height:158px;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent" data-press>
+          <div style="position:absolute;inset:14px;transform:rotate(45deg);border:1px solid rgba(207,169,85,.6);background:linear-gradient(150deg,rgba(207,169,85,.22),rgba(207,169,85,.04) 55%,rgba(240,220,174,.14));box-shadow:0 0 44px rgba(207,169,85,.22),inset 0 0 40px rgba(240,220,174,.1)"></div>
+          <div style="position:absolute;inset:26px;transform:rotate(45deg);border:1px solid rgba(240,220,174,.24)"></div>
+          <div style="position:absolute;inset:14px;transform:rotate(45deg);overflow:hidden">
+            <div style="position:absolute;top:0;bottom:0;left:50%;width:1px;background:linear-gradient(to bottom,transparent,rgba(240,220,174,.28),transparent)"></div>
+            <div style="position:absolute;left:0;right:0;top:50%;height:1px;background:linear-gradient(to right,transparent,rgba(240,220,174,.28),transparent)"></div>
+          </div>
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px">
+            <div style="width:7px;height:7px;background:#f6e6bd;transform:rotate(45deg);box-shadow:0 0 18px rgba(246,230,189,.9);animation:glowPulse 4s ease-in-out infinite"></div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;color:#f4e3bd;text-transform:uppercase">Я приду</div>
+          </div>
+        </button>
+      </div>
+
+      <div style="display:flex;flex-direction:column;align-items:center;gap:9px;padding-top:6px;animation:rise 1.2s ease both 3.7s">
+        <span style="width:1px;height:26px;background:linear-gradient(to bottom,transparent,rgba(207,169,85,.5))"></span>
+        <button data-on="reshuffle" style="padding:6px 2px;border:0;background:none;color:rgba(207,169,85,.72);font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;-webkit-tap-highlight-color:transparent;border-bottom:1px dotted rgba(207,169,85,.38)" data-press>вторая карта ещё дышит</button>
+        <span style="font-size:17px;line-height:1.5;color:rgba(239,227,206,.42);text-align:center;max-width:24ch">ничто не решено, пока ты не решила</span>
+      </div>
+
+    </div>
+  </div>
+  </div>
+
+  <div class="scif" data-if="isVow">
+  <div style="position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:30px;padding:90px 32px 80px">
+    <div style="position:absolute;left:50%;top:44%;width:340px;height:340px;margin:-170px 0 0 -170px;pointer-events:none;background:radial-gradient(closest-side,rgba(207,169,85,.2),transparent 72%);animation:halo 9s ease-in-out infinite"></div>
+
+    <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:18px;animation:fadeSoft 2.4s ease both .35s">
+      <span style="width:1px;height:52px;background:linear-gradient(to bottom,transparent,rgba(207,169,85,.55))"></span>
+      <div style="width:14px;height:14px;background:#f6e6bd;transform:rotate(45deg);box-shadow:0 0 30px rgba(246,230,189,.9);animation:glowPulse 5s ease-in-out infinite"></div>
+    </div>
+
+    <div style="position:relative;font-size:40px;line-height:1.28;color:#f6ecda;text-wrap:pretty;animation:rise 1.6s cubic-bezier(.2,.8,.2,1) both 1s">Тогда до субботы,<br><em style="color:#e8c88a;font-style:italic">бусинка.</em></div>
+
+    <div style="position:relative;font-size:20px;line-height:1.6;color:rgba(239,227,206,.6);max-width:24ch;animation:rise 1.6s cubic-bezier(.2,.8,.2,1) both 2s">Жребий принят. Дальше говорить нечего — остальное скажет сам вечер.</div>
+
+    <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:14px;animation:fadeSoft 2.2s ease both 3s">
+      <span style="width:44px;height:1px;background:rgba(207,169,85,.4)"></span>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.34em;color:rgba(207,169,85,.75);text-transform:uppercase">— кот</div>
+    </div>
+
+    <div style="position:absolute;bottom:44px;left:0;right:0;display:flex;justify-content:center;animation:fadeSoft 2s ease both 4.2s">
+      <button data-on="backToReveal" style="padding:6px 2px;border:0;background:none;color:rgba(207,169,85,.55);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;-webkit-tap-highlight-color:transparent;border-bottom:1px dotted rgba(207,169,85,.3)" data-press>перечитать пророчество</button>
+    </div>
+  </div>
+  </div>
+
+  <div class="scif" data-if="veilIn">
+  <div style="position:absolute;inset:0;z-index:20;background:#08060c;pointer-events:none;animation:veilIn .62s ease both"></div>
+  </div>
+  <div class="scif" data-if="veilOut">
+  <div style="position:absolute;inset:0;z-index:20;background:#08060c;pointer-events:none;animation:veilOut .9s ease both"></div>
+  </div>
+
+</div>
+<script>
+(function () {
+  'use strict';
+
+  /* ======================================================================
+     НАСТРОЙКИ — единственное, что нужно править руками
+     ====================================================================== */
+  var CONFIG = {
+    // Эндпоинт Formspree: зарегистрируйся на formspree.io, создай форму,
+    // вставь сюда её адрес вида 'https://formspree.io/f/xxxxxxxx'.
+    // Пока пусто — ответ просто сохраняется в браузере и показывается запасная ссылка.
+    formEndpoint: '',
+
+    // Прислать письмо в момент, когда она открыла приглашение.
+    notifyOnOpen: false,
+
+    // Запасная ссылка, если письмо не ушло (например 'https://t.me/username').
+    // Пусто — покажется просто текст без ссылки.
+    fallbackUrl: ''
+  };
+
+  var CARDS = {
+    a: 'XVI · Вознесение — суббота, 5 сентября, 18:00',
+    b: 'XVIII · Растворение — суббота, 5 сентября, 14:00'
+  };
+
+  var AUDIO_SRC = 'assets/o-children.mp3';
+  var IMAGES = ['assets/p1.webp', 'assets/p2.webp', 'assets/p3.webp', 'assets/p4.webp',
+                'assets/p5.webp', 'assets/p6.webp', 'assets/p7.webp'];
+  var TARGET_VOLUME = 0.62;
+  var VEIL_SWAP_MS = 620;
+  var VEIL_CLEAR_MS = 1560;
+  var FLIP_MS = 900;
+  var QUEUE_KEY = 'invitation.pending';
+
+  var $ = function (sel) { return document.querySelector(sel); };
+
+  /* ======================================================================
+     Доставка ответа
+     ====================================================================== */
+  function post(payload) {
+    if (!CONFIG.formEndpoint) return Promise.reject(new Error('endpoint not configured'));
+    return fetch(CONFIG.formEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res;
+    });
+  }
+
+  function readQueue() {
+    try { return JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]'); }
+    catch (e) { return []; }
+  }
+
+  function writeQueue(list) {
+    try { localStorage.setItem(QUEUE_KEY, JSON.stringify(list.slice(-10))); }
+    catch (e) { /* приватный режим — молча живём дальше */ }
+  }
+
+  // Ответ никогда не теряется: не ушёл сейчас — уйдёт при следующем открытии.
+  function deliver(payload) {
+    payload.at = new Date().toISOString();
+    return post(payload).catch(function (err) {
+      writeQueue(readQueue().concat([payload]));
+      throw err;
+    });
+  }
+
+  function flushQueue() {
+    var queued = readQueue();
+    if (!queued.length || !CONFIG.formEndpoint) return;
+    writeQueue([]);
+    queued.forEach(function (payload) {
+      post(payload).catch(function () { writeQueue(readQueue().concat([payload])); });
+    });
+  }
+
+  /* ======================================================================
+     Предзагрузка: фото, музыка и шрифты — до того, как она что-то увидит
+     ====================================================================== */
+  var gate = $('#gate');
+  var gateCap = $('#gateCap');
+  var gateFill = $('#gateFill');
+  var gateBtn = $('#gateBtn');
+
+  var weights = { images: 0.32, audio: 0.58, fonts: 0.10 };
+  var done = { images: 0, audio: 0, fonts: 0 };
+  var audioUrl = null;
+
+  function paintProgress() {
+    var pct = (done.images * weights.images + done.audio * weights.audio + done.fonts * weights.fonts) * 100;
+    gateFill.style.width = Math.min(100, Math.round(pct)) + '%';
+  }
+
+  function loadImages() {
+    var loaded = 0;
+    var step = function () {
+      loaded += 1;
+      done.images = loaded / IMAGES.length;
+      paintProgress();
+    };
+    return Promise.all(IMAGES.map(function (src) {
+      return new Promise(function (resolve) {
+        var img = new Image();
+        img.onload = img.onerror = function () { step(); resolve(); };
+        img.src = src;
+      });
+    }));
+  }
+
+  // XHR, а не <audio preload>: даёт честный прогресс и полностью
+  // забуференный blob — на середине трека ничего не подвиснет.
+  function loadAudio() {
+    return new Promise(function (resolve) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', AUDIO_SRC, true);
+      xhr.responseType = 'blob';
+      xhr.onprogress = function (e) {
+        if (!e.lengthComputable) return;
+        done.audio = e.loaded / e.total;
+        paintProgress();
+      };
+      xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 300) audioUrl = URL.createObjectURL(xhr.response);
+        done.audio = 1; paintProgress(); resolve();
+      };
+      xhr.onerror = xhr.onabort = function () { done.audio = 1; paintProgress(); resolve(); };
+      xhr.send();
+    });
+  }
+
+  function loadFonts() {
+    var ready = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+    return ready.catch(function () {}).then(function () { done.fonts = 1; paintProgress(); });
+  }
+
+  Promise.all([loadImages(), loadAudio(), loadFonts()]).then(function () {
+    gateFill.style.width = '100%';
+    gateCap.textContent = 'всё готово';
+    setTimeout(function () {
+      gateCap.textContent = 'коснись, чтобы войти';
+      gateBtn.classList.add('on');
+    }, 480);
+  });
+
+  gateBtn.addEventListener('click', function () {
+    gate.classList.add('gone');
+    setTimeout(function () { gate.remove(); }, 1200);
+    app.enter();
+  });
+
+  /* ======================================================================
+     Состояние и экраны
+     ====================================================================== */
+  var stage = $('#stage');
+  var app = {
+    state: { phase: 'landing', picked: null, faceReady: false, accepted: false, veil: null, sound: false },
+    track: null,
+    fade: null,
+    io: null,
+    seen: null
+  };
+
+  function setState(patch, after) {
+    Object.keys(patch).forEach(function (k) { app.state[k] = patch[k]; });
+    render();
+    if (after) after();
+  }
+
+  function buzz(pattern) {
+    try { if (navigator.vibrate) navigator.vibrate(pattern); } catch (e) {}
+  }
+
+  function transition(next) {
+    setState({ veil: 'in' });
+    setTimeout(function () { setState({ phase: next, veil: 'out' }); }, VEIL_SWAP_MS);
+    setTimeout(function () { setState({ veil: null }); }, VEIL_CLEAR_MS);
+  }
+
+  function cardTransform(isChosen, dir) {
+    if (!app.state.picked) return { t: 'none', o: 1, f: 'none' };
+    if (isChosen) {
+      return {
+        t: 'translateX(' + dir * 84 + 'px) translateY(0) scale(1.14)',
+        o: 1,
+        f: 'drop-shadow(0 0 30px rgba(207,169,85,.3))'
+      };
+    }
+    return { t: 'translateY(-58px) scale(.86) rotate(' + (-dir * 7) + 'deg)', o: 0, f: 'blur(9px)' };
+  }
+
+  function values() {
+    var p = app.state.picked;
+    return {
+      isLanding: app.state.phase === 'landing',
+      isCards: app.state.phase === 'cards',
+      isReveal: app.state.phase === 'reveal',
+      isVow: app.state.phase === 'vow',
+      isA: p === 'a',
+      isB: p === 'b',
+      faceReady: app.state.faceReady,
+      veilIn: app.state.veil === 'in',
+      veilOut: app.state.veil === 'out'
+    };
+  }
+
+  var conditionals = null;
+
+  function render() {
+    var vals = values();
+    if (!conditionals) conditionals = [].slice.call(stage.querySelectorAll('[data-if]'));
+    conditionals.forEach(function (el) { el.hidden = !vals[el.getAttribute('data-if')]; });
+
+    var p = app.state.picked;
+    var a = cardTransform(p === 'a', 1);
+    var b = cardTransform(p === 'b', -1);
+    applyCard($('#cardWrapA'), a);
+    applyCard($('#cardWrapB'), b);
+
+    $('#pickLabel').textContent = p ? 'карта раскрыта' : 'выбери одну · сердцем, не разумом';
+    $('#backdrop').style.pointerEvents = p ? 'auto' : 'none';
+    $('#soundLabel').textContent = app.state.sound ? '❙❙' : '♪';
+
+    observeReveals();
+  }
+
+  function applyCard(el, v) {
+    el.style.transform = v.t;
+    el.style.opacity = v.o;
+    el.style.filter = v.f;
+  }
+
+  /* ---- появление блоков при скролле ---- */
+  function observeReveals() {
+    if (!app.seen) app.seen = new WeakSet();
+    if (!app.io) {
+      app.io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          var el = e.target;
+          if (e.isIntersecting) {
+            el.style.opacity = '1'; el.style.transform = 'translateY(0)'; el.style.filter = 'blur(0px)';
+          } else {
+            el.style.opacity = '0'; el.style.transform = 'translateY(26px)'; el.style.filter = 'blur(7px)';
+          }
+        });
+      }, { threshold: 0.18 });
+    }
+    stage.querySelectorAll('[data-reveal]').forEach(function (el) {
+      if (app.seen.has(el)) return;
+      app.seen.add(el);
+      el.style.opacity = '0'; el.style.transform = 'translateY(26px)'; el.style.filter = 'blur(7px)';
+      app.io.observe(el);
+    });
+  }
+
+  /* ======================================================================
+     Музыка
+     ====================================================================== */
+  function startSound() {
+    if (!audioUrl) return;
+    if (!app.track) {
+      app.track = new Audio(audioUrl);
+      app.track.loop = true;
+      app.track.preload = 'auto';
+    }
+    app.track.volume = 0;
+    var playback = app.track.play();
+    var fadeIn = function () {
+      var v = 0;
+      clearInterval(app.fade);
+      app.fade = setInterval(function () {
+        v = Math.min(TARGET_VOLUME, v + 0.02);
+        app.track.volume = v;
+        if (v >= TARGET_VOLUME) clearInterval(app.fade);
+      }, 90);
+    };
+    if (playback && playback.then) playback.then(function () { app.rearmed = false; fadeIn(); }).catch(rearmSound);
+    else fadeIn();
+  }
+
+  /* Браузер отклонил автозапуск — ждём настоящего касания и пробуем снова. */
+  function rearmSound() {
+    setState({ sound: false });
+    if (app.rearmed) return;
+    app.rearmed = true;
+    var events = ['pointerdown', 'touchend', 'keydown'];
+    var retry = function () {
+      events.forEach(function (name) { document.removeEventListener(name, retry, true); });
+      app.rearmed = false;
+      setState({ sound: true });
+      startSound();
+    };
+    events.forEach(function (name) { document.addEventListener(name, retry, true); });
+  }
+
+  function stopSound() {
+    if (!app.track) return;
+    clearInterval(app.fade);
+    var v = app.track.volume;
+    app.fade = setInterval(function () {
+      v -= 0.06;
+      if (v <= 0) { clearInterval(app.fade); app.track.pause(); }
+      else app.track.volume = v;
+    }, 70);
+  }
+
+  /* ======================================================================
+     Действия
+     ====================================================================== */
+  var actions = {
+    openCards: function () { buzz(18); transition('cards'); },
+    openReveal: function () { buzz([10, 40, 10, 40, 22]); transition('reveal'); },
+    pickA: function () { pick('a'); },
+    pickB: function () { pick('b'); },
+    unpick: function () {
+      if (!app.state.picked) return;
+      buzz(10);
+      setState({ picked: null, faceReady: false });
+    },
+    reshuffle: function () {
+      buzz(12);
+      setState({ faceReady: false, accepted: false });
+      transition('cards');
+      setTimeout(function () { setState({ picked: null }); }, 640);
+    },
+    accept: function () {
+      buzz([22, 70, 22, 70, 60]);
+      setState({ accepted: true });
+      transition('vow');
+      answer();
+    },
+    backToReveal: function () { buzz(10); transition('reveal'); },
+    toggleSound: function () {
+      if (app.state.sound) { setState({ sound: false }); stopSound(); }
+      else { setState({ sound: true }); startSound(); }
+    }
+  };
+
+  function pick(which) {
+    if (app.state.picked) return;
+    buzz([14, 60, 26]);
+    setState({ picked: which });
+    setTimeout(function () { setState({ faceReady: true }); }, FLIP_MS);
+  }
+
+  function answer() {
+    var note = $('#vowNote');
+    note.textContent = '';
+    deliver({
+      event: 'accepted',
+      answer: 'Я приду',
+      card: CARDS[app.state.picked] || 'неизвестно'
+    }).then(function () {
+      note.textContent = 'ответ доставлен';
+    }).catch(function () {
+      note.innerHTML = CONFIG.fallbackUrl
+        ? 'письмо не ушло · <a href="' + CONFIG.fallbackUrl + '" target="_blank" rel="noopener">скажи коту сама</a>'
+        : 'скажи коту сама — он ждёт';
+    });
+  }
+
+  /* ======================================================================
+     Запуск
+     ====================================================================== */
+  app.enter = function () {
+    stage.classList.add('ready');
+    setState({ sound: true });
+    startSound();
+    if (CONFIG.notifyOnOpen) deliver({ event: 'opened' }).catch(function () {});
+  };
+
+  stage.querySelectorAll('[data-on]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      var fn = actions[el.getAttribute('data-on')];
+      if (fn) fn();
+    });
+  });
+
+  // место под статус доставки на финальном экране
+  var vowScreen = stage.querySelector('[data-if="isVow"] > div');
+  var note = document.createElement('div');
+  note.id = 'vowNote';
+  vowScreen.appendChild(note);
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden && app.state.sound) stopSound();
+    else if (!document.hidden && app.state.sound) startSound();
+  });
+
+  flushQueue();
+  render();
+})();
+</script>
+</body>
+</html>
