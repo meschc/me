@@ -74,7 +74,7 @@ a:hover{color:#f0dcae}
 
 
 /* ---- ответ ---- */
-#vowNote{position:relative;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(207,169,85,.45);animation:fadeSoft 2s ease both 5s}
+#vowNote{position:relative;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(207,169,85,.45);animation:fadeSoft 2s ease both .6s}
 #vowNote a{border-bottom:1px dotted rgba(207,169,85,.4)}
 #shareHint{min-height:11px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(207,169,85,.5);transition:opacity .3s ease}
 /* На коротких экранах финальный экран поджимается, чтобы «поделиться»
@@ -253,7 +253,7 @@ a:hover{color:#f0dcae}
           </div>
         </div>
       </div>
-      <p data-reveal style="margin:0;font-size:26px;line-height:1.48;color:#f2e7d3;text-wrap:pretty;transition:opacity 1.2s ease .2s,transform 1.2s cubic-bezier(.2,.8,.2,1) .2s,filter 1.2s ease .2s">Каждая трудность спрашивала одно и то же: <em style="color:#e8c88a">настоящее ли?</em> Мы отвечали: да. Шесть лет отвечаем.</p>
+      <p data-reveal style="margin:0;font-size:26px;line-height:1.48;color:#f2e7d3;text-wrap:pretty;transition:opacity 1.2s ease .2s,transform 1.2s cubic-bezier(.2,.8,.2,1) .2s,filter 1.2s ease .2s">Каждая трудность спрашивала одно и то же: <em style="color:#e8c88a">настоящее ли?</em> Мы отвечали: да, и это остаётся неизменным уже шесть лет.</p>
 <div data-reveal style="display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.28em;color:rgba(207,169,85,.6);text-transform:uppercase;transition:opacity 1.2s ease .25s">
         <span style="width:20px;height:1px;background:rgba(207,169,85,.42)"></span>пройдено
       </div>
@@ -482,7 +482,7 @@ a:hover{color:#f0dcae}
       <div style="width:14px;height:14px;background:#f6e6bd;transform:rotate(45deg);box-shadow:0 0 30px rgba(246,230,189,.9);animation:glowPulse 5s ease-in-out infinite"></div>
     </div>
 
-    <div style="position:relative;font-size:40px;line-height:1.28;color:#f6ecda;text-wrap:pretty;animation:rise 1.6s cubic-bezier(.2,.8,.2,1) both 1s">Тогда до субботы,<br><em style="color:#e8c88a;font-style:italic">бусинка.</em></div>
+    <div id="vowTitle" style="position:relative;font-size:40px;line-height:1.28;color:#f6ecda;text-wrap:pretty;animation:rise 1.6s cubic-bezier(.2,.8,.2,1) both 1s">Тогда до субботы,<br><em style="color:#e8c88a;font-style:italic">бусинка.</em></div>
 
     <div style="position:relative;font-size:20px;line-height:1.6;color:rgba(239,227,206,.6);max-width:24ch;animation:rise 1.6s cubic-bezier(.2,.8,.2,1) both 2s">Жребий принят. Дальше говорить нечего — остальное скажет сам вечер.</div>
 
@@ -904,7 +904,7 @@ a:hover{color:#f0dcae}
   var vowScreen = stage.querySelector('[data-if="isVow"] > div');
   var note = document.createElement('div');
   note.id = 'vowNote';
-  vowScreen.insertBefore(note, $('#vowShare'));
+  vowScreen.insertBefore(note, $('#vowTitle'));
 
   document.addEventListener('visibilitychange', function () {
     if (document.hidden && app.state.sound) stopSound();
