@@ -179,7 +179,9 @@
       .cards-view { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3.4em 1.6em; }
       /* В сетке: обложка 85% по центру; название и автор скрыты; показываем только book-meta по центру */
       .cards-view:not(.is-list) .book-card { align-items: center; }
-      .cards-view:not(.is-list) .cover-wrap { width: 85%; }
+      /* Ширину задаём всей книге, а не только обложке: страницы и задняя обложка
+         (::before/::after у .book3d) растягиваются по .book3d и иначе торчат справа */
+      .cards-view:not(.is-list) .book3d { width: 85%; }
       .cards-view:not(.is-list) .book-title,
       .cards-view:not(.is-list) .book-author { display: none; }
       .cards-view:not(.is-list) .book-content { align-items: center; }
@@ -193,7 +195,7 @@
         gap: 1.1em;
       }
       .cards-view.is-list .book-card { flex-direction: row; align-items: center; width: 100%; gap: 1em; }
-      .cards-view.is-list .cover-wrap { width: 56px; flex: none; }
+      .cards-view.is-list .book3d { width: 56px; flex: none; }
       .cards-view.is-list .book-content { display: flex; flex: 1 1 auto; min-width: 0; }
     }
 
@@ -386,9 +388,8 @@
     }
     @media (max-width: 600px) {
       .cards-view:not(.is-list) .book-card.is-audio .book3d { width: 74%; align-self: center; transform: translateX(-6%); }
-      .cards-view:not(.is-list) .book-card.is-audio .cover-wrap { width: 100%; }
       .cards-view.is-list .vinyl { display: none; }
-      .cards-view.is-list .book-card.is-audio .book3d { width: auto; }
+      .cards-view.is-list .book-card.is-audio .book3d { width: 56px; align-self: center; }
     }
 
     /* iBooks-мокап (корешок/блик) поверх любой обложки */
