@@ -314,6 +314,83 @@
         box-shadow: -14px 20px 30px -16px rgba(0, 0, 0, 0.28), -5px 7px 12px -8px rgba(0, 0, 0, 0.20);
       }
     }
+    /* ===== Аудиокниги: вместо раскрытия книги — конверт с пластинкой.
+       В покое край пластинки выглядывает из конверта (видно и на мобильном, где нет ховера),
+       по ховеру пластинка выезжает вправо и крутится. Конверт уже обычной обложки,
+       чтобы выехавшая пластинка помещалась в свою колонку и не наезжала на соседа. ===== */
+    .book-card.is-audio .book3d { width: 78%; align-self: flex-start; transform-style: flat; }
+    .book-card.is-audio .book3d::before,
+    .book-card.is-audio .book3d::after { content: none; }      /* страниц и задней обложки у конверта нет */
+    .book-card.is-audio .cover-wrap { z-index: 1; }
+    .vinyl {
+      position: absolute;
+      top: 50%;
+      left: 3%;
+      width: 94%;
+      aspect-ratio: 1;
+      transform: translate(9%, -50%);
+      transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .vinyl__disc {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      /* бороздки + тёмный винил; блик — отдельный слой, он НЕ крутится, как свет на настоящей пластинке */
+      background:
+        repeating-radial-gradient(circle, rgba(255,255,255,0.045) 0 1px, transparent 1px 3px),
+        radial-gradient(circle, #1b1a19 0 66%, #111 67% 100%);
+      box-shadow: 0 10px 18px -8px rgba(0,0,0,0.45), 0 2px 4px rgba(0,0,0,0.3);
+      animation: vinyl-spin 2.4s linear infinite;
+      animation-play-state: paused;
+    }
+    .vinyl__label {
+      position: absolute;
+      inset: 33%;
+      border-radius: 50%;
+      background: var(--label-img, none) center / cover, var(--cover-color, #b9b2a7);
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.35);
+    }
+    /* засечка на этикетке — чтобы вращение читалось и без картинки */
+    .vinyl__label::before {
+      content: "";
+      position: absolute;
+      top: 12%; left: 50%;
+      width: 2px; height: 22%;
+      margin-left: -1px;
+      background: rgba(255,255,255,0.55);
+    }
+    /* отверстие */
+    .vinyl__label::after {
+      content: "";
+      position: absolute;
+      inset: 44%;
+      border-radius: 50%;
+      background: #f6f4f0;
+    }
+    .vinyl__sheen {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(from 20deg, transparent 0 8%, rgba(255,255,255,0.13) 13%, transparent 19% 50%, rgba(255,255,255,0.09) 63%, transparent 69%);
+    }
+    @keyframes vinyl-spin { to { transform: rotate(360deg); } }
+    @media (hover: hover) and (pointer: fine) {
+      .book-card.is-audio:hover .cover-wrap { transform: translateX(-3%); box-shadow: 6px 14px 22px -12px rgba(0,0,0,0.3), 0 2px 5px rgba(0,0,0,0.14); }
+      .book-card.is-audio:hover .vinyl { transform: translate(36%, -50%); }
+      .book-card.is-audio:hover .vinyl__disc { animation-play-state: running; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .vinyl__disc { animation: none; }
+    }
+    @media (max-width: 600px) {
+      .cards-view:not(.is-list) .book-card.is-audio .book3d { width: 74%; align-self: center; transform: translateX(-6%); }
+      .cards-view:not(.is-list) .book-card.is-audio .cover-wrap { width: 100%; }
+      .cards-view.is-list .vinyl { display: none; }
+      .cards-view.is-list .book-card.is-audio .book3d { width: auto; }
+    }
+
     /* iBooks-мокап (корешок/блик) поверх любой обложки */
     .cover-wrap::after, .sheet__cover::after {
       content: "";
@@ -1284,6 +1361,10 @@
 
         // Заглушка-сайзер задаёт ширину обёртки (под ней потом проявится обложка)
         coverWrap.prepend(genCover(book));
+        if (formatMeta(book['Формат']).icon === 'headphones') {
+          cardEl.classList.add('is-audio');
+          coverWrap.before(buildVinyl());
+        }
 
         cardEl.dataset.cover = book["Обложка"] || "";
         applyCoverMeta(cardEl, cardEl.dataset.cover);   // пропорция и цвет из кэша — до загрузки
@@ -1434,6 +1515,15 @@
       return col;
     }
 
+    // Пластинка для аудиокниг: выглядывает из конверта-обложки, по ховеру выезжает и крутится
+    function buildVinyl() {
+      const vinyl = document.createElement('div');
+      vinyl.className = 'vinyl';
+      vinyl.setAttribute('aria-hidden', 'true');
+      vinyl.innerHTML = '<div class="vinyl__disc"><span class="vinyl__label"></span></div><div class="vinyl__sheen"></div>';
+      return vinyl;
+    }
+
     // Ленивая подгрузка обложки: пропорция карточки = пропорция картинки (не обрезается),
     // цвет обложки идёт в --cover-color (поля-letterbox и название по ховеру, п.6).
     function loadCover(card, attempt) {
@@ -1456,6 +1546,9 @@
         if (ar) card.style.setProperty('--cover-ar', ar);
         img.classList.add('is-loaded');
         wrap.classList.add('has-cover');   // мокап уже внутри файла — свой не рисуем
+        if (card.classList.contains('is-audio')) {
+          card.style.setProperty('--label-img', 'url("' + url.replace(/"/g, '%22') + '")');   // обложка на этикетке
+        }
         // Заглушка лежит ПОД картинкой и убирается лишь когда та полностью проявилась,
         // иначе в момент перехода видна серая подложка обёртки.
         const gc = wrap.querySelector('.gen-cover');
